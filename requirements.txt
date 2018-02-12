@@ -4,3 +4,8 @@ Jinja2==2.9.6
 pep8==1.7.0
 psycopg2==2.7.4
 pytz==2017.2
+whitenoise==3.3.1
+dj-database-url==0.4.2
+dj-static==0.0.6
+Markdown==2.6.11
+Pillow==4.2.1
