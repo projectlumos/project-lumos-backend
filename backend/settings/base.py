@@ -21,7 +21,7 @@ SECRET_KEY = '93pye=z=**bajl6ie5euzul*gzz8b8+*)ku&1b=b)dkv%+o-q5'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://pl-backend-staging.herokuapp.com/','http://pl-backend-production.herokuapp.com/']
 
 
 # Application definition
