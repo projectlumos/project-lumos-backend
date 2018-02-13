@@ -1,5 +1,5 @@
 import os
-from django.core.exceptions import ImproperlyConfigured
+import logging
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -9,15 +9,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# def get_env_variable(var_name):
-#     try:
-#         return os.environ[var_name]
-#     except KeyError:
-#         error_msg = "Set the %s environment variable" % var_name
-#         raise ImproperlyConfigured(error_msg)
-#
-# SECRET_KEY = get_env_variable('SECRET_KEY')
-SECRET_KEY='93pye=z=**bajl6ie5euzul*gzz8b8+*)ku&1b=b)dkv%+o-q5'
+logger = logging.getLogger(__name__)
+def get_env_variable(var_name, default):
+    try:
+        if var_name not in os.environ:  #if var_name not set in virtual env
+            os.environ[var_name] = default
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        logger.info(error_msg)
+
+SECRET_KEY = get_env_variable('SECRET_KEY','93pye=z=**bajl6ie5euzul*gzz8b8+*)ku&1b=b)dkv%+o-q5')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
