@@ -8,3 +8,17 @@ SKILL_ADVANCED = 'AD'
 EXTERNAL_LINK_BLOG = 'BL'
 EXTERNAL_LINK_TUTORIAL = 'TU'
 EXTERNAL_LINK_COURSE = 'CO'
+
+#skill_level choices
+skill_levels = (
+    (SKILL_BEGINNER, 'BEGINNER'),
+    (SKILL_INTERMEDIATE, 'INTERMEDIATE'),
+    (SKILL_ADVANCED, 'ADVANCED')
+)
+
+#external_type choices
+external_types = (     #indicate which type of external link
+    (EXTERNAL_LINK_BLOG, 'BLOG'),
+    (EXTERNAL_LINK_TUTORIAL, 'TUTORIAL'),
+    (EXTERNAL_LINK_COURSE, 'COURSE')
+)

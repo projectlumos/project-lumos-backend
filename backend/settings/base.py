@@ -1,6 +1,6 @@
 import os
 import logging
-
+from .env_vars import SECRET_KEY_DEFAULT
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -9,17 +9,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-logger = logging.getLogger(__name__)
 def get_env_variable(var_name, default):
-    try:
-        if var_name not in os.environ:  #if var_name not set in virtual env
-            os.environ[var_name] = default
-        return os.environ[var_name]
-    except KeyError:
-        error_msg = "Set the %s environment variable" % var_name
-        logger.info(error_msg)
+    if var_name not in os.environ:  #if var_name not set in virtual env
+        os.environ[var_name] = default
+    return os.environ[var_name]
 
-SECRET_KEY = get_env_variable('SECRET_KEY','93pye=z=**bajl6ie5euzul*gzz8b8+*)ku&1b=b)dkv%+o-q5')
+SECRET_KEY = get_env_variable('SECRET_KEY',SECRET_KEY_DEFAULT)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -35,6 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #my apps
+    'courses'
 ]
 
 MIDDLEWARE = [
