@@ -15,8 +15,9 @@ def custom_slugify(source_field, suffix=False):
     return new_slug
 
 class Language(models.Model):
-    language_name = models.CharField(max_length=20)
+    language_name = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
+    languages_for = models.CharField(max_length=2, choices=language_for)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -36,8 +37,9 @@ class Language(models.Model):
         unique_together = ('language_name', 'slug')
 
 class Domain(models.Model):
-    domain_name = models.CharField(max_length=20)
+    domain_name = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
+    domains_for = models.CharField(max_length=2, choices=domain_for)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -95,8 +97,9 @@ class KnowledgeBase(RowInformation):
         ordering = ['-modified_at','-created_at']
         unique_together = ('title', 'slug')
 
-    multi_language.short_description = "resource has multiple languages or not"
+    multi_language.short_description = "multiple-languages"
     multiple_languages = property(multi_language)
+    multi_language.admin_order_field = '-modified_at'
 
 
 class Video(KnowledgeBase):
