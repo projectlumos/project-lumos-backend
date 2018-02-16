@@ -1,5 +1,5 @@
 from django.db import models
-from courses.utils.constants import skill_levels, external_types
+from courses.utils.constants import skill_levels, external_types, language_for, domain_for
 from django.template.defaultfilters import slugify
 from django.db import IntegrityError
 from django.utils.crypto import get_random_string
@@ -109,8 +109,8 @@ class Video(KnowledgeBase):
 
 class ExternalLink(KnowledgeBase):
     link_url = models.URLField(null=False, blank=False, unique=True)
-    languages = models.ManyToManyField(Language, related_name='external_link_languages')
-    domains = models.ManyToManyField(Domain, related_name='external_link_domains')
+    languages = models.ManyToManyField(Language, related_name='externallink_languages')
+    domains = models.ManyToManyField(Domain, related_name='externallink_domains')
     external_type = models.CharField(max_length=2, choices=external_types)
     paid = models.BooleanField(default=False)
 
