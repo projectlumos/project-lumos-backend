@@ -72,6 +72,8 @@ class KnowledgeBase(RowInformation):
     description = models.TextField(null=False, blank=True)    #if no description, store empty string
     slug = models.SlugField(unique=True)
     skill_level = models.CharField(max_length=2, choices=skill_levels)
+    languages = models.ManyToManyField(Language, related_name='%(class)s_languages')
+    domains = models.ManyToManyField(Domain, related_name='%(class)s_domains')
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -104,13 +106,9 @@ class KnowledgeBase(RowInformation):
 
 class Video(KnowledgeBase):
     video_url = models.URLField(null=False, blank=False, unique=True)  #since video_id is a string
-    languages = models.ManyToManyField(Language, related_name='video_languages')
-    domains = models.ManyToManyField(Domain, related_name='video_domains')
 
 class ExternalLink(KnowledgeBase):
     link_url = models.URLField(null=False, blank=False, unique=True)
-    languages = models.ManyToManyField(Language, related_name='externallink_languages')
-    domains = models.ManyToManyField(Domain, related_name='externallink_domains')
     external_type = models.CharField(max_length=2, choices=external_types)
     paid = models.BooleanField(default=False)
 
