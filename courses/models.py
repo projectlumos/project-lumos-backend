@@ -1,5 +1,5 @@
 from django.db import models
-from courses.utils.constants import skill_levels, external_types
+from courses.utils.constants import skill_levels, external_types, language_for, domain_for
 from django.template.defaultfilters import slugify
 from django.db import IntegrityError
 from django.utils.crypto import get_random_string
@@ -17,6 +17,7 @@ def custom_slugify(source_field, suffix=False):
 class Language(models.Model):
     language_name = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
+    languages_for = models.CharField(max_length=2, choices=language_for)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -38,6 +39,7 @@ class Language(models.Model):
 class Domain(models.Model):
     domain_name = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
+    domains_for = models.CharField(max_length=2, choices=domain_for)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -70,6 +72,8 @@ class KnowledgeBase(RowInformation):
     description = models.TextField(null=False, blank=True)    #if no description, store empty string
     slug = models.SlugField(unique=True)
     skill_level = models.CharField(max_length=2, choices=skill_levels)
+    languages = models.ManyToManyField(Language, related_name='%(class)s_languages')
+    domains = models.ManyToManyField(Domain, related_name='%(class)s_domains')
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -102,13 +106,9 @@ class KnowledgeBase(RowInformation):
 
 class Video(KnowledgeBase):
     video_url = models.URLField(null=False, blank=False, unique=True)  #since video_id is a string
-    languages = models.ManyToManyField(Language, related_name='video_languages')
-    domains = models.ManyToManyField(Domain, related_name='video_domains')
 
 class ExternalLink(KnowledgeBase):
     link_url = models.URLField(null=False, blank=False, unique=True)
-    languages = models.ManyToManyField(Language, related_name='external_link_languages')
-    domains = models.ManyToManyField(Domain, related_name='external_link_domains')
     external_type = models.CharField(max_length=2, choices=external_types)
     paid = models.BooleanField(default=False)
 
