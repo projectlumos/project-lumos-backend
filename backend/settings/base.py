@@ -18,7 +18,7 @@ SECRET_KEY = get_env_variable('SECRET_KEY',SECRET_KEY_DEFAULT)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pl-backend-staging.herokuapp.com','pl-backend-production.herokuapp.com', '0.0.0.0']
+ALLOWED_HOSTS = ['pl-backend-staging.herokuapp.com','pl-backend-production.herokuapp.com', '0.0.0.0', '127.0.0.1']
 
 
 # Application definition
