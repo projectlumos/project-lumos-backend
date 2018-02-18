@@ -72,8 +72,8 @@ def get_wiki_product_data(term):
     runs the wikiperdia helper functions and created the
     wikipedia data ready for the modal
     """
+    return_data = {}
     try:
-        return_data = False
         detailed_data = get_wiki_data(term=term)  #gets the title, url and content of the term
         summary_data = get_wiki_summary(term=term)  #gets the summary or ambiguous results with urls
         related_terms = get_similar_search(term=term) #gets related terms and urls
@@ -84,11 +84,11 @@ def get_wiki_product_data(term):
                     'summary_data': summary_data,
                     'related_terms': related_terms
             }
-        return return_data #dictionary with the submitted term, detailed_data, summary_data and related_terms
 
     except wikipedia.exceptions.PageError as e:
-        return_data = {}
-        return return_data
+        return_data['error'] = "page doesn't exist or could not be loaded."
+
+    return return_data #dictionary with the submitted term, detailed_data, summary_data and related_terms
 
 #dictionary function
 def dictionary_result(term):
@@ -105,15 +105,22 @@ def dictionary_result(term):
 	return_data['term_antonym'] = dictionary.antonym(term)  #returns the antonyms of the term
 	return return_data
 
-
 def wikiscript(request, term):
+    """
+    This is a function that takes in request and a term from url
+    which is a slug and runs wikipedia functions to return JSON data
+    """
     term = str(term)
-    wiki_dict = get_wiki_product_data(term)
-    wiki_dict = json.dumps(wiki_dict)
+    wiki_dict = get_wiki_product_data(term)  #passing the term from url to get_wiki_product_data
+    wiki_dict = json.dumps(wiki_dict)  #converting dictionary into JSON
     return JsonResponse(json.loads(wiki_dict))
 
 def dictscript(request, term):
+    """
+    This is a function that takes in request and a term from url
+    which is a slug and runs dictionary function to return JSON data
+    """
     term = str(term)
-    dict_dict = dictionary_result(term)
-    dict_dict = json.dumps(dict_dict)
+    dict_dict = dictionary_result(term)  #passing the term from url to dictionary_result
+    dict_dict = json.dumps(dict_dict)  #converting dictionary into JSON
     return JsonResponse(json.loads(dict_dict))
