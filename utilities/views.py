@@ -87,7 +87,7 @@ def get_wiki_product_data(term):
         return return_data #dictionary with the submitted term, detailed_data, summary_data and related_terms
 
     except wikipedia.exceptions.PageError as e:
-        return_data = None
+        return_data = {}
         return return_data
 
 #dictionary function
