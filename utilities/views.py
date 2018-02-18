@@ -72,18 +72,23 @@ def get_wiki_product_data(term):
     runs the wikiperdia helper functions and created the
     wikipedia data ready for the modal
     """
-    return_data = False
-    detailed_data = get_wiki_data(term=term)  #gets the title, url and content of the term
-    summary_data = get_wiki_summary(term=term)  #gets the summary or ambiguous results with urls
-    related_terms = get_similar_search(term=term) #gets related terms and urls
-    if summary_data:
-        return_data = {
-                'wiki_term': term,
-                'detailed_data' : detailed_data,
-                'summary_data': summary_data,
-                'related_terms': related_terms
-        }
-    return return_data #dictionary with the submitted term, detailed_data, summary_data and related_terms
+    try:
+        return_data = False
+        detailed_data = get_wiki_data(term=term)  #gets the title, url and content of the term
+        summary_data = get_wiki_summary(term=term)  #gets the summary or ambiguous results with urls
+        related_terms = get_similar_search(term=term) #gets related terms and urls
+        if summary_data:
+            return_data = {
+                    'wiki_term': term,
+                    'detailed_data' : detailed_data,
+                    'summary_data': summary_data,
+                    'related_terms': related_terms
+            }
+        return return_data #dictionary with the submitted term, detailed_data, summary_data and related_terms
+
+    except wikipedia.exceptions.PageError as e:
+        return_data = None
+        return return_data
 
 #dictionary function
 def dictionary_result(term):
