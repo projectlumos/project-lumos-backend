@@ -24,7 +24,7 @@ Setup database tables,
 
 Run the web application locally,
 
-`python mage.py runserver --settings=backend.settings.development` # 127.0.0.1:8000(localhost)
+`python manage.py runserver --settings=backend.settings.development` # 127.0.0.1:8000(localhost)
 
 
 you can also set the environment variable in the virtual environment, to avoid writing the settings part everytime
