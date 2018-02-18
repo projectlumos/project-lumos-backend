@@ -1,5 +1,5 @@
 from .base import *
-from .env_vars import DATABASE_ENGINE, DATABASE_USER, DATABASE_NAME, DATABASE_PASSWORD
+from .env_vars import DATABASE_ENGINE, DATABASE_USER, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_DEFAULT, SECURE_PROXY_SSL_HEADER
 DEBUG = True
 
 DATABASES = {
@@ -14,5 +14,6 @@ DATABASES = {
 }
 
 import dj_database_url
-DATABASES['default'] = dj_database_url.config(default='postgres://paritosh:Parwad321@localhost/backend2_db')
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+DATABASES['default'] = DATABASE_DEFAULT
+SECURE_PROXY_SSL_HEADER = SECURE_PROXY_SSL_HEADER
