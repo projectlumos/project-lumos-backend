@@ -2,6 +2,7 @@
 
 ## Overview
 
+This is the backend repository for Project Lumos, a site that aims to be a central repository for open source knowledge resources. The backend is on Django REST Framework.
 
 
 ## Prerequisites
