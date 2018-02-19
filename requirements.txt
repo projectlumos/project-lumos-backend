@@ -6,3 +6,5 @@ psycopg2==2.7.4
 pytz==2017.2
 dj-database-url==0.4.2
 dj-static==0.0.6
+wikipedia==1.4.0
+PyDictionary==1.5.2
