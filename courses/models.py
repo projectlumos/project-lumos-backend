@@ -106,7 +106,7 @@ class KnowledgeBase(RowInformation):
     This class is used to maintain attributes which are common to both the
     Video class and ExternalLink class. It inherits from RowInformation class
     """
-    title = models.CharField(max_length=50, null=False, blank=False)  #title of the resource
+    title = models.CharField(max_length=100, null=False, blank=False)  #title of the resource
     description = models.TextField(null=False, blank=True)    #if no description, store empty string
     slug = models.SlugField(unique=True)
     skill_level = models.CharField(max_length=2, choices=skill_levels)  #skill level required to understand the resource
