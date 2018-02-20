@@ -15,6 +15,9 @@ class LanguageSerializer(ModelSerializer):
             'id',
             'language_name',
             'slug',
+            'site_url',
+            'description',
+            'icon',
             'languages_for'
         ]
 
@@ -26,6 +29,8 @@ class DomainSerializer(ModelSerializer):
             'id'
             'domain_name'
             'slug',
+            'description',
+            'icon',
             'domains_for'
         ]
 
