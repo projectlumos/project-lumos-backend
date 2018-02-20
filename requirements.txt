@@ -1,3 +1,5 @@
+WHY TWO REQUIREMENT SETUPS?
+
 Django==2.0.2
 gunicorn==19.7.1
 Jinja2==2.9.6

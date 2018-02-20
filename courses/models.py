@@ -5,6 +5,12 @@ from django.db import IntegrityError
 from django.utils.crypto import get_random_string
 # Create your models here.
 
+"""
+Non Critical: Please read a Pep8 guide or use an IDE such as PyCharm
+"""
+
+
+# move this to the utils - create a models utils
 def custom_slugify(source_field, suffix=False):
     """
     Using django util methods create a slug.
@@ -18,6 +24,7 @@ def custom_slugify(source_field, suffix=False):
 
     return new_slug
 
+
 class Language(models.Model):
     """
     It refers to the various languages in technical skills and soft skills context.
@@ -26,11 +33,14 @@ class Language(models.Model):
     """
     language_name = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
-    languages_for = models.CharField(max_length=2, choices=language_for)  #used to indicate whether the language is for technical skills or soft skills
+
+    # used to indicate whether the language is for technical skills or soft skills
+    languages_for = models.CharField(max_length=2, choices=language_for)
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = custom_slugify(source_field=self.language_name, suffix=False)  #if slug doesn't exist pass the source_field and suffix=False to custom_slugify function
+            # if slug doesn't exist pass the source_field and suffix=False to custom_slugify function
+            self.slug = custom_slugify(source_field=self.language_name, suffix=False)
 
         try:
             """
@@ -52,6 +62,7 @@ class Language(models.Model):
 
     class Meta:
         unique_together = ('language_name', 'slug')  #checks whether the combination of two fields is unique
+
 
 class Domain(models.Model):
     """
@@ -88,6 +99,8 @@ class Domain(models.Model):
     class Meta:
         unique_together = ('domain_name', 'slug')  #checks whether the combination of two fields is unique
 
+
+# think about moving this to model utils
 class RowInformation(models.Model):
     """
     This class is used to maintain meta information such as is_active, created_at, modified_at
@@ -144,6 +157,7 @@ class KnowledgeBase(RowInformation):
             return True
         else:
             return False
+
     class Meta:
         abstract = True  #used as a base class for other models
         ordering = ['-modified_at','-created_at']
@@ -153,6 +167,22 @@ class KnowledgeBase(RowInformation):
     multiple_languages = property(multi_language)   #multiple_languages is a property on KnowledgeBase
     multi_language.admin_order_field = '-modified_at'  #multi_language is ordered by reverse modified_at at the admin panel
 
+    """
+    Why not this convention?
+    
+    @property
+    def multi_language(self):
+        \"""
+        check whether the resource has more than one languages associated
+        with it, if yes return True
+        \"""
+        if self.languages.count() > 1:
+            return True
+        else:
+            return False
+    
+    """
+
 
 class Video(KnowledgeBase):
     """
@@ -160,6 +190,7 @@ class Video(KnowledgeBase):
     from the KnowledgeBase
     """
     video_url = models.URLField(null=False, blank=False, unique=True)  #url of the video resource
+
 
 class ExternalLink(KnowledgeBase):
     """
