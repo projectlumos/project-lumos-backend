@@ -26,6 +26,9 @@ class Language(models.Model):
     """
     language_name = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
+    site_url = models.URLField(null=False, blank=True)  #if no site_url, store empty string
+    description = models.TextField(null=False, blank=True)    #if no description, store empty string
+    icon = models.URLField(null=False, blank=True)  #if no icon_url, store empty string
     languages_for = models.CharField(max_length=2, choices=language_for)  #used to indicate whether the language is for technical skills or soft skills
 
     def save(self, *args, **kwargs):
@@ -61,6 +64,8 @@ class Domain(models.Model):
     """
     domain_name = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
+    description = models.TextField(null=False, blank=True)    #if no description, store empty string
+    icon = models.URLField(null=False, blank=True)   #if no icon_url, store empty string
     domains_for = models.CharField(max_length=2, choices=domain_for)  #used to indicate whether the domain is for technical skills or soft skills
 
     def save(self, *args, **kwargs):
