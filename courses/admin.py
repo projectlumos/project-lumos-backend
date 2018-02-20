@@ -6,15 +6,21 @@ class DomainModelAdmin(admin.ModelAdmin):
     """
     handles the admin panel for Domain class.
     """
-    list_display = ['domain_name','__str__']  #fields to be displayed in the admin site list
-    list_display_links = ['domain_name','__str__']  #fields which link the list object to object
-    search_fields = ['domain_name','__str__']  #fields which are searchable from the admin site
+    list_display = ['domain_name', 'slug']  #fields to be displayed in the admin site list
+    list_display_links = ['domain_name', 'slug']  #fields which link the list object to object
+    search_fields = ['domain_name', 'slug']  #fields which are searchable from the admin site
     list_filter = ['domain_name']  #fields to filter by
     readonly_fields = ['slug']  #this field can only be read at the admin site. slug is created when object is saved so no write permissions given
 
     class Meta:
         model = Domain  #indicates the model this class works for
 
+"""
+replicate the changes for the others.
+don't add repeated doc strings :p
+
+read up on raw_id_fields and it's advantages
+"""
 
 class LanguageModelAdmin(admin.ModelAdmin):
     """

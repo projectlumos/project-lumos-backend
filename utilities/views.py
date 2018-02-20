@@ -4,6 +4,23 @@ import wikipedia
 from PyDictionary import PyDictionary
 import json
 from django.http import JsonResponse
+
+
+"""
+Please write/integrate functional views from a DRF perspective.
+
+http://www.django-rest-framework.org/api-guide/views/#function-based-views
+
+Why is the REST resource (endpoint) and helper functions (all the dict and wiki stuff) in a single file?
+Change it please.
+
+utilities/views.py
+utilities/app_utils/wiki.py
+utilities/app_utils/dictonary.py
+utilities/constants.py
+
+"""
+
 # Create your views here.
 
 #wikipedia functions
@@ -12,6 +29,8 @@ def wiki_term_to_url(terms_list):
     takes a term list and returns a dict
     which contains the term and the wikipedia url
     """
+
+    # use constants bro
     wiki_data = {curr_term: 'https://en.wikipedia.org/wiki/' + curr_term.lower().replace(' ','_') for curr_term in terms_list}  #for every term in the list, concatenate with default wiki_url, make it lowercase and replace space with _ for url purposes
     return wiki_data
 
@@ -29,6 +48,7 @@ def get_wiki_data(term):
         return_data['url'] = term_data.url
         return_data['content'] = term_data.content
     except Exception as e:
+        # log it NO PRINTS IN THE APP
         print(e)  #if exception is thrown, print it
         return_data = None
     return return_data  #if no exception return title, url and content of the term in dictionary
@@ -80,7 +100,7 @@ def get_wiki_product_data(term):
         if summary_data:
             return_data = {
                     'wiki_term': term,
-                    'detailed_data' : detailed_data,
+                    'detailed_data': detailed_data,
                     'summary_data': summary_data,
                     'related_terms': related_terms
             }
@@ -89,6 +109,12 @@ def get_wiki_product_data(term):
         return_data['error'] = "page doesn't exist or could not be loaded."
 
     return return_data #dictionary with the submitted term, detailed_data, summary_data and related_terms
+
+
+"""
+PEP 8 says the lines below contain tabs not spaces in the indentation.
+Please use a PEP 8 linter
+"""
 
 #dictionary function
 def dictionary_result(term):
