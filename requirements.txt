@@ -8,3 +8,4 @@ dj-database-url==0.4.2
 dj-static==0.0.6
 wikipedia==1.4.0
 PyDictionary==1.5.2
+djangorestframework==3.7.7

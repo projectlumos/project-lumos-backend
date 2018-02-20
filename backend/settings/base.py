@@ -32,10 +32,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #my apps
     'courses',
-    'utilities'
+    'utilities',
+    #third_party_apps
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
