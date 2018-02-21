@@ -18,7 +18,7 @@ SECRET_KEY = get_env_variable('SECRET_KEY',SECRET_KEY_DEFAULT)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pl-backend-staging.herokuapp.com','pl-backend-production.herokuapp.com', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['pl-backend-staging.herokuapp.com','pl-backend-production.herokuapp.com','pl-backend-development.herokuapp.com', '0.0.0.0', '127.0.0.1']
 
 
 # Application definition
@@ -32,10 +32,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #my apps
     'courses',
-    'utilities'
+    'utilities',
+    #third_party_apps
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

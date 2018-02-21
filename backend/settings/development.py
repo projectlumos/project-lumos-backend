@@ -1,5 +1,7 @@
+import os
 from .base import *
-from .env_vars import DATABASE_ENGINE, DATABASE_USER, DATABASE_NAME, DATABASE_PASSWORD, DATABASE_DEFAULT, SECURE_PROXY_SSL_HEADER
+from .env_vars import DATABASE_ENGINE, DATABASE_USER, DATABASE_NAME, DATABASE_PASSWORD, \
+    SECURE_PROXY_SSL_HEADER
 DEBUG = True
 
 DATABASES = {
@@ -13,7 +15,10 @@ DATABASES = {
     }
 }
 
-import dj_database_url
-
-DATABASES['default'] = DATABASE_DEFAULT
-SECURE_PROXY_SSL_HEADER = SECURE_PROXY_SSL_HEADER
+env = os.environ.copy()
+db_url = env.get('DATABASE_URL', False)
+if db_url != False:
+    # to handle Heroku and local settings, DATABASE_URL present in env then run the following code
+    import dj_database_url
+    DATABASES['default'] =  dj_database_url.config()
+    SECURE_PROXY_SSL_HEADER = SECURE_PROXY_SSL_HEADER
