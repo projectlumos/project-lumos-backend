@@ -26,7 +26,7 @@ def get_wiki_data(term):
         return_data['url'] = term_data.url
         return_data['content'] = term_data.content
     except Exception as e:
-        print(e)  #if exception is thrown, print it
+        logger.error(e)
         return_data = None
     return return_data  #if no exception return title, url and content of the term in dictionary
 
@@ -42,7 +42,7 @@ def get_similar_search(term, results = 5):
         all_terms = wikipedia.search(term, results=results)  #search the related terms and limit to results specified
         return_data = wiki_term_to_url(all_terms)  #pass the all_terms list into wiki_term_to_url to get indivisual urls of each related term
     except Exception as e:
-        logger.error(e)  #if exception is thrown, print it
+        logger.error(e)
         return_data = None
     return return_data  #dictionary with related terms and thier urls
 
