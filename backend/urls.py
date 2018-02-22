@@ -19,8 +19,8 @@ import utilities.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('wiki/<slug:term>/', utilities.views.wikiscript),
-    path('dict/<slug:term>/', utilities.views.dictscript)
+    path('wiki/<slug:term>/', utilities.views.wikiscript, name='wiki'),
+    path('dict/<slug:term>/', utilities.views.dictscript, name='dictionary')
     # path('wiki/(?P<term>[-\w]+)/$', utilities.views.wikiscript, name="wiki" )
     # path('dict/(?P<term>[-\w]+)/$', utilities.views.dictscript, name="dict" )
 ]
