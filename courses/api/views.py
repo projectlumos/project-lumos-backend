@@ -1,4 +1,3 @@
-from rest_framework import mixins
 from rest_framework import viewsets
 from .serializers import LanguageSerializer, DomainSerializer, VideoSerializer, ExternalLinkSerializer
 from courses.models import Language, Domain, Video, ExternalLink
@@ -12,9 +11,7 @@ from rest_framework.filters import (
 )
 
 
-class LanguageViewSet(mixins.ListModelMixin,
-                                mixins.RetrieveModelMixin,
-                                viewsets.GenericViewSet):
+class LanguageViewSet(viewsets.ReadOnlyModelViewSet):
     """
     handles viewset for LanguageSerializer
     """
@@ -27,9 +24,7 @@ class LanguageViewSet(mixins.ListModelMixin,
     queryset = Language.objects.all()
 
 
-class DomainViewSet(mixins.ListModelMixin,
-                                mixins.RetrieveModelMixin,
-                                viewsets.GenericViewSet):
+class DomainViewSet(viewsets.ReadOnlyModelViewSet):
     """
     handles viewset for DomainSerializer
     """
@@ -42,9 +37,7 @@ class DomainViewSet(mixins.ListModelMixin,
     queryset = Domain.objects.all()
 
 
-class VideoViewSet(mixins.ListModelMixin,
-                                mixins.RetrieveModelMixin,
-                                viewsets.GenericViewSet):
+class VideoViewSet(viewsets.ReadOnlyModelViewSet):
     """
     handles viewset for VideoSerializer
     """
@@ -55,12 +48,14 @@ class VideoViewSet(mixins.ListModelMixin,
     filter_fields = ['title', 'description', 'slug', 'skill_level', 'languages', 'domains']
     ordering_fields = ['skill_level', 'title']
     ordering = ['skill_level']
-    queryset = Video.objects.filter(is_active=True)
+    queryset = Video.objects.all()
+
+    def get_queryset(self):
+        queryset = Video.objects.filter(is_active=True)
+        return queryset
 
 
-class ExternalLinkViewSet(mixins.ListModelMixin,
-                                mixins.RetrieveModelMixin,
-                                viewsets.GenericViewSet):
+class ExternalLinkViewSet(viewsets.ReadOnlyModelViewSet):
     """
     handles viewset for ExternalLinkSerializer
     """
@@ -71,4 +66,8 @@ class ExternalLinkViewSet(mixins.ListModelMixin,
     filter_fields = ['title', 'description', 'slug', 'skill_level', 'external_type', 'paid', 'languages', 'domains']
     ordering_fields = ['skill_level', 'external_type', 'title', 'paid']
     ordering = ['skill_level', 'external_type']
-    queryset = ExternalLink.objects.filter(is_active=True)
+    queryset = ExternalLink.objects.all()
+
+    def get_queryset(self):
+        queryset = ExternalLink.objects.filter(is_active=True)
+        return queryset
