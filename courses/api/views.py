@@ -18,7 +18,7 @@ class LanguageViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = LanguageSerializer
     permission_classes = [AllowAny]
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
-    filter_fields = ['id','language_name', 'slug', 'description']
+    filter_fields = ['id','language_name', 'slug', 'description', 'languages_for']
     ordering_fields = ['language_name']
     ordering = ['language_name']
     queryset = Language.objects.all()
@@ -31,7 +31,7 @@ class DomainViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = DomainSerializer
     permission_classes = [AllowAny]
     filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
-    filter_fields = ['id','domain_name', 'slug', 'description']
+    filter_fields = ['id','domain_name', 'slug', 'description', 'domains_for']
     ordering_fields = ['domain_name']
     ordering = ['domain_name']
     queryset = Domain.objects.all()
