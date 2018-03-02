@@ -4,6 +4,9 @@ import logging
 logger = logging.getLogger(__name__)
 from utilities.constants import wiki_base_url
 
+# please use an autoformat pep8 linter
+
+
 def wiki_term_to_url(terms_list):
     """
     takes a term list and returns a dict

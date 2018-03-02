@@ -9,23 +9,23 @@ from courses.models import Language, Domain, Video, ExternalLink
 
 language_detail_url = HyperlinkedIdentityField(
     #url to detail view
-    view_name = 'language-detail',
-    read_only = True
+    view_name='language-detail',
+    read_only=True
 )
 
 domain_detail_url = HyperlinkedIdentityField(
-    view_name = 'domain-detail',
-    read_only = True
+    view_name='domain-detail',
+    read_only=True
 )
 
 video_detail_url = HyperlinkedIdentityField(
-    view_name = 'video-detail',
-    read_only = True
+    view_name='video-detail',
+    read_only=True
 )
 
-externallink_detail_url = HyperlinkedIdentityField(
-    view_name = 'externallink-detail',
-    read_only = True
+externallink_detail_url=HyperlinkedIdentityField(
+    view_name='externallink-detail',
+    read_only=True
 )
 
 

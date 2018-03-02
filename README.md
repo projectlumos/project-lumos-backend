@@ -18,6 +18,11 @@ Install development dependencies,
 
 ---
 
+Create database
+
+`createdb pl_dev`
+
+
 Setup database tables,
 
 ```
