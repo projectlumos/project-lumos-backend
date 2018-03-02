@@ -4,13 +4,16 @@
 SKILL_BEGINNER = 'BG'
 SKILL_INTERMEDIATE = 'IT'
 SKILL_ADVANCED = 'AD'
+
 # external link type constants
 EXTERNAL_LINK_BLOG = 'BL'
 EXTERNAL_LINK_TUTORIAL = 'TU'
 EXTERNAL_LINK_COURSE = 'CO'
+
 # Language choice
 LANGUAGE_TECHNICAL_SKILLS = 'TS'
 LANGUAGE_SOFT_SKILLS = 'SS'
+
 # Domain choice
 DOMAIN_TECHNICAL_SKILLS = 'TS'
 DOMAIN_SOFT_SKILLS = 'SS'
@@ -23,7 +26,7 @@ skill_levels = (
 )
 
 # external_type choices
-external_types = (     # indicate which type of external link
+external_types = (
     (EXTERNAL_LINK_BLOG, 'BLOG'),
     (EXTERNAL_LINK_TUTORIAL, 'TUTORIAL'),
     (EXTERNAL_LINK_COURSE, 'COURSE')

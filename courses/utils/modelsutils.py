@@ -8,11 +8,16 @@ def custom_slugify(source_field, suffix=False):
     Using django util methods create a slug.
     Append a random string at the end of the slug if necessary for making it unique
     """
-    new_slug = slugify(source_field)  #slugify the source_field passed to the function
+
+    # slugify the source_field passed to the function
+    new_slug = slugify(source_field)
 
     if suffix:
-        random_str = get_random_string(length=10)  #get a random string of length 10
-        new_slug = "{0}-{1}".format(new_slug, random_str)  #the new_slug and random_str is concatenated
+        # get a random string of length 10
+        random_str = get_random_string(length=10)
+
+        # the new_slug and random_str is concatenated
+        new_slug = "{0}-{1}".format(new_slug, random_str)
 
     return new_slug
 
@@ -27,4 +32,4 @@ class RowInformation(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        abstract = True  #used as a base class for other models
+        abstract = True
