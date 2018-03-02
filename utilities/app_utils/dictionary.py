@@ -1,5 +1,11 @@
 # dictionary function
 from PyDictionary import PyDictionary
+
+"""
+Please add a sample request and response in the docstrings
+Check out with prashant I have explained him about this
+"""
+
 def dictionary_result(term):
     """
 	Takes an input string and returns a dictionary with

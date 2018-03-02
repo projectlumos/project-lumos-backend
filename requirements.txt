@@ -10,3 +10,4 @@ wikipedia==1.4.0
 PyDictionary==1.5.2
 djangorestframework==3.7.7
 django-cors-headers==2.1.0
+django-filter==1.1.0
