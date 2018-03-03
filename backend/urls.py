@@ -17,13 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 from utilities.views import wikiscript, dictscript
-# from .routers import router
+from .routers import router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('wiki/<slug:term>/', wikiscript , name='wiki'),
     path('dict/<slug:term>/', dictscript , name='dictionary'),
-    # path('api/', include(router.urls)),
-    # path('wiki/(?P<term>[-\w]+)/$', utilities.views.wikiscript, name="wiki" )
-    # path('dict/(?P<term>[-\w]+)/$', utilities.views.dictscript, name="dict" )
+    path('api/', include(router.urls)),
 ]
