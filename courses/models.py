@@ -1,5 +1,5 @@
 from django.db import models
-from courses.utils.constants import skill_levels, external_types, language_for, domain_for
+from courses.utils.constants import skill_levels, data_types, language_for, domain_for
 from django.db import IntegrityError
 from courses.utils import modelsutils
 from courses.utils.modelsutils import RowInformation
@@ -9,12 +9,12 @@ from courses.utils.modelsutils import RowInformation
 '''
 PLEASE MAKE CHANGES FOR THE REST OF THE DJANGO PROJECT WRT COMMENTS
 
-USE THIS 
+USE THIS
 
 # this is a comment
 how_to = "write comments"
 
-INSTEAD OF 
+INSTEAD OF
 
 how_not = "to write comments" #coz this is simply not readable, you read top to bottom and left to right
 
@@ -58,9 +58,6 @@ class Language(models.Model):
 
     # if no icon_url, store empty string
     icon = models.URLField(null=False, blank=True)
-
-    # used to indicate whether the language is for technical skills or soft skills
-    languages_for = models.CharField(max_length=2, choices=language_for)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -107,9 +104,6 @@ class Domain(models.Model):
     # if no icon_url, store empty string
     icon = models.URLField(null=False, blank=True)
 
-    # used to indicate whether the domain is for technical skills or soft skills
-    domains_for = models.CharField(max_length=2, choices=domain_for)
-
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = modelsutils.custom_slugify(source_field=self.domain_name, suffix=False)
@@ -139,19 +133,120 @@ class Domain(models.Model):
         unique_together = ('domain_name', 'slug')
 
 
+class SoftSkills(models.Model):
+    """
+    This class refers to softskills categories.
+
+    """
+    soft_skill_category = models.CharField(max_length=30)
+    slug = models.SlugField(unique=True)
+
+    # if no description, store empty string
+    description = models.TextField(null=False, blank=True)
+
+    # if no icon_url, store empty string
+    icon = models.URLField(null=False, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = modelsutils.custom_slugify(source_field=self.soft_skill_category, suffix=False)
+
+        try:
+            """
+            While saving, it we have a duplicate combination of name and slug
+            Since we have added an IntegrityError check, we will have an exception raised
+            """
+            # since unique combination of source_field and slug exists, call save method
+            super(SoftSkills, self).save(*args, **kwargs)
+
+        except IntegrityError:
+            """
+            after catching the exception, we will generate another slug but this time we will
+            suffix  it with a random string at the end of the slug to make it unique and try saving it again
+            """
+            # since unique combination of source_field and slug doesn't exist, pass suffix=True to add random_str to make it unique
+            self.slug = modelsutils.custom_slugify(source_field=self.soft_skill_category, suffix=True)
+            super(SoftSkills, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return '{name}-{slug}'.format(name=self.soft_skill_category, slug=self.slug)
+
+    class Meta:
+        # checks whether the combination of two fields is unique
+        unique_together = ('soft_skill_category', 'slug')
+
+
+class SoftSkillsData(RowInformation):
+    soft_skill = models.ManyToManyField(SoftSkills, related_name='soft_skills')
+    title = models.CharField(max_length=100, null=False, blank=False)
+
+    # if no description, store empty string
+    description = models.TextField(null=False, blank=True)
+    slug = models.SlugField(unique=True)
+    link_url = models.URLField(null=False, blank=False, unique=True)
+
+    # indicates the type of data, video, blog, tutorial, course or others
+    data_type = models.CharField(max_length=2, choices=data_types)
+
+    # indicates whether the resource is paid or not
+    paid = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = modelsutils.custom_slugify(source_field=self.title, suffix=False)
+
+        try:
+            """
+            While saving, it we have a duplicate combination of name and slug
+            Since we have added an IntegrityError check, we will have an exception raised
+            """
+            # since unique combination of source_field and slug exists, call save method
+            super(SoftSkillsData, self).save(*args, **kwargs)
+
+        except IntegrityError:
+            """
+            after catching the exception, we will generate another slug but this time we will
+            suffix  it with a random string at the end of the slug to make it unique and try saving it again
+            """
+            # since unique combination of source_field and slug doesn't exist, pass suffix=True to add random_str to make it unique
+            self.slug = modelsutils.custom_slugify(source_field=self.title, suffix=True)
+            super(SoftSkillsData, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return '{name}-{slug}'.format(name=self.title, slug=self.slug)
+
+    class Meta:
+        ordering = ['-modified_at', '-created_at']
+        # checks whether the combination of two fields is unique
+        unique_together = ('title', 'slug')
+
+
 class KnowledgeBase(RowInformation):
     """
     This class is used to maintain attributes which are common to both the
     Video class and ExternalLink class. It inherits from RowInformation class
     """
     title = models.CharField(max_length=100, null=False, blank=False)
-    description = models.TextField(null=False, blank=True)  # if no description, store empty string
+
+    # if no description, store empty string
+    description = models.TextField(null=False, blank=True)
     slug = models.SlugField(unique=True)
+
     # skill level required to understand the resource
     skill_level = models.CharField(max_length=2, choices=skill_levels)
+
+    # indicates the type of data, video, blog, tutorial, course or others
+    data_type = models.CharField(max_length=2, choices=data_types)
+
     # languages associated with the resource
-    languages = models.ManyToManyField(Language, related_name='%(class)s_languages')
-    domains = models.ManyToManyField(Domain, related_name='%(class)s_domains')  # domains associated with the resource
+    languages = models.ManyToManyField(Language, related_name='%(class)s_languages', blank=True)
+
+    # domains associated with the resource
+    domains = models.ManyToManyField(Domain, related_name='%(class)s_domains', blank=True)
+    link_url = models.URLField(null=False, blank=False, unique=True)
+
+    # indicates whether the resource is paid or not
+    paid = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -175,43 +270,54 @@ class KnowledgeBase(RowInformation):
     def __str__(self):
         return self.slug
 
-    def multi_language(self):
-        """
-        check whether the resource has more than one languages associated
-        with it, if yes return True
-        """
-        if self.languages.count() > 1:
-            return True
-        else:
-            return False
-
     class Meta:
         abstract = True  # used as a base class for other models
         ordering = ['-modified_at', '-created_at']
         unique_together = ('title', 'slug')  # checks whether the combination of two fields is unique
 
-    multi_language.short_description = "multiple-languages"  # description to show on the admin panel
-    multiple_languages = property(multi_language)  # multiple_languages is a property on KnowledgeBase
-    multi_language.admin_order_field = '-modified_at'  # multi_language is ordered by reverse modified_at at the admin panel
 
+class RandomData(RowInformation):
+    """
+    This class refers to all the random resources.
+    """
+    title = models.CharField(max_length=100, null=False, blank=False)
 
-class Video(KnowledgeBase):
-    """
-    This is a class for resources which are either video or playlists. It inherits
-    from the KnowledgeBase
-    """
-    video_url = models.URLField(null=False, blank=False, unique=True)  # url of the video resource
+    # if no description, store empty string
+    description = models.TextField(null=False, blank=True)
+    slug = models.SlugField(unique=True)
+    link_url = models.URLField(null=False, blank=False, unique=True)
 
+    # indicates the type of data, video, blog, tutorial, course or others
+    data_type = models.CharField(max_length=2, choices=data_types)
 
-class ExternalLink(KnowledgeBase):
-    """
-    This is a class for resources which are external links, it can be a blog
-    or a tutorial or a course. It inherits from the KnowledgeBase
-    """
-    link_url = models.URLField(null=False, blank=False, unique=True)  # url for ExternalLink resource
-    # indicates whether the resource is a blog or a tutorial or course
-    external_type = models.CharField(max_length=2, choices=external_types)
-    paid = models.BooleanField(default=False)  # indicates whether the resource is paid or not
+    # indicates whether the resource is paid or not
+    paid = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = modelsutils.custom_slugify(source_field=self.title, suffix=False)
+
+        try:
+            """
+            While saving, it we have a duplicate combination of name and slug
+            Since we have added an IntegrityError check, we will have an exception raised
+            """
+            # since unique combination of source_field and slug exists, call save method
+            super(RandomData, self).save(*args, **kwargs)
+
+        except IntegrityError:
+            """
+            after catching the exception, we will generate another slug but this time we will
+            suffix  it with a random string at the end of the slug to make it unique and try saving it again
+            """
+            # since unique combination of source_field and slug doesn't exist, pass suffix=True to add random_str to make it unique
+            self.slug = modelsutils.custom_slugify(source_field=self.title, suffix=True)
+            super(RandomData, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return '{name}-{slug}'.format(name=self.title, slug=self.slug)
 
     class Meta:
-        ordering = ['external_type']
+        ordering = ['-modified_at', '-created_at']
+        # checks whether the combination of two fields is unique
+        unique_together = ('title', 'slug')
