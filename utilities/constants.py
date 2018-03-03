@@ -3,4 +3,4 @@
 
 
 # constants for utilities app
-wiki_base_url = 'https://en.wikipedia.org/wiki/'
+WIKI_BASE_URL = 'https://en.wikipedia.org/wiki/'

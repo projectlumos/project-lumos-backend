@@ -2,7 +2,7 @@
 import wikipedia
 import logging
 logger = logging.getLogger(__name__)
-from utilities.constants import wiki_base_url
+from utilities.constants import WIKI_BASE_URL
 
 # please use an autoformat pep8 linter
 
@@ -12,7 +12,7 @@ def wiki_term_to_url(terms_list):
     takes a term list and returns a dict
     which contains the term and the wikipedia url
     """
-    wiki_data = {curr_term: wiki_base_url + curr_term.lower().replace(' ','_') for curr_term in terms_list}  #for every term in the list, concatenate with default wiki_url, make it lowercase and replace space with _ for url purposes
+    wiki_data = {curr_term: WIKI_BASE_URL + curr_term.lower().replace(' ','_') for curr_term in terms_list}  #for every term in the list, concatenate with default wiki_url, make it lowercase and replace space with _ for url purposes
     return wiki_data
 
 def get_wiki_data(term):

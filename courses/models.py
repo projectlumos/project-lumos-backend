@@ -1,8 +1,11 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from courses.utils.constants import skill_levels, data_types, language_for, domain_for
 from django.db import IntegrityError
 from courses.utils import modelsutils
 from courses.utils.modelsutils import RowInformation
+
 # Create your models here.
 
 
@@ -45,7 +48,7 @@ class Language(models.Model):
     """
     It refers to the various languages in technical skills and soft skills context.
     This class consists of language attributes such as
-    language_name, slug and languages_for
+    language_name, slug, description and icon
     """
     language_name = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
@@ -93,7 +96,7 @@ class Domain(models.Model):
     """
     It refers to the various domains in the technical skills and soft skills context.
     This class consists of domain attributes such as
-    domain_name, slug and domains_for
+    domain_name, slug, description and icon
     """
     domain_name = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
@@ -136,7 +139,8 @@ class Domain(models.Model):
 class SoftSkills(models.Model):
     """
     This class refers to softskills categories.
-
+    This class consists of softskills attributes such as
+    soft_skill_category, slug, description and icon
     """
     soft_skill_category = models.CharField(max_length=30)
     slug = models.SlugField(unique=True)
@@ -177,6 +181,11 @@ class SoftSkills(models.Model):
 
 
 class SoftSkillsData(RowInformation):
+    """
+    This class refers to SoftSkills resources.
+    It consists of attributes such as soft_skill, title, description, slug, link_url,
+    data_type and paid
+    """
     soft_skill = models.ManyToManyField(SoftSkills, related_name='soft_skills')
     title = models.CharField(max_length=100, null=False, blank=False)
 
@@ -239,14 +248,19 @@ class KnowledgeBase(RowInformation):
     data_type = models.CharField(max_length=2, choices=data_types)
 
     # languages associated with the resource
-    languages = models.ManyToManyField(Language, related_name='%(class)s_languages', blank=True)
+    languages = models.ManyToManyField(Language, related_name='%(class)s_languages', blank=True,
+                                        validators=[validate_language])
 
     # domains associated with the resource
-    domains = models.ManyToManyField(Domain, related_name='%(class)s_domains', blank=True)
+    domains = models.ManyToManyField(Domain, related_name='%(class)s_domains', blank=True,
+                                        validators=[validate_domain])
     link_url = models.URLField(null=False, blank=False, unique=True)
 
     # indicates whether the resource is paid or not
     paid = models.BooleanField(default=False)
+
+    # indicates if it's a project resource or not
+    project = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -267,6 +281,16 @@ class KnowledgeBase(RowInformation):
             self.slug = modelsutils.custom_slugify(source_field=self.title, suffix=True)
             super(KnowledgeBase, self).save(*args, **kwargs)
 
+    def validate_language(value):
+        validate_language.language = value
+
+    def validate_domain(value):
+        validate_domain.domain = value
+        if validate_language.language is None and validate_domain.domain is None:
+            raise ValidationError(
+            _('both languages and domains cannot be none'),
+        )
+
     def __str__(self):
         return self.slug
 
@@ -279,6 +303,8 @@ class KnowledgeBase(RowInformation):
 class RandomData(RowInformation):
     """
     This class refers to all the random resources.
+    It consists of attributes like title, description, slug, link_url,
+    data_type and paid
     """
     title = models.CharField(max_length=100, null=False, blank=False)
 

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Domain, Language, Video, ExternalLink
+from .models import Domain, Language, SoftSkills, SoftSkillsData, KnowledgeBase, RandomData
 # Register your models here.
 
 
@@ -43,16 +43,32 @@ class LanguageModelAdmin(admin.ModelAdmin):
         model = Language
 
 
-class VideoModelAdmin(admin.ModelAdmin):
+class SoftSkillsModelAdmin(admin.ModelAdmin):
+    """
+    handles the admin panel for Language class.
+    """
+    list_display = ['soft_skill_category', 'slug']
+    list_editable = ['soft_skill_category']
+    list_display_links = ['slug']
+    search_fields = ['soft_skill_category', 'slug']
+    list_filter = ['soft_skill_category']
+    readonly_fields = ['slug']
+
+    class Meta:
+        model = SoftSkills
+
+
+class KnowledgeBaseModelAdmin(admin.ModelAdmin):
     """
     handles the admin panel for Video class.
     """
-    list_display = ['title', 'is_active', 'modified_at', 'created_at', 'skill_level', 'multi_language']
+    list_display = ['title', 'is_active', 'modified_at', 'created_at', 'skill_level', 'data_type', 'paid',
+                    'project']
     list_display_links = ['title']
 
     # fields to filter by. __ indicates the attribute of a related class, by default django assumes id
-    list_filter = ['is_active', 'languages__language_name', 'domains__domain_name', 'skill_level', 'modified_at',
-                   'created_at']
+    list_filter = ['is_active', 'languages__language_name', 'domains__domain_name', 'skill_level',
+                    'modified_at', 'created_at', 'data_type', 'paid', 'project']
 
     # fields which are searchable from the admin site
     search_fields = ['title', 'description', 'languages__language_name', 'domains__domain_name']
@@ -63,31 +79,47 @@ class VideoModelAdmin(admin.ModelAdmin):
 
     # this field can only be read at the admin site. Since multiple_languages is a property called when object is saved,
     # no write permissions given
-    readonly_fields = ['multiple_languages', 'slug']
+    readonly_fields = ['slug']
 
     class Meta:
-        model = Video
+        model = KnowledgeBase
 
 
-class ExternalLinkModelAdmin(admin.ModelAdmin):
+class SoftSkillsDataModelAdmin(admin.ModelAdmin):
     """
     handles the admin panel for ExternalLink class.
     """
-    list_display = ['title', 'is_active', 'modified_at', 'created_at', 'skill_level', 'multi_language']
+    list_display = ['title', 'is_active', 'modified_at', 'created_at', 'data_type', 'paid']
     list_display_links = ['title']
-    list_editable = ['is_active', 'skill_level']
-    list_filter = ['is_active', 'languages__language_name',
-                   'domains__domain_name', 'skill_level', 'modified_at', 'created_at']
-    search_fields = ['title', 'description', 'languages__language_name', 'domains__domain_name']
-    autocomplete_fields = ['languages', 'domains']
-    readonly_fields = ['multiple_languages', 'slug']
+    list_editable = ['is_active']
+    list_filter = ['is_active', 'soft_skill__soft_skill_category', 'modified_at', 'created_at']
+    search_fields = ['title', 'description', 'soft_skill__soft_skill_category']
+    autocomplete_fields = ['soft_skill__soft_skill_category']
+    readonly_fields = ['slug']
 
     class Meta:
-        model = ExternalLink
+        model = SoftSkillsData
+
+
+class RandomDataModelAdmin(admin.ModelAdmin):
+    """
+    handles the admin panel for ExternalLink class.
+    """
+    list_display = ['title', 'is_active', 'modified_at', 'created_at', 'data_type', 'paid']
+    list_display_links = ['title']
+    list_editable = ['is_active']
+    list_filter = ['is_active', 'modified_at', 'created_at']
+    search_fields = ['title', 'description']
+    readonly_fields = ['slug']
+
+    class Meta:
+        model = RandomData
 
 
 """Register the admin models """
 admin.site.register(Domain, DomainModelAdmin)
 admin.site.register(Language, LanguageModelAdmin)
-admin.site.register(Video, VideoModelAdmin)
-admin.site.register(ExternalLink, ExternalLinkModelAdmin)
+admin.site.register(SoftSkills, SoftSkillsModelAdmin)
+admin.site.register(KnowledgeBase, KnowledgeBaseModelAdmin)
+admin.site.register(SoftSkillsData, SoftSkillsDataModelAdmin)
+admin.site.register(RandomData, RandomDataModelAdmin)
