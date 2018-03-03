@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
-from courses.utils.constants import skill_levels, data_types, language_for, domain_for
+from courses.utils.constants import skill_levels, data_types
 from django.db import IntegrityError
 from courses.utils import modelsutils
 from courses.utils.modelsutils import RowInformation
@@ -25,7 +25,6 @@ this way, you are first reading the code, then the comment, but again you have t
 available due to comment
 
 '''
-
 
 def custom_slugify(source_field, suffix=False):
     """
@@ -248,12 +247,10 @@ class KnowledgeBase(RowInformation):
     data_type = models.CharField(max_length=2, choices=data_types)
 
     # languages associated with the resource
-    languages = models.ManyToManyField(Language, related_name='%(class)s_languages', blank=True,
-                                        validators=[validate_language])
+    languages = models.ManyToManyField(Language, related_name='%(class)s_languages', blank=True)
 
     # domains associated with the resource
-    domains = models.ManyToManyField(Domain, related_name='%(class)s_domains', blank=True,
-                                        validators=[validate_domain])
+    domains = models.ManyToManyField(Domain, related_name='%(class)s_domains', blank=True)
     link_url = models.URLField(null=False, blank=False, unique=True)
 
     # indicates whether the resource is paid or not
@@ -281,21 +278,10 @@ class KnowledgeBase(RowInformation):
             self.slug = modelsutils.custom_slugify(source_field=self.title, suffix=True)
             super(KnowledgeBase, self).save(*args, **kwargs)
 
-    def validate_language(value):
-        validate_language.language = value
-
-    def validate_domain(value):
-        validate_domain.domain = value
-        if validate_language.language is None and validate_domain.domain is None:
-            raise ValidationError(
-            _('both languages and domains cannot be none'),
-        )
-
     def __str__(self):
         return self.slug
 
     class Meta:
-        abstract = True  # used as a base class for other models
         ordering = ['-modified_at', '-created_at']
         unique_together = ('title', 'slug')  # checks whether the combination of two fields is unique
 

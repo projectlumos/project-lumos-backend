@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Domain, Language, SoftSkills, SoftSkillsData, KnowledgeBase, RandomData
+from .forms import KnowledgeBaseForm
 # Register your models here.
 
 
@@ -62,6 +63,7 @@ class KnowledgeBaseModelAdmin(admin.ModelAdmin):
     """
     handles the admin panel for Video class.
     """
+    form = KnowledgeBaseForm
     list_display = ['title', 'is_active', 'modified_at', 'created_at', 'skill_level', 'data_type', 'paid',
                     'project']
     list_display_links = ['title']
@@ -94,7 +96,7 @@ class SoftSkillsDataModelAdmin(admin.ModelAdmin):
     list_editable = ['is_active']
     list_filter = ['is_active', 'soft_skill__soft_skill_category', 'modified_at', 'created_at']
     search_fields = ['title', 'description', 'soft_skill__soft_skill_category']
-    autocomplete_fields = ['soft_skill__soft_skill_category']
+    autocomplete_fields = ['soft_skill']
     readonly_fields = ['slug']
 
     class Meta:
