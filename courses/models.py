@@ -1,6 +1,5 @@
 from django.db import models
-from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
+from django.db import transaction
 from courses.utils.constants import SKILL_LEVELS, DATA_TYPES
 from django.db import IntegrityError
 from courses.utils.modelsutils import pl_custom_slugify
@@ -40,8 +39,10 @@ class Language(models.Model):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            # since unique combination of source_field and slug exists, call save method
-            super(Language, self).save(*args, **kwargs)
+            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            with transaction.atomic():
+                # since unique combination of source_field and slug exists, call save method
+                super(Language, self).save(*args, **kwargs)
 
         except IntegrityError:
             """
@@ -85,8 +86,10 @@ class Domain(models.Model):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            # since unique combination of source_field and slug exists, call save method
-            super(Domain, self).save(*args, **kwargs)
+            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            with transaction.atomic():
+                # since unique combination of source_field and slug exists, call save method
+                super(Domain, self).save(*args, **kwargs)
 
         except IntegrityError:
             """
@@ -129,8 +132,10 @@ class SoftSkills(models.Model):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            # since unique combination of source_field and slug exists, call save method
-            super(SoftSkills, self).save(*args, **kwargs)
+            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            with transaction.atomic():
+                # since unique combination of source_field and slug exists, call save method
+                super(SoftSkills, self).save(*args, **kwargs)
 
         except IntegrityError:
             """
@@ -178,8 +183,10 @@ class SoftSkillsData(RowInformation):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            # since unique combination of source_field and slug exists, call save method
-            super(SoftSkillsData, self).save(*args, **kwargs)
+            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            with transaction.atomic():
+                # since unique combination of source_field and slug exists, call save method
+                super(SoftSkillsData, self).save(*args, **kwargs)
 
         except IntegrityError:
             """
@@ -238,7 +245,10 @@ class KnowledgeBase(RowInformation):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            super(KnowledgeBase, self).save(*args, **kwargs)
+            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            with transaction.atomic():
+                # since unique combination of source_field and slug exists, call save method
+                super(KnowledgeBase, self).save(*args, **kwargs)
 
         except IntegrityError:
             """
@@ -286,8 +296,10 @@ class RandomData(RowInformation):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            # since unique combination of source_field and slug exists, call save method
-            super(RandomData, self).save(*args, **kwargs)
+            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            with transaction.atomic():
+                # since unique combination of source_field and slug exists, call save method
+                super(RandomData, self).save(*args, **kwargs)
 
         except IntegrityError:
             """
