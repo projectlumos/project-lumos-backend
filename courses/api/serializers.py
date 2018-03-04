@@ -43,6 +43,7 @@ class LanguageSerializer(ModelSerializer):
     serializer for Language model class
     """
     url = language_detail_url
+
     class Meta:
         model = Language
         fields = [
@@ -61,6 +62,7 @@ class DomainSerializer(ModelSerializer):
     serializer for Domain model class
     """
     url = domain_detail_url
+
     class Meta:
         model = Domain
         fields = [
@@ -78,6 +80,7 @@ class SoftSkillsSerializer(ModelSerializer):
     serializer for Domain model class
     """
     url = softskills_detail_url
+
     class Meta:
         model = SoftSkills
         fields = [
@@ -96,6 +99,7 @@ class SoftSkillsDataSerializer(ModelSerializer):
     """
     soft_skill = PrimaryKeyRelatedField(many=True, read_only=True)
     url = softskillsdata_detail_url
+
     class Meta:
         model = SoftSkillsData
         fields = [
@@ -118,6 +122,7 @@ class KnowledgeBaseSerializer(ModelSerializer):
     languages = PrimaryKeyRelatedField(many=True, read_only=True)
     domains = PrimaryKeyRelatedField(many=True, read_only=True)
     url = knowledgebase_detail_url
+
     class Meta:
         model = KnowledgeBase
         fields = [
@@ -141,6 +146,7 @@ class RandomDataSerializer(ModelSerializer):
     serializer for ExternalLink model class
     """
     url = randomdata_detail_url
+
     class Meta:
         model = RandomData
         fields = [

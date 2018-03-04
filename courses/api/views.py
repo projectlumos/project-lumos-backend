@@ -26,7 +26,7 @@ class ReadOnlyCoursesAbstractViewSet(viewsets.ReadOnlyModelViewSet):
     filter_fields = []
     ordering_fields = []
     ordering = []
-    queryset = Language.objects.all()
+    queryset = None
     pagination_class = ResourcesPagination
 
     class Meta:
@@ -49,7 +49,7 @@ class DomainViewSet(ReadOnlyCoursesAbstractViewSet):
     handles viewset for DomainSerializer
     """
     serializer_class = DomainSerializer
-    filter_fields = ['id','domain_name', 'slug', 'description']
+    filter_fields = ['id', 'domain_name', 'slug', 'description']
     ordering_fields = ['domain_name']
     ordering = ['domain_name']
     queryset = Domain.objects.all()
@@ -60,7 +60,7 @@ class SoftSkillsViewSet(ReadOnlyCoursesAbstractViewSet):
     handles viewset for SoftSkillsSerializer
     """
     serializer_class = SoftSkillsSerializer
-    filter_fields = ['id','soft_skill_category', 'slug', 'description']
+    filter_fields = ['id', 'soft_skill_category', 'slug', 'description']
     ordering_fields = ['soft_skill_category']
     ordering = ['soft_skill_category']
     queryset = SoftSkills.objects.all()

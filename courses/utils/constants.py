@@ -13,14 +13,14 @@ DATA_TYPE_COURSES = 'CO'
 DATA_TYPE_OTHERS = 'OT'
 
 # skill_level choices
-skill_levels = (
+SKILL_LEVELS = (
     (SKILL_BEGINNER, 'BEGINNER'),
     (SKILL_INTERMEDIATE, 'INTERMEDIATE'),
     (SKILL_ADVANCED, 'ADVANCED')
 )
 
 # data_type choices
-data_types = (
+DATA_TYPES = (
     (DATA_TYPE_VIDEO, 'VIDEO'),
     (DATA_TYPE_BLOG, 'BLOG'),
     (DATA_TYPE_TUTORIAL, 'TUTORIAL'),

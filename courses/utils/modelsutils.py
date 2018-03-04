@@ -3,7 +3,7 @@ from django.utils.crypto import get_random_string
 from django.db import models
 
 
-def custom_slugify(source_field, suffix=False):
+def pl_custom_slugify(source_field, suffix=False):
     """
     Using django util methods create a slug.
     Append a random string at the end of the slug if necessary for making it unique
