@@ -156,3 +156,272 @@ It also consists of 4 admin models namely DomainModelAdmin, LanguageModelAdmin, 
     dict_dict = json.dumps(dict_dict)  #converting dictionary into JSON
     return JsonResponse(json.loads(dict_dict))
   ```
+
+ ### endpoints
+
+ 1. LanguageViewSet
+
+    handles viewset for LanguageSerializer
+
+    request : http://127.0.0.1:8000/api/language/
+
+    response :
+
+    ```
+    {
+        "count": 1,
+        "next": null,
+        "previous": null,
+        "results": [
+            {
+                "url": "https://pl-backend-development.herokuapp.com/api/language/1/",
+                "id": 1,
+                "language_name": "R",
+                "slug": "r",
+                "site_url": "https://www.r-project.org/",
+                "description": "R is a programming language and software environment for
+                statistical computing and graphics supported by the R Foundation for Statistical Computing.",
+                "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/2000px-R_logo.svg.png"
+            }
+        ]
+    }
+    ```
+
+     ---
+
+   2. DomainViewSet
+
+      handles viewset for DomainSerializer
+
+      request : http://127.0.0.1:8000/api/domain/
+
+      response :
+
+      ```
+      {
+          "count": 1,
+          "next": null,
+          "previous": null,
+          "results": [
+              {
+                  "url": "http://127.0.0.1:8000/api/domain/1/",
+                  "id": 1,
+                  "domain_name": "Artificial Intelligence",
+                  "slug": "artificial-intelligence",
+                  "description": "Artificial intelligence (AI, also machine intelligence, MI)
+                  is intelligence demonstrated by machines, in contrast to the natural intelligence
+                  (NI) displayed by humans and other animals.",
+                  "icon": "https://www.iconfinder.com/icons/1106723/ai_artificial_computer_deep_learning_intelligence_machine_learning_icon"
+              }
+          ]
+      }
+      ```
+
+       ---
+
+   3. SoftSkillsViewSet
+
+      handles viewset for SoftSkillsSerializer
+
+      request : http://127.0.0.1:8000/api/soft-skills/
+
+      response :
+
+      ```
+      {
+          "count": 1,
+          "next": null,
+          "previous": null,
+          "results": [
+              {
+                  "url": "http://127.0.0.1:8000/api/soft-skills/1/",
+                  "id": 1,
+                  "soft_skill_category": "Body Language",
+                  "slug": "body-language",
+                  "description": "Does this really matter? Yes it does.SIT UP STRAIGHT!",
+                  "icon": ""
+              }
+          ]
+      }
+      ```
+
+      ---
+
+
+   4. SoftSkillsDataViewSet
+
+      handles viewset for SoftSkillsSerializer
+
+      request : http://127.0.0.1:8000/api/soft-skills-data/
+
+      response :
+
+      ```
+      {
+          "count": 1,
+          "next": null,
+          "previous": null,
+          "results": [
+              {
+              "url": "http://127.0.0.1:8000/api/soft-skills-data/1/",
+              "id": 1,
+              "soft_skill": [
+                  2
+              ],
+              "title": "How to reduce and cope with stress",
+              "description": "It may seem like there’s nothing you can do about stress.",
+              "slug": "how-to-reduce-and-cope-with-stress",
+              "data_type": "BL",
+              "link_url": "https://www.helpguide.org/articles/stress/stress-management.htm",
+              "paid": false
+              },
+          ]
+      }    
+      ```
+
+      ---
+
+   5. KnowledgeBaseViewSet
+
+      handles viewset for KnowledgeBaseSerializer
+
+      request : http://127.0.0.1:8000/api/knowledge-base/
+
+      response :
+
+      ```
+      {
+          "count": 1,
+          "next": null,
+          "previous": null,
+          "results": [
+              {
+                  "url": "http://127.0.0.1:8000/api/knowledge-base/1/",
+                  "id": 1,
+                  "title": "Testing Django Signals",
+                  "description": "Learn how to test Django signals",
+                  "slug": "testing-django-signals",
+                  "languages": [
+                      1
+                  ],
+                  "domains": [
+                      1
+                  ],
+                  "data_type": "BL",
+                  "skill_level": "AD",
+                  "link_url": "https://medium.freecodecamp.com/how-to-testing-django-signals-like-a-pro-c7ed74279311#.n5anplyc4",
+                  "paid": false,
+                  "project": false
+              },
+          ]
+      }
+      ```
+
+      ---
+
+
+   6. RandomDataViewSet
+
+      handles viewset for RandomDataSerializer
+
+      request : http://127.0.0.1:8000/api/random-data/
+
+      response :
+
+      ```
+      {
+          "count": 1,
+          "next": null,
+          "previous": null,
+          "results": [
+              {
+                  "url": "http://127.0.0.1:8000/api/random-data/1/",
+                  "id": 1,
+                  "title": "What Are Microservices?",
+                  "description": "The article explains in detail what does
+                  a microservice architecture mean and what are the use cases where it should be deployed.",
+                  "slug": "what-are-microservices",
+                  "data_type": "BL",
+                  "link_url": "http://microservices.io/patterns/microservices.html",
+                  "paid": false
+              }
+          ]
+      }
+      ```
+
+      ---
+
+   7. wikiscript
+
+      This is a function that takes in request and a term from url
+      which is a slug and runs wikipedia functions to return JSON data
+
+      request : http://127.0.0.1:8000/wiki/ruby-language/
+
+      response :
+
+      ```
+      {
+            "wiki_term": "ruby-language",
+            "detailed_data": {
+            "title": "Ruby (programming language)",
+            "url": "https://en.wikipedia.org/wiki/Ruby_(programming_language)",
+            "content": "Ruby is a dynamic, reflective, object-oriented,
+            general-purpose programming language. It was designed and developed
+            "
+            },
+            "summary_data": {
+            "summary_present": true,
+            "summary_content": "Ruby is a dynamic, reflective, object-oriented, general-purpose programming language"
+            },
+            "related_terms": {
+            "Ruby (programming language)": "https://en.wikipedia.org/wiki/ruby_(programming_language)",
+            "Ruby": "https://en.wikipedia.org/wiki/ruby",
+            "Ruby MRI": "https://en.wikipedia.org/wiki/ruby_mri",
+            "Ruby on Rails": "https://en.wikipedia.org/wiki/ruby_on_rails",
+            "Ruby character": "https://en.wikipedia.org/wiki/ruby_character"
+            }
+      }
+      ```
+
+      ---
+
+
+   8. dictscript
+
+      This is a function that takes in request and a term from url
+      which is a slug and runs dictionary function to return JSON data
+
+      request : http://127.0.0.1:8000/dict/compress/
+
+      response :
+
+      ```
+      {
+        "term": "compress",
+        "term_meaning": {
+            "Noun": [
+                "a cloth pad or dressing (with or without medication",
+                "to relieve discomfort or reduce fever"
+            ],
+            "Verb": [
+                "make more compact by or as if by pressing",
+                "squeeze or press together"
+            ]
+        },
+        "term_synonym": [
+            "abbreviate",
+            "shorten",
+            "restrict",
+            "wrap",
+            "cram"
+        ],
+        "term_antonym": [
+            "amplify",
+            "enlarge",
+            "increase",
+            "lengthen",
+            "grow"
+        ]
+      }
+      ```
