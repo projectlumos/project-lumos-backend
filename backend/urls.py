@@ -24,6 +24,4 @@ urlpatterns = [
     path('wiki/<slug:term>/', wikiscript , name='wiki'),
     path('dict/<slug:term>/', dictscript , name='dictionary'),
     path('api/', include(router.urls)),
-    # path('wiki/(?P<term>[-\w]+)/$', utilities.views.wikiscript, name="wiki" )
-    # path('dict/(?P<term>[-\w]+)/$', utilities.views.dictscript, name="dict" )
 ]

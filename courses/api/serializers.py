@@ -2,9 +2,8 @@ from rest_framework.serializers import (
     ModelSerializer,
     HyperlinkedIdentityField,
     PrimaryKeyRelatedField,
-    ReadOnlyField,
 )
-from courses.models import Language, Domain, Video, ExternalLink
+from courses.models import Language, Domain, KnowledgeBase, SoftSkills, SoftSkillsData, RandomData
 
 
 language_detail_url = HyperlinkedIdentityField(
@@ -18,13 +17,23 @@ domain_detail_url = HyperlinkedIdentityField(
     read_only=True
 )
 
-video_detail_url = HyperlinkedIdentityField(
-    view_name='video-detail',
+softskills_detail_url = HyperlinkedIdentityField(
+    view_name='softskills-detail',
     read_only=True
 )
 
-externallink_detail_url=HyperlinkedIdentityField(
-    view_name='externallink-detail',
+knowledgebase_detail_url = HyperlinkedIdentityField(
+    view_name='knowledgebase-detail',
+    read_only=True
+)
+
+softskillsdata_detail_url=HyperlinkedIdentityField(
+    view_name='softskillsdata-detail',
+    read_only=True
+)
+
+randomdata_detail_url=HyperlinkedIdentityField(
+    view_name='randomdata-detail',
     read_only=True
 )
 
@@ -34,6 +43,7 @@ class LanguageSerializer(ModelSerializer):
     serializer for Language model class
     """
     url = language_detail_url
+
     class Meta:
         model = Language
         fields = [
@@ -44,7 +54,6 @@ class LanguageSerializer(ModelSerializer):
             'site_url',
             'description',
             'icon',
-            'languages_for'
         ]
 
 
@@ -53,6 +62,7 @@ class DomainSerializer(ModelSerializer):
     serializer for Domain model class
     """
     url = domain_detail_url
+
     class Meta:
         model = Domain
         fields = [
@@ -62,44 +72,59 @@ class DomainSerializer(ModelSerializer):
             'slug',
             'description',
             'icon',
-            'domains_for'
         ]
 
 
-class VideoSerializer(ModelSerializer):
+class SoftSkillsSerializer(ModelSerializer):
     """
-    serializer for Video model class
+    serializer for Domain model class
     """
-    languages = PrimaryKeyRelatedField(many=True, read_only=True)
-    domains = PrimaryKeyRelatedField(many=True, read_only=True)
-    multiple_languages = ReadOnlyField()
-    url = video_detail_url
+    url = softskills_detail_url
+
     class Meta:
-        model = Video
+        model = SoftSkills
         fields = [
             'url',
             'id',
-            'title',
-            'description',
+            'soft_skill_category',
             'slug',
-            'languages',
-            'domains',
-            'skill_level',
-            'multiple_languages',
-            'video_url'
+            'description',
+            'icon',
         ]
 
 
-class ExternalLinkSerializer(ModelSerializer):
+class SoftSkillsDataSerializer(ModelSerializer):
+    """
+    serializer for ExternalLink model class
+    """
+    soft_skill = PrimaryKeyRelatedField(many=True, read_only=True)
+    url = softskillsdata_detail_url
+
+    class Meta:
+        model = SoftSkillsData
+        fields = [
+            'url',
+            'id',
+            'soft_skill',
+            'title',
+            'description',
+            'slug',
+            'data_type',
+            'link_url',
+            'paid',
+        ]
+
+
+class KnowledgeBaseSerializer(ModelSerializer):
     """
     serializer for ExternalLink model class
     """
     languages = PrimaryKeyRelatedField(many=True, read_only=True)
     domains = PrimaryKeyRelatedField(many=True, read_only=True)
-    multiple_languages = ReadOnlyField()
-    url = externallink_detail_url
+    url = knowledgebase_detail_url
+
     class Meta:
-        model = ExternalLink
+        model = KnowledgeBase
         fields = [
             'url',
             'id',
@@ -108,9 +133,29 @@ class ExternalLinkSerializer(ModelSerializer):
             'slug',
             'languages',
             'domains',
-            'multiple_languages',
-            'external_type',
+            'data_type',
             'skill_level',
             'link_url',
-            'paid'
+            'paid',
+            'project'
+        ]
+
+
+class RandomDataSerializer(ModelSerializer):
+    """
+    serializer for ExternalLink model class
+    """
+    url = randomdata_detail_url
+
+    class Meta:
+        model = RandomData
+        fields = [
+            'url',
+            'id',
+            'title',
+            'description',
+            'slug',
+            'data_type',
+            'link_url',
+            'paid',
         ]
