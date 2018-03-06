@@ -33,11 +33,15 @@ INSTALLED_APPS = [
     #my apps
     'courses',
     'utilities',
+    'accounts',
     #third_party_apps
     'rest_framework',
     'corsheaders',
     'django_filters'
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
+
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
