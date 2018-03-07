@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     #my apps
     'courses',
     'utilities',
+    'ratings',
     #third_party_apps
     'rest_framework',
     'corsheaders',

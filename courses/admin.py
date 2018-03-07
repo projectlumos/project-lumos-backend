@@ -46,7 +46,7 @@ class LanguageModelAdmin(admin.ModelAdmin):
 
 class SoftSkillsModelAdmin(admin.ModelAdmin):
     """
-    handles the admin panel for Language class.
+    handles the admin panel for SoftSkills class.
     """
     list_display = ['soft_skill_category', 'slug']
     list_editable = ['soft_skill_category']
@@ -61,7 +61,7 @@ class SoftSkillsModelAdmin(admin.ModelAdmin):
 
 class KnowledgeBaseModelAdmin(admin.ModelAdmin):
     """
-    handles the admin panel for Video class.
+    handles the admin panel for KnowledgeBase class.
     """
     form = KnowledgeBaseForm
     list_display = ['title', 'is_active', 'modified_at', 'created_at', 'skill_level', 'data_type', 'paid',
@@ -89,7 +89,7 @@ class KnowledgeBaseModelAdmin(admin.ModelAdmin):
 
 class SoftSkillsDataModelAdmin(admin.ModelAdmin):
     """
-    handles the admin panel for ExternalLink class.
+    handles the admin panel for SoftSkillsData class.
     """
     list_display = ['title', 'is_active', 'modified_at', 'created_at', 'data_type', 'paid']
     list_display_links = ['title']
@@ -105,7 +105,7 @@ class SoftSkillsDataModelAdmin(admin.ModelAdmin):
 
 class RandomDataModelAdmin(admin.ModelAdmin):
     """
-    handles the admin panel for ExternalLink class.
+    handles the admin panel for RandomData class.
     """
     list_display = ['title', 'is_active', 'modified_at', 'created_at', 'data_type', 'paid']
     list_display_links = ['title']
