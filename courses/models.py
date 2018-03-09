@@ -4,7 +4,7 @@ from courses.utils.constants import SKILL_LEVELS, DATA_TYPES
 from django.db import IntegrityError
 from courses.utils.modelsutils import pl_custom_slugify
 from courses.utils.modelsutils import RowInformation
-
+from ratings.models import KnowledgeBaseRating, SoftSkillsDataRating, RandomDataRating
 # Create your models here.
 
 
@@ -196,6 +196,15 @@ class SoftSkillsData(RowInformation):
             self.slug = pl_custom_slugify(source_field=self.title, suffix=True)
             super(SoftSkillsData, self).save(*args, **kwargs)
 
+    @property
+    def ratings(self):
+        """
+        calculates the average rating per attribute for the resource
+        """
+        qs = SoftSkillsDataRating().calculate_ratings(resource= self.id, attribute_list=['attribute_1',
+                                                        'attribute_2', 'attribute_3', 'attribute_4'])
+        return qs
+
     def __str__(self):
         return '{name}-{slug}'.format(name=self.title, slug=self.slug)
 
@@ -258,6 +267,15 @@ class KnowledgeBase(RowInformation):
             self.slug = pl_custom_slugify(source_field=self.title, suffix=True)
             super(KnowledgeBase, self).save(*args, **kwargs)
 
+    @property
+    def ratings(self):
+        """
+        calculates the average rating per attribute for the resource
+        """
+        qs = KnowledgeBaseRating().calculate_ratings(resource= self.id, attribute_list=['attribute_1',
+                                                        'attribute_2', 'attribute_3', 'attribute_4'])
+        return qs
+
     def __str__(self):
         return self.slug
 
@@ -308,6 +326,15 @@ class RandomData(RowInformation):
             """
             self.slug = pl_custom_slugify(source_field=self.title, suffix=True)
             super(RandomData, self).save(*args, **kwargs)
+
+    @property
+    def ratings(self):
+        """
+        calculates the average rating per attribute for the resource
+        """
+        qs = RandomDataRating().calculate_ratings(resource= self.id, attribute_list=['attribute_1',
+                                                        'attribute_2', 'attribute_3', 'attribute_4'])
+        return qs
 
     def __str__(self):
         return '{name}-{slug}'.format(name=self.title, slug=self.slug)

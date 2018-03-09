@@ -17,9 +17,6 @@ class KnowledgeBaseRatingModelAdmin(admin.ModelAdmin):
     # fields to filter by
     list_filter = ['user', 'resource']
 
-    # this field can only be read at the admin site.
-    readonly_fields = ['get_avg_attribute1', 'get_avg_attribute2', 'get_avg_attribute3', 'get_avg_attribute4']
-
     class Meta:
         model = KnowledgeBaseRating
 
@@ -32,7 +29,6 @@ class SoftSkillsDataRatingModelAdmin(admin.ModelAdmin):
                     'attribute_1', 'attribute_2', 'attribute_3', 'attribute_4']
     list_display_links = ['user', 'resource']
     list_filter = ['user', 'resource']
-    readonly_fields = ['get_avg_attribute1', 'get_avg_attribute2', 'get_avg_attribute3', 'get_avg_attribute4']
 
     class Meta:
         model = SoftSkillsDataRating
@@ -46,7 +42,6 @@ class RandomDataRatingModelAdmin(admin.ModelAdmin):
                     'attribute_1', 'attribute_2', 'attribute_3', 'attribute_4']
     list_display_links = ['user', 'resource']
     list_filter = ['user', 'resource']
-    readonly_fields = ['get_avg_attribute1', 'get_avg_attribute2', 'get_avg_attribute3', 'get_avg_attribute4']
 
     class Meta:
         model = RandomDataRating

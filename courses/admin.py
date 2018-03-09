@@ -81,7 +81,7 @@ class KnowledgeBaseModelAdmin(admin.ModelAdmin):
 
     # this field can only be read at the admin site. Since multiple_languages is a property called when object is saved,
     # no write permissions given
-    readonly_fields = ['slug']
+    readonly_fields = ['slug', 'ratings']
 
     class Meta:
         model = KnowledgeBase
@@ -97,7 +97,7 @@ class SoftSkillsDataModelAdmin(admin.ModelAdmin):
     list_filter = ['is_active', 'soft_skill__soft_skill_category', 'modified_at', 'created_at']
     search_fields = ['title', 'description', 'soft_skill__soft_skill_category']
     autocomplete_fields = ['soft_skill']
-    readonly_fields = ['slug']
+    readonly_fields = ['slug', 'ratings']
 
     class Meta:
         model = SoftSkillsData
@@ -112,7 +112,7 @@ class RandomDataModelAdmin(admin.ModelAdmin):
     list_editable = ['is_active']
     list_filter = ['is_active', 'modified_at', 'created_at']
     search_fields = ['title', 'description']
-    readonly_fields = ['slug']
+    readonly_fields = ['slug', 'ratings']
 
     class Meta:
         model = RandomData

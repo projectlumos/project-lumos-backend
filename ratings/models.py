@@ -1,71 +1,58 @@
 from django.db import models
-from courses.models import KnowledgeBase, SoftSkillsData, RandomData
 from django.contrib.auth.models import User
 from courses.utils.modelsutils import RowInformation
 from ratings.utils.constants import RATING
+import courses
 # Create your models here.
 
 
-class KnowledgeBaseRating(RowInformation):
+class Rating(RowInformation):
     """
-    This class handles the ratings for KnowledgeBase resources
+    This is a base class for rating models
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    resource = models.ForeignKey(KnowledgeBase, on_delete=models.CASCADE)
+    # optional user foreignkey for anonymous users
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.DO_NOTHING)
     attribute_1 = models.PositiveSmallIntegerField(default=0, choices=RATING)
     attribute_2 = models.PositiveSmallIntegerField(default=0, choices=RATING)
     attribute_3 = models.PositiveSmallIntegerField(default=0, choices=RATING)
     attribute_4 = models.PositiveSmallIntegerField(default=0, choices=RATING)
 
-    @property
-    def get_avg_attribute1(self):
+    class Meta:
+        abstract = True
+
+
+class KnowledgeBaseRating(Rating):
+    """
+    This class handles the ratings for KnowledgeBase resources
+    """
+    resource = models.ForeignKey('courses.KnowledgeBase', on_delete=models.CASCADE)
+
+    def calculate_ratings(self, attribute_list, resource):
         """
         it gets all the objects from the current resource and grabs the values of attribute_1
         in a list, calculates the average rating for it and returns it
         """
+        rating = []
+        for item in attribute_list:
+            try:
+                qs = KnowledgeBaseRating.objects.filter(resource=resource).values_list(item, flat=True).order_by('id')
+                # calculates the average of the qs list
+                average = sum(qs)/float(len(qs))
 
-        # gets a list of all the ratings for attribute_1 of the current resource by id
-        qs = KnowledgeBaseRating.objects.filter(resource=self.resource).values_list('attribute_1', flat=True).order_by('id')
+                # rounds off the average to the closest 0.5
+                result = round(average * 2) / 2.0
 
-        # calculates the average of the qs list
-        average = sum(qs)/float(len(qs))
+                # dictionary with key as item and value as the result
+                result_dict = {item : result}
 
-        # rounds off the average to the closest 0.5
-        result = round(average * 2) / 2.0
-        return result
+                # creates a list of dictionaries for the passed attributes
+                rating.append(result_dict)
 
-    @property
-    def get_avg_attribute2(self):
-        """
-        it gets all the objects from the current resource and grabs the values of attribute_2
-        in a list, calculates the average rating for it and returns it
-        """
-        qs = KnowledgeBaseRating.objects.filter(resource=self.resource).values_list('attribute_2', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
+            except ZeroDivisionError:
+                # handles when attribute is 0, returns empty list
+                rating = []
 
-    @property
-    def get_avg_attribute3(self):
-        """
-        it gets all the objects from the current resource and grabs the values of attribute_3
-        in a list, calculates the average rating for it and returns it
-        """
-        qs = KnowledgeBaseRating.objects.filter(resource=self.resource).values_list('attribute_3', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
-
-    @property
-    def get_avg_attribute4(self):
-        """
-        it gets all the objects from the current resource and grabs the values of attribute_4
-        in a list, calculates the average rating for it and returns it
-        """
-        qs = KnowledgeBaseRating.objects.filter(resource=self.resource).values_list('attribute_4', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
+        return rating
 
     class Meta:
 
@@ -73,119 +60,59 @@ class KnowledgeBaseRating(RowInformation):
         unique_together = ('user', 'resource')
 
 
-class SoftSkillsDataRating(RowInformation):
+class SoftSkillsDataRating(Rating):
     """
     This class handles the ratings for SoftSkillsData resources
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    resource = models.ForeignKey(SoftSkillsData, on_delete=models.CASCADE)
-    attribute_1 = models.PositiveSmallIntegerField(default=0, choices=RATING)
-    attribute_2 = models.PositiveSmallIntegerField(default=0, choices=RATING)
-    attribute_3 = models.PositiveSmallIntegerField(default=0, choices=RATING)
-    attribute_4 = models.PositiveSmallIntegerField(default=0, choices=RATING)
+    resource = models.ForeignKey('courses.SoftSkillsData', on_delete=models.CASCADE)
 
-    @property
-    def get_avg_attribute1(self):
+    def calculate_ratings(self, attribute_list, resource):
         """
         it gets all the objects from the current resource and grabs the values of attribute_1
         in a list, calculates the average rating for it and returns it
         """
-        qs = SoftSkillsDataRating.objects.filter(resource=self.resource).values_list('attribute_1', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
+        rating = []
+        for item in attribute_list:
+            try:
+                qs = SoftSkillsDataRating.objects.filter(resource=resource).values_list(item, flat=True).order_by('id')
+                average = sum(qs)/float(len(qs))
+                result = round(average * 2) / 2.0
+                result_dict = {item : result}
+                rating.append(result_dict)
 
-    @property
-    def get_avg_attribute2(self):
-        """
-        it gets all the objects from the current resource and grabs the values of attribute_2
-        in a list, calculates the average rating for it and returns it
-        """
-        qs = SoftSkillsDataRating.objects.filter(resource=self.resource).values_list('attribute_2', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
+            except ZeroDivisionError:
+                rating = []
 
-    @property
-    def get_avg_attribute3(self):
-        """
-        it gets all the objects from the current resource and grabs the values of attribute_3
-        in a list, calculates the average rating for it and returns it
-        """
-        qs = SoftSkillsDataRating.objects.filter(resource=self.resource).values_list('attribute_3', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
-
-    @property
-    def get_avg_attribute4(self):
-        """
-        it gets all the objects from the current resource and grabs the values of attribute_4
-        in a list, calculates the average rating for it and returns it
-        """
-        qs = SoftSkillsDataRating.objects.filter(resource=self.resource).values_list('attribute_4', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
+        return rating
 
     class Meta:
         unique_together = ('user', 'resource')
 
 
-class RandomDataRating(RowInformation):
+class RandomDataRating(Rating):
     """
     This class handles the ratings for RandomData resources
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    resource = models.ForeignKey(RandomData, on_delete=models.CASCADE)
-    attribute_1 = models.PositiveSmallIntegerField(default=0, choices=RATING)
-    attribute_2 = models.PositiveSmallIntegerField(default=0, choices=RATING)
-    attribute_3 = models.PositiveSmallIntegerField(default=0, choices=RATING)
-    attribute_4 = models.PositiveSmallIntegerField(default=0, choices=RATING)
+    resource = models.ForeignKey('courses.RandomData', on_delete=models.CASCADE)
 
-    @property
-    def get_avg_attribute1(self):
+    def calculate_ratings(self, attribute_list, resource):
         """
         it gets all the objects from the current resource and grabs the values of attribute_1
         in a list, calculates the average rating for it and returns it
         """
-        qs = RandomDataRating.objects.filter(resource=self.resource).values_list('attribute_1', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
+        rating = []
+        for item in attribute_list:
+            try:
+                qs = RandomDataRating.objects.filter(resource=resource).values_list(item, flat=True).order_by('id')
+                average = sum(qs)/float(len(qs))
+                result = round(average * 2) / 2.0
+                result_dict = {item : result}
+                rating.append(result_dict)
 
-    @property
-    def get_avg_attribute2(self):
-        """
-        it gets all the objects from the current resource and grabs the values of attribute_2
-        in a list, calculates the average rating for it and returns it
-        """
-        qs = RandomDataRating.objects.filter(resource=self.resource).values_list('attribute_2', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
+            except ZeroDivisionError:
+                rating = []
 
-    @property
-    def get_avg_attribute3(self):
-        """
-        it gets all the objects from the current resource and grabs the values of attribute_3
-        in a list, calculates the average rating for it and returns it
-        """
-        qs = RandomDataRating.objects.filter(resource=self.resource).values_list('attribute_3', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
-
-    @property
-    def get_avg_attribute4(self):
-        """
-        it gets all the objects from the current resource and grabs the values of attribute_4
-        in a list, calculates the average rating for it and returns it
-        """
-        qs = RandomDataRating.objects.filter(resource=self.resource).values_list('attribute_4', flat=True).order_by('id')
-        average = sum(qs)/float(len(qs))
-        result = round(average * 2) / 2.0
-        return result
+        return rating
 
     class Meta:
         unique_together = ('user', 'resource')
