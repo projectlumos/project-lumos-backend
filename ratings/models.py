@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from courses.utils.modelsutils import RowInformation
 from ratings.utils.constants import RATING
+from .managers import KnowledgeBaseRatingManager, SoftSkillsDataRatingManager, RandomDataRatingManager
 import courses
 # Create your models here.
 
@@ -21,30 +22,13 @@ class Rating(RowInformation):
         abstract = True
 
 
-class KnowledgeBaseRatingQuerySet(models.QuerySet):
-    def calculated_attribute_1(self):
-        # checking the queryset exists
-        if self.exists():
-            # flattening out only the attribute 1 and doing and avg of all the values
-            return sum(self.values_list('attribute_1', flat=True))/float(self.count())
-        else:
-            return 0
-
-
-class KnowledgeBaseRatingManager(models.Manager):
-    def get_queryset(self):
-        return KnowledgeBaseRatingQuerySet(self.model, using=self._db)
-
-    def calculated_attribute_1(self):
-        return self.get_queryset().calculated_attribute_1()
-
-
 class KnowledgeBaseRating(Rating):
     """
     This class handles the ratings for KnowledgeBase resources
     """
-    resource = models.ForeignKey('courses.KnowledgeBase', on_delete=models.CASCADE, related_name='ratings')
-    manager = KnowledgeBaseRatingManager()
+    resource = models.ForeignKey('courses.KnowledgeBase', on_delete=models.CASCADE)
+
+    objects = KnowledgeBaseRatingManager()
 
 
 class SoftSkillsDataRating(Rating):
@@ -53,24 +37,7 @@ class SoftSkillsDataRating(Rating):
     """
     resource = models.ForeignKey('courses.SoftSkillsData', on_delete=models.CASCADE)
 
-    def calculate_ratings(self, attribute_list, resource):
-        """
-        it gets all the objects from the resource passed and grabs the values of attributes
-        in a list, calculates the average rating for it and returns it
-        """
-        rating = []
-        for item in attribute_list:
-            try:
-                qs = SoftSkillsDataRating.objects.filter(resource=resource).values_list(item, flat=True).order_by('id')
-                average = sum(qs)/float(len(qs))
-                result = round(average * 2) / 2.0
-                result_dict = {item : result}
-                rating.append(result_dict)
-
-            except ZeroDivisionError:
-                rating = []
-
-        return rating
+    objects = SoftSkillsDataRatingManager()
 
 
 class RandomDataRating(Rating):
@@ -79,21 +46,4 @@ class RandomDataRating(Rating):
     """
     resource = models.ForeignKey('courses.RandomData', on_delete=models.CASCADE)
 
-    def calculate_ratings(self, attribute_list, resource):
-        """
-        it gets all the objects from the resource passed and grabs the values of attributes
-        in a list, calculates the average rating for it and returns it
-        """
-        rating = []
-        for item in attribute_list:
-            try:
-                qs = RandomDataRating.objects.filter(resource=resource).values_list(item, flat=True).order_by('id')
-                average = sum(qs)/float(len(qs))
-                result = round(average * 2) / 2.0
-                result_dict = {item : result}
-                rating.append(result_dict)
-
-            except ZeroDivisionError:
-                rating = []
-
-        return rating
+    objects = RandomDataRatingManager()

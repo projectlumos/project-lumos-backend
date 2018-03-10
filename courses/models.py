@@ -201,9 +201,12 @@ class SoftSkillsData(RowInformation):
         """
         calculates the average rating per attribute for the resource
         """
-        qs = SoftSkillsDataRating().calculate_ratings(resource= self.id, attribute_list=['attribute_1',
-                                                        'attribute_2', 'attribute_3', 'attribute_4'])
-        return qs
+        attribute_1 = SoftSkillsDataRating.objects.filter(resource=self.id).calculated_attribute_1()
+        attribute_2 = SoftSkillsDataRating.objects.filter(resource=self.id).calculated_attribute_2()
+        attribute_3 = SoftSkillsDataRating.objects.filter(resource=self.id).calculated_attribute_3()
+        attribute_4 = SoftSkillsDataRating.objects.filter(resource=self.id).calculated_attribute_4()
+        return {'attribute_1':attribute_1, 'attribute_2':attribute_2, 'attribute_3':attribute_3,
+                'attribute_4':attribute_4}
 
     def __str__(self):
         return '{name}-{slug}'.format(name=self.title, slug=self.slug)
@@ -267,14 +270,17 @@ class KnowledgeBase(RowInformation):
             self.slug = pl_custom_slugify(source_field=self.title, suffix=True)
             super(KnowledgeBase, self).save(*args, **kwargs)
 
-    # @property
-    # def ratings(self):
-    #     """
-    #     calculates the average rating per attribute for the resource
-    #     """
-    #     qs = KnowledgeBaseRating().calculate_ratings(resource= self.id, attribute_list=['attribute_1',
-    #                                                     'attribute_2', 'attribute_3', 'attribute_4'])
-    #     return qs
+    @property
+    def ratings(self):
+        """
+        calculates the average rating per attribute for the resource
+        """
+        attribute_1 = KnowledgeBaseRating.objects.filter(resource=self.id).calculated_attribute_1()
+        attribute_2 = KnowledgeBaseRating.objects.filter(resource=self.id).calculated_attribute_2()
+        attribute_3 = KnowledgeBaseRating.objects.filter(resource=self.id).calculated_attribute_3()
+        attribute_4 = KnowledgeBaseRating.objects.filter(resource=self.id).calculated_attribute_4()
+        return {'attribute_1':attribute_1, 'attribute_2':attribute_2, 'attribute_3':attribute_3,
+                'attribute_4':attribute_4}
 
     def __str__(self):
         return self.slug
@@ -332,9 +338,12 @@ class RandomData(RowInformation):
         """
         calculates the average rating per attribute for the resource
         """
-        qs = RandomDataRating().calculate_ratings(resource= self.id, attribute_list=['attribute_1',
-                                                        'attribute_2', 'attribute_3', 'attribute_4'])
-        return qs
+        attribute_1 = RandomDataRating.objects.filter(resource=self.id).calculated_attribute_1()
+        attribute_2 = RandomDataRating.objects.filter(resource=self.id).calculated_attribute_2()
+        attribute_3 = RandomDataRating.objects.filter(resource=self.id).calculated_attribute_3()
+        attribute_4 = RandomDataRating.objects.filter(resource=self.id).calculated_attribute_4()
+        return {'attribute_1':attribute_1, 'attribute_2':attribute_2, 'attribute_3':attribute_3,
+                'attribute_4':attribute_4}
 
     def __str__(self):
         return '{name}-{slug}'.format(name=self.title, slug=self.slug)
