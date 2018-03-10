@@ -1,13 +1,8 @@
-from datetime import datetime
-
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
-from django.utils import timezone
-from rest_framework.parsers import BaseParser
 from rest_framework_jwt.settings import api_settings
 
-
 from accounts.models import LumosUser
+
 
 def get_lumos_user_data(user):
 
