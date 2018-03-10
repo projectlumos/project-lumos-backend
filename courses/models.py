@@ -267,14 +267,14 @@ class KnowledgeBase(RowInformation):
             self.slug = pl_custom_slugify(source_field=self.title, suffix=True)
             super(KnowledgeBase, self).save(*args, **kwargs)
 
-    @property
-    def ratings(self):
-        """
-        calculates the average rating per attribute for the resource
-        """
-        qs = KnowledgeBaseRating().calculate_ratings(resource= self.id, attribute_list=['attribute_1',
-                                                        'attribute_2', 'attribute_3', 'attribute_4'])
-        return qs
+    # @property
+    # def ratings(self):
+    #     """
+    #     calculates the average rating per attribute for the resource
+    #     """
+    #     qs = KnowledgeBaseRating().calculate_ratings(resource= self.id, attribute_list=['attribute_1',
+    #                                                     'attribute_2', 'attribute_3', 'attribute_4'])
+    #     return qs
 
     def __str__(self):
         return self.slug

@@ -21,38 +21,30 @@ class Rating(RowInformation):
         abstract = True
 
 
+class KnowledgeBaseRatingQuerySet(models.QuerySet):
+    def calculated_attribute_1(self):
+        # checking the queryset exists
+        if self.exists():
+            # flattening out only the attribute 1 and doing and avg of all the values
+            return sum(self.values_list('attribute_1', flat=True))/float(self.count())
+        else:
+            return 0
+
+
+class KnowledgeBaseRatingManager(models.Manager):
+    def get_queryset(self):
+        return KnowledgeBaseRatingQuerySet(self.model, using=self._db)
+
+    def calculated_attribute_1(self):
+        return self.get_queryset().calculated_attribute_1()
+
+
 class KnowledgeBaseRating(Rating):
     """
     This class handles the ratings for KnowledgeBase resources
     """
-    resource = models.ForeignKey('courses.KnowledgeBase', on_delete=models.CASCADE)
-
-    def calculate_ratings(self, attribute_list, resource):
-        """
-        it gets all the objects from the resource passed and grabs the values of attributes
-        in a list, calculates the average rating for it and returns it
-        """
-        rating = []
-        for item in attribute_list:
-            try:
-                qs = KnowledgeBaseRating.objects.filter(resource=resource).values_list(item, flat=True).order_by('id')
-                # calculates the average of the qs list
-                average = sum(qs)/float(len(qs))
-
-                # rounds off the average to the closest 0.5
-                result = round(average * 2) / 2.0
-
-                # dictionary with key as item and value as the result
-                result_dict = {item : result}
-
-                # creates a list of dictionaries for the passed attributes
-                rating.append(result_dict)
-
-            except ZeroDivisionError:
-                # handles when attribute is 0, returns empty list
-                rating = []
-
-        return rating
+    resource = models.ForeignKey('courses.KnowledgeBase', on_delete=models.CASCADE, related_name='ratings')
+    manager = KnowledgeBaseRatingManager()
 
 
 class SoftSkillsDataRating(Rating):
