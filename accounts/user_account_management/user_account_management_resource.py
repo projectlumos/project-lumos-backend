@@ -2,16 +2,14 @@ import json
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseNotFound, HttpResponseForbidden
+from django.contrib.auth import logout
 
-
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
-
-from django.utils.crypto import get_random_string
-from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 # project level
 from accounts.models import User, LumosUser
@@ -88,3 +86,12 @@ def create_lumos_user(request):
     response_data['id'] = int(django_user.id)
 
     return Response(data=response_data, status=HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication, BasicAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def logout_lumos_user(request):
+    logout(request)
+    return Response(data="Successfully logged out.", status=HTTP_200_OK)
+
