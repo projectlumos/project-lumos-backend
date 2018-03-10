@@ -11,6 +11,10 @@ class LumosUser(models.Model):
 
     """
     id = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name="lumos_user")
+    is_verified = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'lumos_user'
 
     def __str__(self):
         return '{username}'.format(username=self.lumos_user.username)
