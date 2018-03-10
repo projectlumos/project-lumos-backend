@@ -3,51 +3,57 @@ from .models import KnowledgeBaseNotes, SoftSkillsDataNotes, RandomDataNotes
 # Register your models here.
 
 
-class KnowledgeBaseNotesAdmin(admin.ModelAdmin):
+class KnowledgeBaseNotesModelAdmin(admin.ModelAdmin):
 	"""
 	This model admin will handle the admin panel
 	for KnowledgeBaseNotes class.
 	"""
-	list_display = ['user','resource','title']
+	list_display = ['user', 'resource', 'title', 'is_active', 'created_at', 'modified_at']
 	list_display_links = ['user', 'resource']
-	search_fields = ['title', 'created_date','date_modified']
-	readonly_fields = ['created_date','date_modified']
+	list_filter = ['user', 'resource', 'is_active', 'created_at', 'modified_at']
+	search_fields = ['title', 'content']
+	autocomplete_fields = ['user', 'resource']
+	readonly_fields = ['slug']
 
 	class Meta:
 		model = KnowledgeBaseNotes
 
 
-class SoftSkillsDataNotesAdmin(admin.ModelAdmin):
+class SoftSkillsDataNotesModelAdmin(admin.ModelAdmin):
 	"""
 	This model admin will handle the admin panel
 	for SoftSkillsDataNotes class.
 	"""
-	list_display = ['user','resource','title']
+	list_display = ['user', 'resource', 'title', 'is_active', 'created_at', 'modified_at']
 	list_display_links = ['user', 'resource']
-	search_fields = ['title', 'created_date','date_modified']
-	readonly_fields = ['created_date','date_modified']
+	list_filter = ['user', 'resource', 'is_active', 'created_at', 'modified_at']
+	search_fields = ['title', 'content']
+	autocomplete_fields = ['user', 'resource']
+	readonly_fields = ['slug']
 
 	class Meta:
 		model = SoftSkillsDataNotes
 
 
-class RandomDataNotesAdmin(admin.ModelAdmin):
+class RandomDataNotesModelAdmin(admin.ModelAdmin):
 	"""
 	This model admin will handle the admin panel
 	for RandomData class.
 	"""
-	list_display = ['user','resource','title']
+	list_display = ['user', 'resource', 'title', 'is_active', 'created_at', 'modified_at']
 	list_display_links = ['user', 'resource']
-	search_fields = ['title', 'created_date','date_modified']
-	readonly_fields = ['created_date','date_modified']
+	list_filter = ['user', 'resource', 'is_active', 'created_at', 'modified_at']
+	search_fields = ['title', 'content']
+	autocomplete_fields = ['user', 'resource']
+	readonly_fields = ['slug']
 
 	class Meta:
 		model = RandomDataNotes
 
 
-admin.site.register(KnowledgeBaseNotes, KnowledgeBaseNotesAdmin)
-admin.site.register(SoftSkillsDataNotes, KnowledgeBaseNotesAdmin)
-admin.site.register(RandomDataNotes, RandomDataNotesAdmin)
+admin.site.register(KnowledgeBaseNotes, KnowledgeBaseNotesModelAdmin)
+admin.site.register(SoftSkillsDataNotes, KnowledgeBaseNotesModelAdmin)
+admin.site.register(RandomDataNotes, RandomDataNotesModelAdmin)
 
 
 

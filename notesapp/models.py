@@ -1,10 +1,11 @@
-import courses
 from django.db import models
+from django.db import transaction
 from django.contrib.auth.models import User
+from courses.models import(KnowledgeBase,
+						   SoftSkillsData,
+						   RandomData)
 from courses.utils.modelsutils import RowInformation
-from datetime import date
-from django.utils import timezone
-
+from courses.utils.modelsutils import pl_custom_slugify
 
 # Create your models here.
 
@@ -16,12 +17,10 @@ class Notes(RowInformation):
 	the child classes.
 
 	"""
-	user = models.ForeignKey(User, null=True, blank=True, on_delete=models.DO_NOTHING)
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
 	title = models.CharField(max_length=120)
 	content = models.TextField()
-	created_date = models.DateField(default=timezone.now().date())
-	date_modified = models.DateTimeField(auto_now=True,auto_now_add=False,null=True)
-
+	
 	class Meta:
 		abstract = True
 
@@ -33,10 +32,40 @@ class KnowledgeBaseNotes(Notes):
 
 	"""
 
-	resource = models.ForeignKey('courses.KnowledgeBase', on_delete=models.CASCADE)
+	resource = models.ForeignKey(KnowledgeBase, on_delete=models.CASCADE)
+	slug = models.SlugField(unique=True)
+
+	def save(self, *args, **kwargs):
+
+		self.title = self.title.title() if self.title else self.title
+
+		if not self.slug:
+		    # if slug doesn't exist pass the source_field and suffix=False to custom_slugify function
+		    self.slug = pl_custom_slugify(source_field=self.title, suffix=False)
+
+		try:
+			"""
+			While saving, it we have a duplicate combination of name and slug
+			Since we have added an IntegrityError check, we will have an exception raised
+			"""
+			#This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+			with transaction.atomic():
+			# since unique combination of source_field and slug exists, call save method
+				super(KnowledgeBaseNotes, self).save(*args, **kwargs)
+
+		except IntegrityError:
+			"""
+			after catching the exception, we will generate another slug but this time we will
+			suffix  it with a random string at the end of the slug to make it unique and try saving it again
+			"""
+
+			# since unique combination of source_field and slug doesn't exist,
+			# pass suffix=True to add random_str to make it unique
+			self.slug = pl_custom_slugify(source_field=self.title, suffix=True)
+			super(KnowledgeBaseNotes, self).save(*args, **kwargs)
 
 	def __str__(self):
-		return self.resource.title
+		return '{title}-{slug}'.format(title=self.title, slug=self.slug)
 
 
 class SoftSkillsDataNotes(Notes):
@@ -46,10 +75,40 @@ class SoftSkillsDataNotes(Notes):
 
 	"""
 
-	resource = models.ForeignKey('courses.SoftSkillsData', on_delete=models.CASCADE)
+	resource = models.ForeignKey(SoftSkillsData, on_delete=models.CASCADE)
+	slug = models.SlugField(unique=True)
+
+	def save(self, *args, **kwargs):
+
+		self.title = self.title.title() if self.title else self.title
+
+		if not self.slug:
+		    # if slug doesn't exist pass the source_field and suffix=False to custom_slugify function
+			self.slug = pl_custom_slugify(source_field=self.title, suffix=False)
+
+		try:
+			"""
+			While saving, it we have a duplicate combination of name and slug
+			Since we have added an IntegrityError check, we will have an exception raised
+			"""
+			#This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+			with transaction.atomic():
+			    # since unique combination of source_field and slug exists, call save method
+				super(SoftSkillsDataNotes, self).save(*args, **kwargs)
+
+		except IntegrityError:
+			"""
+			after catching the exception, we will generate another slug but this time we will
+			suffix  it with a random string at the end of the slug to make it unique and try saving it again
+			"""
+
+			# since unique combination of source_field and slug doesn't exist,
+			# pass suffix=True to add random_str to make it unique
+			self.slug = pl_custom_slugify(source_field=self.title, suffix=True)
+			super(SoftSkillsDataNotes, self).save(*args, **kwargs)
 
 	def __str__(self):
-		return self.resource.title
+		return '{title}-{slug}'.format(title=self.title, slug=self.slug)
 
 
 class RandomDataNotes(Notes):
@@ -59,8 +118,37 @@ class RandomDataNotes(Notes):
 
 	"""
 
-	resource = models.ForeignKey('courses.RandomData', on_delete=models.CASCADE)
+	resource = models.ForeignKey(RandomData, on_delete=models.CASCADE)
+	slug = models.SlugField(unique=True)
+
+	def save(self, *args, **kwargs):
+
+		self.title = self.title.title() if self.title else self.title
+
+		if not self.slug:
+		    # if slug doesn't exist pass the source_field and suffix=False to custom_slugify function
+			self.slug = pl_custom_slugify(source_field=self.title, suffix=False)
+
+		try:
+			"""
+			While saving, it we have a duplicate combination of name and slug
+			Since we have added an IntegrityError check, we will have an exception raised
+			"""
+			#This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+			with transaction.atomic():
+			    # since unique combination of source_field and slug exists, call save method
+				super(RandomDataNotes, self).save(*args, **kwargs)
+
+		except IntegrityError:
+			"""
+			after catching the exception, we will generate another slug but this time we will
+			suffix  it with a random string at the end of the slug to make it unique and try saving it again
+			"""
+
+			# since unique combination of source_field and slug doesn't exist,
+			# pass suffix=True to add random_str to make it unique
+			self.slug = pl_custom_slugify(source_field=self.title, suffix=True)
+			super(RandomDataNotes, self).save(*args, **kwargs)
 
 	def __str__(self):
-		return self.resource.title
-
+		return '{title}-{slug}'.format(title=self.title, slug=self.slug)
