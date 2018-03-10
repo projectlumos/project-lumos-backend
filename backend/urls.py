@@ -19,9 +19,17 @@ from django.conf.urls import include
 from utilities.views import wikiscript, dictscript
 from .routers import router
 
+
+from django.conf.urls import include, url
+from django.contrib import admin
+
+# TODO REFACTOR NAMESPACES AND URLS
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('wiki/<slug:term>/', wikiscript , name='wiki'),
-    path('dict/<slug:term>/', dictscript , name='dictionary'),
+    url(r'^admin/docs/', include('django.contrib.admindocs.urls')),
+    url(r'^admin/', admin.site.urls),
+    path('wiki/<slug:term>/', wikiscript, name='wiki'),
+    path('dict/<slug:term>/', dictscript, name='dictionary'),
     path('api/', include(router.urls)),
+    url(r'^accounts/', include('accounts.urls')),
 ]
