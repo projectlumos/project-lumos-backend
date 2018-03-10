@@ -29,7 +29,7 @@ class KnowledgeBaseRating(Rating):
 
     def calculate_ratings(self, attribute_list, resource):
         """
-        it gets all the objects from the current resource and grabs the values of attribute_1
+        it gets all the objects from the resource passed and grabs the values of attributes
         in a list, calculates the average rating for it and returns it
         """
         rating = []
@@ -54,11 +54,6 @@ class KnowledgeBaseRating(Rating):
 
         return rating
 
-    class Meta:
-
-        # user and resource ids together cannot be duplicated
-        unique_together = ('user', 'resource')
-
 
 class SoftSkillsDataRating(Rating):
     """
@@ -68,7 +63,7 @@ class SoftSkillsDataRating(Rating):
 
     def calculate_ratings(self, attribute_list, resource):
         """
-        it gets all the objects from the current resource and grabs the values of attribute_1
+        it gets all the objects from the resource passed and grabs the values of attributes
         in a list, calculates the average rating for it and returns it
         """
         rating = []
@@ -85,9 +80,6 @@ class SoftSkillsDataRating(Rating):
 
         return rating
 
-    class Meta:
-        unique_together = ('user', 'resource')
-
 
 class RandomDataRating(Rating):
     """
@@ -97,7 +89,7 @@ class RandomDataRating(Rating):
 
     def calculate_ratings(self, attribute_list, resource):
         """
-        it gets all the objects from the current resource and grabs the values of attribute_1
+        it gets all the objects from the resource passed and grabs the values of attributes
         in a list, calculates the average rating for it and returns it
         """
         rating = []
@@ -113,6 +105,3 @@ class RandomDataRating(Rating):
                 rating = []
 
         return rating
-
-    class Meta:
-        unique_together = ('user', 'resource')
