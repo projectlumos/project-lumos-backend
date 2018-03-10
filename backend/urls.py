@@ -19,6 +19,7 @@ from django.conf.urls import include
 from utilities.views import wikiscript, dictscript
 from .routers import router
 
+from rest_framework_jwt.views import obtain_jwt_token
 
 from django.conf.urls import include, url
 from django.contrib import admin
@@ -28,6 +29,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/docs/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^auth/login/$', obtain_jwt_token),
     path('wiki/<slug:term>/', wikiscript, name='wiki'),
     path('dict/<slug:term>/', dictscript, name='dictionary'),
     path('api/', include(router.urls)),

@@ -1,5 +1,7 @@
 import os
 import logging
+import datetime
+
 from .env_vars import SECRET_KEY_DEFAULT
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -18,7 +20,11 @@ SECRET_KEY = get_env_variable('SECRET_KEY',SECRET_KEY_DEFAULT)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pl-backend-staging.herokuapp.com','pl-backend-production.herokuapp.com','pl-backend-development.herokuapp.com', '0.0.0.0', '127.0.0.1']
+ALLOWED_HOSTS = ['pl-backend-staging.herokuapp.com',
+                 'pl-backend-production.herokuapp.com',
+                 'pl-backend-development.herokuapp.com',
+                 '0.0.0.0',
+                 '127.0.0.1']
 
 
 # Application definition
@@ -125,3 +131,24 @@ STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+
+# Authentication and REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+}
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+        'backend.utils.jwt_response_payload_handler',
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=365),
+}
