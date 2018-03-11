@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     #my apps
     'courses',
     'utilities',
+    'ratings',
     'accounts',
     'notesapp',
     #third_party_apps

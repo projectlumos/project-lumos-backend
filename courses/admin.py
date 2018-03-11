@@ -46,7 +46,7 @@ class LanguageModelAdmin(admin.ModelAdmin):
 
 class SoftSkillsModelAdmin(admin.ModelAdmin):
     """
-    handles the admin panel for Language class.
+    handles the admin panel for SoftSkills class.
     """
     list_display = ['soft_skill_category', 'slug']
     list_editable = ['soft_skill_category']
@@ -61,7 +61,7 @@ class SoftSkillsModelAdmin(admin.ModelAdmin):
 
 class KnowledgeBaseModelAdmin(admin.ModelAdmin):
     """
-    handles the admin panel for Video class.
+    handles the admin panel for KnowledgeBase class.
     """
     form = KnowledgeBaseForm
     list_display = ['title', 'is_active', 'modified_at', 'created_at', 'skill_level', 'data_type', 'paid',
@@ -81,7 +81,7 @@ class KnowledgeBaseModelAdmin(admin.ModelAdmin):
 
     # this field can only be read at the admin site. Since multiple_languages is a property called when object is saved,
     # no write permissions given
-    readonly_fields = ['slug']
+    readonly_fields = ['slug', 'ratings']
 
     class Meta:
         model = KnowledgeBase
@@ -89,7 +89,7 @@ class KnowledgeBaseModelAdmin(admin.ModelAdmin):
 
 class SoftSkillsDataModelAdmin(admin.ModelAdmin):
     """
-    handles the admin panel for ExternalLink class.
+    handles the admin panel for SoftSkillsData class.
     """
     list_display = ['title', 'is_active', 'modified_at', 'created_at', 'data_type', 'paid']
     list_display_links = ['title']
@@ -97,7 +97,7 @@ class SoftSkillsDataModelAdmin(admin.ModelAdmin):
     list_filter = ['is_active', 'soft_skill__soft_skill_category', 'modified_at', 'created_at']
     search_fields = ['title', 'description', 'soft_skill__soft_skill_category']
     autocomplete_fields = ['soft_skill']
-    readonly_fields = ['slug']
+    readonly_fields = ['slug', 'ratings']
 
     class Meta:
         model = SoftSkillsData
@@ -105,14 +105,14 @@ class SoftSkillsDataModelAdmin(admin.ModelAdmin):
 
 class RandomDataModelAdmin(admin.ModelAdmin):
     """
-    handles the admin panel for ExternalLink class.
+    handles the admin panel for RandomData class.
     """
     list_display = ['title', 'is_active', 'modified_at', 'created_at', 'data_type', 'paid']
     list_display_links = ['title']
     list_editable = ['is_active']
     list_filter = ['is_active', 'modified_at', 'created_at']
     search_fields = ['title', 'description']
-    readonly_fields = ['slug']
+    readonly_fields = ['slug', 'ratings']
 
     class Meta:
         model = RandomData
