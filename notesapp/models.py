@@ -33,7 +33,7 @@ class KnowledgeBaseNotes(Notes):
 
 	"""
 
-	resource = models.ForeignKey(KnowledgeBase, on_delete=models.CASCADE)
+	resource = models.ForeignKey(KnowledgeBase, on_delete=models.CASCADE, related_name='knowledge_base_notes')
 	slug = models.SlugField(unique=True)
 
 	def save(self, *args, **kwargs):
@@ -76,7 +76,7 @@ class SoftSkillsDataNotes(Notes):
 
 	"""
 
-	resource = models.ForeignKey(SoftSkillsData, on_delete=models.CASCADE)
+	resource = models.ForeignKey(SoftSkillsData, on_delete=models.CASCADE, related_name='soft_skills_data_notes')
 	slug = models.SlugField(unique=True)
 
 	def save(self, *args, **kwargs):
@@ -119,7 +119,7 @@ class RandomDataNotes(Notes):
 
 	"""
 
-	resource = models.ForeignKey(RandomData, on_delete=models.CASCADE)
+	resource = models.ForeignKey(RandomData, on_delete=models.CASCADE,related_name='random_data_notes')
 	slug = models.SlugField(unique=True)
 
 	def save(self, *args, **kwargs):

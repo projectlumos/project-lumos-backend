@@ -1,10 +1,10 @@
-from rest_framework.serializers import ( ModelSerializer,
-										 HyperlinkedIdentityField
-	                                   )
-from notesapp.model import ( KnowledgeBaseNotes,
-							 SoftSkillsDataNotes,
-							 RandomDataNotes
-						   )
+from rest_framework.serializers import ( 
+	ModelSerializer,
+	HyperlinkedIdentityField,
+	PrimaryKeyRelatedField,
+)
+from notesapp.model import KnowledgeBaseNotes, SoftSkillsDataNotes, RandomDataNotes
+						   
 
 
 knowledgebasenotes_detail_url = HyperlinkedIdentityField(
@@ -30,6 +30,7 @@ class KnowledgeBaseNotesSerializer(ModelSerializer):
 	"""
 	serializer class for KnowledgeBaseNotes model
 	"""
+	knowledge_base_notes = PrimaryKeyRelatedField(many=True, read_only=True)
 	url = knowledgebasenotes_detail_url
 
 	class Meta:
@@ -58,6 +59,7 @@ class SoftSkillsDataNotesSerializer(ModelSerializer):
 	"""
 	serializer class for SoftSkillsDataNotes model
 	"""
+	soft_skills_data_notes = PrimaryKeyRelatedField(many=True, read_only=True)
 	url = softskillsdatanotes_detail_url
 
 	class Meta:
@@ -85,6 +87,7 @@ class RandomDataNotesSerializer(ModelSerializer):
 	"""
 	serializer class for RandomDataNotes model
 	"""
+	random_data_notes = PrimaryKeyRelatedField(many=True, read_only=True)
 	url = randomdatanotes_detail_url
 
 	class Meta:
