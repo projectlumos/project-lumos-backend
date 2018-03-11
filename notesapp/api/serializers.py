@@ -4,7 +4,9 @@ from rest_framework.serializers import (
 	PrimaryKeyRelatedField,
 )
 from notesapp.model import KnowledgeBaseNotes, SoftSkillsDataNotes, RandomDataNotes
-						   
+from courses.models import KnowledgeBase, SoftSkillsData, RandomData
+from django.contrib.auth.models import User
+
 
 
 knowledgebasenotes_detail_url = HyperlinkedIdentityField(
@@ -30,7 +32,8 @@ class KnowledgeBaseNotesSerializer(ModelSerializer):
 	"""
 	serializer class for KnowledgeBaseNotes model
 	"""
-	knowledge_base_notes = PrimaryKeyRelatedField(many=True, read_only=True)
+	user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    resource = PrimaryKeyRelatedField(queryset=KnowledgeBase.objects.all())
 	url = knowledgebasenotes_detail_url
 
 	class Meta:
@@ -51,7 +54,6 @@ class KnowledgeBaseNotesSerializer(ModelSerializer):
 		extra_kwargs = {
 		'created_at' : {'read_only': True},
 		'modified_at' : {'read_only': True}
-
 		}
 
 
@@ -59,7 +61,8 @@ class SoftSkillsDataNotesSerializer(ModelSerializer):
 	"""
 	serializer class for SoftSkillsDataNotes model
 	"""
-	soft_skills_data_notes = PrimaryKeyRelatedField(many=True, read_only=True)
+	user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    resource = PrimaryKeyRelatedField(queryset=SoftSkillsData.objects.all())
 	url = softskillsdatanotes_detail_url
 
 	class Meta:
@@ -80,14 +83,15 @@ class SoftSkillsDataNotesSerializer(ModelSerializer):
 		extra_kwargs = {
 		'created_at' : {'read_only': True},
 		'modified_at' : {'read_only': True}
-
 		}
+
 
 class RandomDataNotesSerializer(ModelSerializer):
 	"""
 	serializer class for RandomDataNotes model
 	"""
-	random_data_notes = PrimaryKeyRelatedField(many=True, read_only=True)
+	user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    resource = PrimaryKeyRelatedField(queryset=RandomData.objects.all())
 	url = randomdatanotes_detail_url
 
 	class Meta:
@@ -108,5 +112,4 @@ class RandomDataNotesSerializer(ModelSerializer):
 		extra_kwargs = {
 		'created_at' : {'read_only': True},
 		'modified_at' : {'read_only': True}
-
 		}
