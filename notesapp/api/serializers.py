@@ -3,7 +3,7 @@ from rest_framework.serializers import (
 	HyperlinkedIdentityField,
 	PrimaryKeyRelatedField,
 )
-from notesapp.model import KnowledgeBaseNotes, SoftSkillsDataNotes, RandomDataNotes
+from notesapp.models import KnowledgeBaseNotes, SoftSkillsDataNotes, RandomDataNotes
 from courses.models import KnowledgeBase, SoftSkillsData, RandomData
 from django.contrib.auth.models import User
 
@@ -52,7 +52,8 @@ class KnowledgeBaseNotesSerializer(ModelSerializer):
 
 		extra_kwargs = {
 			'created_at' : {'read_only': True},
-			'modified_at' : {'read_only': True}
+			'modified_at' : {'read_only': True},
+			'slug' : {'read_only': True}
 		}
 
 
@@ -81,7 +82,8 @@ class SoftSkillsDataNotesSerializer(ModelSerializer):
 
 		extra_kwargs = {
 			'created_at' : {'read_only': True},
-			'modified_at' : {'read_only': True}
+			'modified_at' : {'read_only': True},
+			'slug' : {'read_only': True}
 		}
 
 
@@ -110,5 +112,6 @@ class RandomDataNotesSerializer(ModelSerializer):
 
 		extra_kwargs = {
 			'created_at' : {'read_only': True},
-			'modified_at' : {'read_only': True}
+			'modified_at' : {'read_only': True},
+			'slug' : {'read_only': True}
 		}
