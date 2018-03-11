@@ -1,7 +1,6 @@
 from rest_framework.serializers import (
     ModelSerializer,
     HyperlinkedIdentityField,
-    PrimaryKeyRelatedField,
 )
 from courses.models import Language, Domain, KnowledgeBase, SoftSkills, SoftSkillsData, RandomData
 
@@ -97,7 +96,7 @@ class SoftSkillsDataSerializer(ModelSerializer):
     """
     serializer for ExternalLink model class
     """
-    soft_skill = PrimaryKeyRelatedField(many=True, read_only=True)
+    soft_skill = SoftSkillsSerializer(many=True)
     url = softskillsdata_detail_url
 
     class Meta:
@@ -119,8 +118,8 @@ class KnowledgeBaseSerializer(ModelSerializer):
     """
     serializer for ExternalLink model class
     """
-    languages = PrimaryKeyRelatedField(many=True, read_only=True)
-    domains = PrimaryKeyRelatedField(many=True, read_only=True)
+    languages = LanguageSerializer(many=True)
+    domains = DomainSerializer(many=True)
     url = knowledgebase_detail_url
 
     class Meta:
