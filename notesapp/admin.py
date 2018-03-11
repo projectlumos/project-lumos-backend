@@ -9,7 +9,7 @@ class KnowledgeBaseNotesModelAdmin(admin.ModelAdmin):
 	for KnowledgeBaseNotes class.
 	"""
 	list_display = ['user', 'resource', 'title', 'is_active', 'created_at', 'modified_at']
-	list_display_links = ['user', 'resource']
+	list_display_links = ['title']
 	list_filter = ['user', 'resource', 'is_active', 'created_at', 'modified_at']
 	search_fields = ['title', 'content']
 	autocomplete_fields = ['user', 'resource']
@@ -25,7 +25,7 @@ class SoftSkillsDataNotesModelAdmin(admin.ModelAdmin):
 	for SoftSkillsDataNotes class.
 	"""
 	list_display = ['user', 'resource', 'title', 'is_active', 'created_at', 'modified_at']
-	list_display_links = ['user', 'resource']
+	list_display_links = ['title']
 	list_filter = ['user', 'resource', 'is_active', 'created_at', 'modified_at']
 	search_fields = ['title', 'content']
 	autocomplete_fields = ['user', 'resource']
@@ -41,7 +41,7 @@ class RandomDataNotesModelAdmin(admin.ModelAdmin):
 	for RandomData class.
 	"""
 	list_display = ['user', 'resource', 'title', 'is_active', 'created_at', 'modified_at']
-	list_display_links = ['user', 'resource']
+	list_display_links = ['title']
 	list_filter = ['user', 'resource', 'is_active', 'created_at', 'modified_at']
 	search_fields = ['title', 'content']
 	autocomplete_fields = ['user', 'resource']

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from courses.models import(KnowledgeBase,
 						   SoftSkillsData,
 						   RandomData)
+from django.db import IntegrityError
 from courses.utils.modelsutils import RowInformation
 from courses.utils.modelsutils import pl_custom_slugify
 
