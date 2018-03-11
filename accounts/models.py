@@ -17,4 +17,4 @@ class LumosUser(models.Model):
         db_table = 'lumos_user'
 
     def __str__(self):
-        return '{username}'.format(username=self.lumos_user.username)
+        return '{username}'.format(username=self.id.username)
