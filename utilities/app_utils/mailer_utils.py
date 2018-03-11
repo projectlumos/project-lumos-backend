@@ -7,22 +7,12 @@ from sendgrid.helpers.mail import Email, Mail, Content
 from backend.settings.env_vars import SENDGRID_API_KEY
 from utilities.constants import LUMOS_FROM_EMAIL_ID
 
-# sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
-# from_email = "abhishek.juneja145+from@gmail.com"
-# to_email = "abhishek.juneja145+to@gmail.com"
-# subject = "Sending with SendGrid is Fun"
-# content = "APples are yum"
-# mail = Mail(from_email, subject, to_email, content)
-# response = sg.client.mail.send.post(request_body=mail.get())
-# print(response.status_code)
-# print(response.body)
-# print(response.headers)
-
 
 def sendgrid_client():
     """
-    
-    :return: 
+    Fetching a sendgrid client
+        
+    :return: Sendgrid client object 
     """
     sendgrid_client_obj = SendGridAPIClient(apikey=SENDGRID_API_KEY)
     return sendgrid_client_obj
@@ -32,13 +22,15 @@ def send_sendgrid_email(to_email, subject, content,
                         from_email=LUMOS_FROM_EMAIL_ID,
                         content_type="text/plain"):
     """
+    Send an email using the sendgrid API
     
-    :param to_email: 
-    :param subject: 
-    :param content: 
-    :param from_email: 
-    :param content_type: 
-    :return: 
+    
+    :param to_email: to email
+    :param subject: subject of the email
+    :param content: content of the email body
+    :param from_email: email sender
+    :param content_type: "text/plain" or "text/html"
+    :return: bool
     """
 
     if not all([to_email, from_email, subject, content]):
@@ -63,11 +55,19 @@ def send_sendgrid_email(to_email, subject, content,
 def send_lumos_email(lumos_user, subject, content, check_verified_email=True):
     """
     
-    :param lumos_user: 
-    :param subject: 
-    :param content: 
-    :param check_verified_email: 
-    :return: 
+    Single point for sending email from the Project. 
+    
+    Takes in a lumos_user object and checks if it has a verified email (by default)
+    
+    If we need to send verification independent emails (email sent to verify the email ID :p), 
+    we bypass the verified email flag 
+    
+    :param lumos_user: LumosUser object
+    :param subject: Subject of the email
+    :param content: body of the email
+    :param check_verified_email: flag to prevent sending emails to non verified accounts
+    
+    :return: bool
     """
 
     # lumos_user_email = lumos_user.email
