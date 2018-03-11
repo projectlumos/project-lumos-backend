@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'courses',
     'utilities',
     'accounts',
+    'notesapp',
     #third_party_apps
     'rest_framework',
     'corsheaders',
