@@ -8,23 +8,22 @@ from courses.models import KnowledgeBase, SoftSkillsData, RandomData
 from django.contrib.auth.models import User
 
 
-
 knowledgebasenotes_detail_url = HyperlinkedIdentityField(
     # URL to detail view
-    view_name='knowledgebasenotes-detail',
-    read_only=True
+	view_name='knowledgebasenotes-detail',
+	read_only=True
 )
 
 softskillsdatanotes_detail_url = HyperlinkedIdentityField(
     # URL to detail view
-    view_name='softskillsdatanotes-detail',
-    read_only=True
+	view_name='softskillsdatanotes-detail',
+	read_only=True
 )
 
 randomdatanotes_detail_url = HyperlinkedIdentityField(
     # URL to detail view
-    view_name='randomdatanotes-detail',
-    read_only=True
+	view_name='randomdatanotes-detail',
+	read_only=True
 )
 
 
@@ -33,7 +32,7 @@ class KnowledgeBaseNotesSerializer(ModelSerializer):
 	serializer class for KnowledgeBaseNotes model
 	"""
 	user = PrimaryKeyRelatedField(queryset=User.objects.all())
-    resource = PrimaryKeyRelatedField(queryset=KnowledgeBase.objects.all())
+	resource = PrimaryKeyRelatedField(queryset=KnowledgeBase.objects.all())
 	url = knowledgebasenotes_detail_url
 
 	class Meta:
@@ -52,8 +51,8 @@ class KnowledgeBaseNotesSerializer(ModelSerializer):
 		]
 
 		extra_kwargs = {
-		'created_at' : {'read_only': True},
-		'modified_at' : {'read_only': True}
+			'created_at' : {'read_only': True},
+			'modified_at' : {'read_only': True}
 		}
 
 
@@ -62,7 +61,7 @@ class SoftSkillsDataNotesSerializer(ModelSerializer):
 	serializer class for SoftSkillsDataNotes model
 	"""
 	user = PrimaryKeyRelatedField(queryset=User.objects.all())
-    resource = PrimaryKeyRelatedField(queryset=SoftSkillsData.objects.all())
+	resource = PrimaryKeyRelatedField(queryset=SoftSkillsData.objects.all())
 	url = softskillsdatanotes_detail_url
 
 	class Meta:
@@ -81,8 +80,8 @@ class SoftSkillsDataNotesSerializer(ModelSerializer):
 		]
 
 		extra_kwargs = {
-		'created_at' : {'read_only': True},
-		'modified_at' : {'read_only': True}
+			'created_at' : {'read_only': True},
+			'modified_at' : {'read_only': True}
 		}
 
 
@@ -91,7 +90,7 @@ class RandomDataNotesSerializer(ModelSerializer):
 	serializer class for RandomDataNotes model
 	"""
 	user = PrimaryKeyRelatedField(queryset=User.objects.all())
-    resource = PrimaryKeyRelatedField(queryset=RandomData.objects.all())
+	resource = PrimaryKeyRelatedField(queryset=RandomData.objects.all())
 	url = randomdatanotes_detail_url
 
 	class Meta:
@@ -110,6 +109,6 @@ class RandomDataNotesSerializer(ModelSerializer):
 		]
 
 		extra_kwargs = {
-		'created_at' : {'read_only': True},
-		'modified_at' : {'read_only': True}
+			'created_at' : {'read_only': True},
+			'modified_at' : {'read_only': True}
 		}
