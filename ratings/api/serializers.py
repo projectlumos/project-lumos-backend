@@ -4,6 +4,8 @@ from rest_framework.serializers import (
     PrimaryKeyRelatedField
 )
 from ratings.models import KnowledgeBaseRating, SoftSkillsDataRating, RandomDataRating
+from courses.models import KnowledgeBase, SoftSkillsData, RandomData
+from django.contrib.auth.models import User
 
 
 knowledgebaserating_detail_url = HyperlinkedIdentityField(
@@ -27,9 +29,9 @@ class KnowledgeBaseRatingSerializer(ModelSerializer):
     """
     serializer for KnowledgeBaseRating
     """
-    user = PrimaryKeyRelatedField(read_only=True)
-    resource = PrimaryKeyRelatedField(read_only=True)
-    url = knowledgebase_detail_url
+    user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    resource = PrimaryKeyRelatedField(queryset=KnowledgeBase.objects.all())
+    url = knowledgebaserating_detail_url
 
     class Meta:
         model = KnowledgeBaseRating
@@ -49,8 +51,8 @@ class SoftSkillsDataRatingSerializer(ModelSerializer):
     """
     serializer for SoftSkillsDataRating
     """
-    user = PrimaryKeyRelatedField(read_only=True)
-    resource = PrimaryKeyRelatedField(read_only=True)
+    user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    resource = PrimaryKeyRelatedField(queryset=SoftSkillsData.objects.all())
     url = softskillsdatarating_detail_url
 
     class Meta:
@@ -71,8 +73,8 @@ class RandomDataRatingSerializer(ModelSerializer):
     """
     serializer for RandomDataRating
     """
-    user = PrimaryKeyRelatedField(read_only=True)
-    resource = PrimaryKeyRelatedField(read_only=True)
+    user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    resource = PrimaryKeyRelatedField(queryset=RandomData.objects.all())
     url = randomdatarating_detail_url
 
     class Meta:
