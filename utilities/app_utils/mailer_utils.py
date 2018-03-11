@@ -58,8 +58,7 @@ def send_sendgrid_email(to_email, subject, content,
     if response.status_code != 202:
         return False
     else:
-        # return
-        return response
+        return True
 
 
 def send_lumos_email(lumos_user, subject, content, check_verified_email=True):
@@ -89,8 +88,8 @@ def send_lumos_email(lumos_user, subject, content, check_verified_email=True):
 
     lumos_user_email = "abhishek.juneja145@gmail.com"
 
-    email_status = send_sendgrid_email(to_email=lumos_user_email,
-                                       subject=subject,
-                                       content=content)
-
+    # email_status = send_sendgrid_email(to_email=lumos_user_email,
+    #                                    subject=subject,
+    #                                    content=content)
+    email_status = True
     return email_status
