@@ -29,7 +29,7 @@ class KnowledgeBaseRatingSerializer(ModelSerializer):
     """
     serializer for KnowledgeBaseRating
     """
-    user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    user = PrimaryKeyRelatedField(allow_null=True, queryset=User.objects.all())
     resource = PrimaryKeyRelatedField(queryset=KnowledgeBase.objects.all())
     url = knowledgebaserating_detail_url
 
@@ -51,7 +51,7 @@ class SoftSkillsDataRatingSerializer(ModelSerializer):
     """
     serializer for SoftSkillsDataRating
     """
-    user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    user = PrimaryKeyRelatedField(allow_null=True, queryset=User.objects.all())
     resource = PrimaryKeyRelatedField(queryset=SoftSkillsData.objects.all())
     url = softskillsdatarating_detail_url
 
@@ -73,7 +73,7 @@ class RandomDataRatingSerializer(ModelSerializer):
     """
     serializer for RandomDataRating
     """
-    user = PrimaryKeyRelatedField(queryset=User.objects.all())
+    user = PrimaryKeyRelatedField(allow_null=True, queryset=User.objects.all())
     resource = PrimaryKeyRelatedField(queryset=RandomData.objects.all())
     url = randomdatarating_detail_url
 
