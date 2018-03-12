@@ -43,7 +43,7 @@ class RatingsAbstractViewSet(viewsets.ModelViewSet):
 
 class KnowledgeBaseRatingViewSet(RatingsAbstractViewSet):
     """
-    handles viewset for KnowledgeBaseRating
+    handles viewset for KnowledgeBase
     """
     serializer_class = KnowledgeBaseRatingSerializer
     pagination_class = ResourcesPagination
@@ -62,6 +62,7 @@ class KnowledgeBaseRatingViewSet(RatingsAbstractViewSet):
 
     def perform_create(self, serializer):
         if self.request.user.id == None:
+            # handles anonymous users
             serializer.save(user=self.request.user.id)
         else:
             serializer.save(user=self.request.user)
@@ -78,7 +79,7 @@ class KnowledgeBaseRatingViewSet(RatingsAbstractViewSet):
 
 class SoftSkillsDataRatingViewSet(RatingsAbstractViewSet):
     """
-    handles viewset for SoftSkillsDataRatingViewSet
+    handles viewset for SoftSkillsData
     """
     serializer_class = SoftSkillsDataRatingSerializer
     pagination_class = ResourcesPagination
@@ -113,7 +114,7 @@ class SoftSkillsDataRatingViewSet(RatingsAbstractViewSet):
 
 class RandomDataRatingViewSet(RatingsAbstractViewSet):
     """
-    handles viewset for RandomDataRatingViewSet
+    handles viewset for RandomDataRating
     """
     serializer_class = RandomDataRatingSerializer
     pagination_class = ResourcesPagination
