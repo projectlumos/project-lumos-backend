@@ -37,12 +37,17 @@ class KnowledgeBaseRatingSerializer(ModelSerializer):
         fields = [
             'url',
             'id',
+            'user',
             'resource',
             'attribute_1',
             'attribute_2',
             'attribute_3',
             'attribute_4'
         ]
+
+        extra_kwargs = {
+            'user' : {'read_only': True}   #making create_date read_only
+        }
 
 
 class SoftSkillsDataRatingSerializer(ModelSerializer):
@@ -57,12 +62,17 @@ class SoftSkillsDataRatingSerializer(ModelSerializer):
         fields = [
             'url',
             'id',
+            'user',
             'resource',
             'attribute_1',
             'attribute_2',
             'attribute_3',
             'attribute_4'
         ]
+
+        extra_kwargs = {
+            'user' : {'read_only': True}   #making create_date read_only
+        }
 
 
 class RandomDataRatingSerializer(ModelSerializer):
@@ -77,9 +87,14 @@ class RandomDataRatingSerializer(ModelSerializer):
         fields = [
             'url',
             'id',
+            'user',
             'resource',
             'attribute_1',
             'attribute_2',
             'attribute_3',
             'attribute_4'
         ]
+
+        extra_kwargs = {
+            'user' : {'read_only': True}   #making create_date read_only
+        }
