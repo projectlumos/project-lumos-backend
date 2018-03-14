@@ -7,6 +7,11 @@ from courses.api.views import (
     KnowledgeBaseViewSet,
     RandomDataViewSet
 )
+from notesapp.api.views import (
+	KnowledgeBaseNotesViewset,
+	SoftSkillsDataNotesViewset,
+	RandomDataNotesViewset
+)
 
 router = routers.SimpleRouter()
 router.register(r'language', LanguageViewSet)
@@ -15,3 +20,8 @@ router.register(r'soft-skills', SoftSkillsViewSet)
 router.register(r'soft-skills-data', SoftSkillsDataViewSet)
 router.register(r'knowledge-base', KnowledgeBaseViewSet)
 router.register(r'random-data', RandomDataViewSet)
+router.register(r'knowledge-base-notes', KnowledgeBaseNotesViewset)
+router.register(r'soft-skills-notes', SoftSkillsDataNotesViewset)
+router.register(r'random-data-notes', RandomDataNotesViewset)
+
+

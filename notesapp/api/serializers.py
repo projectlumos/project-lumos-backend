@@ -3,7 +3,7 @@ from rest_framework.serializers import (
 	HyperlinkedIdentityField,
 	PrimaryKeyRelatedField,
 )
-from notesapp.model import KnowledgeBaseNotes, SoftSkillsDataNotes, RandomDataNotes
+from notesapp.models import KnowledgeBaseNotes, SoftSkillsDataNotes, RandomDataNotes
 from courses.models import KnowledgeBase, SoftSkillsData, RandomData
 from django.contrib.auth.models import User
 
@@ -31,7 +31,6 @@ class KnowledgeBaseNotesSerializer(ModelSerializer):
 	"""
 	serializer class for KnowledgeBaseNotes model
 	"""
-	user = PrimaryKeyRelatedField(queryset=User.objects.all())
 	resource = PrimaryKeyRelatedField(queryset=KnowledgeBase.objects.all())
 	url = knowledgebasenotes_detail_url
 
@@ -51,8 +50,10 @@ class KnowledgeBaseNotesSerializer(ModelSerializer):
 		]
 
 		extra_kwargs = {
+			'user' : {'read_only': True},
 			'created_at' : {'read_only': True},
-			'modified_at' : {'read_only': True}
+			'modified_at' : {'read_only': True},
+			'slug' : {'read_only': True}
 		}
 
 
@@ -60,7 +61,6 @@ class SoftSkillsDataNotesSerializer(ModelSerializer):
 	"""
 	serializer class for SoftSkillsDataNotes model
 	"""
-	user = PrimaryKeyRelatedField(queryset=User.objects.all())
 	resource = PrimaryKeyRelatedField(queryset=SoftSkillsData.objects.all())
 	url = softskillsdatanotes_detail_url
 
@@ -80,8 +80,10 @@ class SoftSkillsDataNotesSerializer(ModelSerializer):
 		]
 
 		extra_kwargs = {
+			'user' : {'read_only': True},
 			'created_at' : {'read_only': True},
-			'modified_at' : {'read_only': True}
+			'modified_at' : {'read_only': True},
+			'slug' : {'read_only': True}
 		}
 
 
@@ -89,7 +91,6 @@ class RandomDataNotesSerializer(ModelSerializer):
 	"""
 	serializer class for RandomDataNotes model
 	"""
-	user = PrimaryKeyRelatedField(queryset=User.objects.all())
 	resource = PrimaryKeyRelatedField(queryset=RandomData.objects.all())
 	url = randomdatanotes_detail_url
 
@@ -109,6 +110,8 @@ class RandomDataNotesSerializer(ModelSerializer):
 		]
 
 		extra_kwargs = {
+			'user' : {'read_only': True},
 			'created_at' : {'read_only': True},
-			'modified_at' : {'read_only': True}
+			'modified_at' : {'read_only': True},
+			'slug' : {'read_only': True}
 		}
