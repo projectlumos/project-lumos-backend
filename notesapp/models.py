@@ -32,7 +32,6 @@ class KnowledgeBaseNotes(Notes):
 	It will inherit from base class which is notes.
 
 	"""
-
 	resource = models.ForeignKey(KnowledgeBase, on_delete=models.CASCADE, related_name='knowledge_base_notes')
 	slug = models.SlugField(unique=True)
 
@@ -75,7 +74,6 @@ class SoftSkillsDataNotes(Notes):
 	It will inherit from base class which is notes.
 
 	"""
-
 	resource = models.ForeignKey(SoftSkillsData, on_delete=models.CASCADE, related_name='soft_skills_data_notes')
 	slug = models.SlugField(unique=True)
 
@@ -118,7 +116,6 @@ class RandomDataNotes(Notes):
 	It will inherit from base class which is notes.
 
 	"""
-
 	resource = models.ForeignKey(RandomData, on_delete=models.CASCADE,related_name='random_data_notes')
 	slug = models.SlugField(unique=True)
 

@@ -15,7 +15,7 @@ class KnowledgeBaseNotesViewset(ModelViewSet):
 	serializer_class = KnowledgeBaseNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwner]
 	queryset=KnowledgeBaseNotes.objects.all()
-	filter_fields = ['id', 'title', 'slug', 'content','created_at']
+	filter_fields = ['id', 'user', 'resource', 'title', 'slug', 'content', 'created_at']
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
@@ -41,7 +41,7 @@ class SoftSkillsDataNotesViewset(ModelViewSet):
 	serializer_class = SoftSkillsDataNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwner]
 	queryset=SoftSkillsDataNotes.objects.all()
-	filter_fields = ['id', 'title', 'slug', 'content','created_at']
+	filter_fields = ['id', 'user', 'resource', 'title', 'slug', 'content', 'created_at']
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
@@ -67,7 +67,7 @@ class RandomDataNotesViewset(ModelViewSet):
 	serializer_class = RandomDataNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwner]
 	queryset=RandomDataNotes.objects.all()
-	filter_fields = ['id', 'title', 'slug', 'content','created_at']
+	filter_fields = ['id', 'user', 'resource', 'title', 'slug', 'content', 'created_at']
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
@@ -85,7 +85,7 @@ class RandomDataNotesViewset(ModelViewSet):
 		queryset_list = RandomDataNotes.objects.filter(user=user) 
 		return queryset_list
 
-	
+
 
 
 
