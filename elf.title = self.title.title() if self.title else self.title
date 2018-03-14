@@ -1,0 +1,235 @@
+[33mcommit 2ae5a8004584bb2de0b3ee8a5f00ec6b5ae69502[m[33m ([m[1;36mHEAD -> [m[1;32mnotes_viewset[m[33m, [m[1;31morigin/notes_viewset[m[33m)[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Mon Mar 12 23:42:40 2018 +0530
+
+    removed user field from serializers and added default Authentication classes in base.py
+
+[33mcommit 93be6a126bb44cd2e5d56ed86fd3bbfa7a55e4ee[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Mon Mar 12 02:30:13 2018 +0530
+
+    Implemented Viewset for notes
+
+[33mcommit 1d03e693cb4155e3917cbf611544c3e50689fe48[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Merge: 411fc7b 13be6a4
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Sun Mar 11 22:55:27 2018 +0530
+
+    Merge pull request #25 from projectlumos/notes_serializer
+    
+    implemented serializers for notes
+
+[33mcommit 13be6a4fa1de26ffc81df1afa13f978c37eb79b1[m[33m ([m[1;31morigin/notes_serializer[m[33m)[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sun Mar 11 22:49:17 2018 +0530
+
+    adjusted alignement and spaces in serializers
+
+[33mcommit 679ab71fd2c9d6c08af16c30fc6b11f37262438f[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sun Mar 11 22:32:41 2018 +0530
+
+    added user and resource PrimaryKeyRelatedField
+
+[33mcommit 1ed41a6b1b2348e05fa93c6de00f283957549464[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sun Mar 11 21:24:57 2018 +0530
+
+    added PrimaryKeyRelatedField to the serializers
+
+[33mcommit c09c425cc6f2adaf15cb1145f4bc23f8ddfdc452[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sun Mar 11 18:58:37 2018 +0530
+
+    implemented serializers for notes
+
+[33mcommit 411fc7bba3115cb07af706f191e183c32136f7ec[m
+Merge: c101ab1 cd1dcd9
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Sun Mar 11 18:41:26 2018 +0530
+
+    Merge pull request #24 from projectlumos/serializers-fix
+    
+    serializers fix
+
+[33mcommit cd1dcd97650a46ffe4dd09656cb06e79de31fc9d[m[33m ([m[1;31morigin/serializers-fix[m[33m)[m
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Sun Mar 11 18:19:43 2018 +0530
+
+    languages, domains and soft_skills are nested serializers in resources, filter on their id and slug
+
+[33mcommit c101ab19c42bc0ce948caddbaee62d07702b01b5[m
+Merge: 5fb159d b03893e
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Sun Mar 11 18:01:15 2018 +0530
+
+    Merge pull request #17 from projectlumos/ratings-models
+    
+    Ratings models and admin
+
+[33mcommit b03893e626e20d28b391dd9494083015b0398a93[m[33m ([m[1;31morigin/ratings-models[m[33m)[m
+Merge: f8d6cbd 5fb159d
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Sun Mar 11 17:58:06 2018 +0530
+
+    resolved merge conflict on ratings-models
+
+[33mcommit 5fb159d85c1c2d69ed2d64ae9fcd96277537b5d7[m
+Merge: 187cdbd 168dddc
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Sun Mar 11 17:44:00 2018 +0530
+
+    Merge pull request #20 from projectlumos/notes_model
+    
+    Implemented Notes model and admin
+
+[33mcommit 168dddc1f5e00561548f6d4b04953b2d10ea8dc4[m[33m ([m[1;31morigin/notes_model[m[33m)[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sun Mar 11 17:40:33 2018 +0530
+
+    removed accounts app migration file
+
+[33mcommit 187cdbd0f5b5b3d751a40877b4b2da9487943a33[m
+Merge: ef3ed86 1c39a02
+Author: Abhishek Juneja <darth-dodo@users.noreply.github.com>
+Date:   Sun Mar 11 13:43:51 2018 +0530
+
+    Merge pull request #23 from projectlumos/epic/mailer
+    
+    Epic/mailer
+
+[33mcommit 1c39a02e55ddd76c707ad8038516baa5b2dd1734[m[33m ([m[1;31morigin/epic/mailer[m[33m)[m
+Author: Abhishek Juneja <abhishek.juneja145@gmail.com>
+Date:   Sun Mar 11 13:40:29 2018 +0530
+
+    docstrings
+
+[33mcommit d30e0e6660125247799f5ad441981e5a4afc4ebe[m
+Author: Abhishek Juneja <abhishek.juneja145@gmail.com>
+Date:   Sun Mar 11 13:35:12 2018 +0530
+
+    drying out the mailer code
+
+[33mcommit 9a4ca0d6eb0919b78ce1786947f5c7dfaf476680[m
+Author: Abhishek Juneja <abhishek.juneja145@gmail.com>
+Date:   Sun Mar 11 11:49:02 2018 +0530
+
+    raw emailer sendgrid config
+
+[33mcommit 52b6a6ce4dda08d6befda36de83a16824ac3c2ba[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sun Mar 11 11:44:14 2018 +0530
+
+    added migrations files
+
+[33mcommit e6c007e8657a6a05a9f79a6115a973109847913b[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sun Mar 11 11:21:14 2018 +0530
+
+    added IntegrityError import and added just title in list display link
+
+[33mcommit 2fd70051d2c806a9b182611e2e36295128b9f63c[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sun Mar 11 02:35:59 2018 +0530
+
+    removed initial migration used for testing.Complete code now
+
+[33mcommit 8c6292f7f7e8cc064d273ba4975c358d56707fc0[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sun Mar 11 02:33:00 2018 +0530
+
+    added custom slug field and updated admin panel
+
+[33mcommit f8d6cbdb987b04d7660d6a1fc1aa05eaa15110d9[m
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Sat Mar 10 22:54:05 2018 +0530
+
+    added managers.py to ratings
+
+[33mcommit a41d60bbbb33748fd9c8b0669e208812652df03d[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sat Mar 10 21:57:16 2018 +0530
+
+    Implemented Notes model and admin
+
+[33mcommit ef3ed86167121c2b44bceb5fb3aaf0b3625c3658[m
+Merge: 6ef9106 22fbeb2
+Author: Abhishek Juneja <darth-dodo@users.noreply.github.com>
+Date:   Sat Mar 10 18:32:42 2018 +0530
+
+    Merge pull request #18 from projectlumos/user_model
+    
+    User model
+
+[33mcommit 39620df8d371cfcf0fd95e0d204e53851a216983[m
+Author: Abhishek Juneja <abhishek.juneja145@gmail.com>
+Date:   Sat Mar 10 18:21:20 2018 +0530
+
+    dirty model manager implementation
+
+[33mcommit 22fbeb2aff1f127500a3be724bc6d73a5029e86f[m[33m ([m[1;31morigin/user_model[m[33m)[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Sat Mar 10 16:10:22 2018 +0530
+
+    removed email field and returing username instead of whole object
+
+[33mcommit 80c612231d3d9ba7308a4c7e8d4c2ed977388924[m
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Sat Mar 10 09:56:14 2018 +0530
+
+    modified migrations file
+
+[33mcommit 1a7526b7145631212ed350977c7bfc43346071a7[m
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Sat Mar 10 09:51:02 2018 +0530
+
+    removed user and resource unique_together constraint
+
+[33mcommit a519e7df1fb9a4aaa0354723bddca3f559589809[m
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Fri Mar 9 21:13:15 2018 +0530
+
+    updtaed migrations file, updated db.json
+
+[33mcommit 784a339a92add08aaeadcfa9735a65ef5a12af64[m
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Fri Mar 9 20:41:25 2018 +0530
+
+    ratings at resource model level, ratings attributes taken as list of dictionaries
+
+[33mcommit c20ca408b32cfea486a19c75a05a60a9124e0b8d[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Fri Mar 9 19:22:58 2018 +0530
+
+    Implemented UserInfo model with onetoone link with default django user
+
+[33mcommit 51f8f7d77c46b4105ae74cd412176b0665ba896b[m
+Author: prashant <prashantpandey071@gmail.com>
+Date:   Fri Mar 9 19:09:22 2018 +0530
+
+    discarded previous User model and made a new UserInfo model
+
+[33mcommit 7a484f731f5d754e3a0b2ab9657786e6036079c4[m
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Thu Mar 8 04:55:34 2018 +0530
+
+    added a comment and spaces in ratings admin
+
+[33mcommit 8c9d8e1b3d8f889088f802cfc29239e6972ba50d[m
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Thu Mar 8 04:53:24 2018 +0530
+
+    added average ratings property to calculate average rating of a particular resource
+
+[33mcommit 1874ff5d3c49adbeba64c33c4d209a67bff46e5a[m
+Author: Paritosh Wadhavane <paritoshwadhavane@gmail.com>
+Date:   Wed Mar 7 23:39:33 2018 +0530
+
+    added ratings app, created models and admin for ratings, changed docstrings of courses admin
+
+[33mcommit 6ef91067278a198c8e10630f245638dffad5e8a3[m
+Merge: 3045508 04d478c
+Author: Abhishek Juneja <darth-dodo@users.noreply.github.com>
+Date:   Tue Mar 6 09:21:31 2018 +0530
+
+    Merge pul

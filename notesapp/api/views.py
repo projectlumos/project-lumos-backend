@@ -85,6 +85,8 @@ class RandomDataNotesViewset(ModelViewSet):
 		queryset_list = RandomDataNotes.objects.filter(user=user) 
 		return queryset_list
 
+	
+
 
 
 
