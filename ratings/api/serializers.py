@@ -29,7 +29,6 @@ class KnowledgeBaseRatingSerializer(ModelSerializer):
     """
     serializer for KnowledgeBaseRating
     """
-    user = PrimaryKeyRelatedField(allow_null=True, queryset=User.objects.all())
     resource = PrimaryKeyRelatedField(queryset=KnowledgeBase.objects.all())
     url = knowledgebaserating_detail_url
 
@@ -46,12 +45,15 @@ class KnowledgeBaseRatingSerializer(ModelSerializer):
             'attribute_4'
         ]
 
+        extra_kwargs = {
+            'user' : {'read_only': True}   #making create_date read_only
+        }
+
 
 class SoftSkillsDataRatingSerializer(ModelSerializer):
     """
     serializer for SoftSkillsDataRating
     """
-    user = PrimaryKeyRelatedField(allow_null=True, queryset=User.objects.all())
     resource = PrimaryKeyRelatedField(queryset=SoftSkillsData.objects.all())
     url = softskillsdatarating_detail_url
 
@@ -68,12 +70,15 @@ class SoftSkillsDataRatingSerializer(ModelSerializer):
             'attribute_4'
         ]
 
+        extra_kwargs = {
+            'user' : {'read_only': True}   #making create_date read_only
+        }
+
 
 class RandomDataRatingSerializer(ModelSerializer):
     """
     serializer for RandomDataRating
     """
-    user = PrimaryKeyRelatedField(allow_null=True, queryset=User.objects.all())
     resource = PrimaryKeyRelatedField(queryset=RandomData.objects.all())
     url = randomdatarating_detail_url
 
@@ -89,3 +94,7 @@ class RandomDataRatingSerializer(ModelSerializer):
             'attribute_3',
             'attribute_4'
         ]
+
+        extra_kwargs = {
+            'user' : {'read_only': True}   #making create_date read_only
+        }
