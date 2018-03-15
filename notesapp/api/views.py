@@ -1,6 +1,8 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.filters import OrderingFilter
 from django_filters import rest_framework as filters
+from courses.api.pagination import ResourcesPagination
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from notesapp.models import KnowledgeBaseNotes, SoftSkillsDataNotes, RandomDataNotes
@@ -14,8 +16,10 @@ class KnowledgeBaseNotesViewset(ModelViewSet):
 	"""
 	serializer_class = KnowledgeBaseNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwner]
+	pagination_class = ResourcesPagination
 	queryset=KnowledgeBaseNotes.objects.all()
-	filter_fields = ['id', 'user', 'resource', 'title', 'slug', 'content', 'created_at']
+	filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+	filter_fields = ['id', 'resource', 'title', 'slug', 'content']
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
@@ -40,8 +44,10 @@ class SoftSkillsDataNotesViewset(ModelViewSet):
 	"""
 	serializer_class = SoftSkillsDataNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwner]
+	pagination_class = ResourcesPagination
 	queryset=SoftSkillsDataNotes.objects.all()
-	filter_fields = ['id', 'user', 'resource', 'title', 'slug', 'content', 'created_at']
+	filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+	filter_fields = ['id', 'resource', 'title', 'slug', 'content']
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
@@ -66,8 +72,10 @@ class RandomDataNotesViewset(ModelViewSet):
 	"""
 	serializer_class = RandomDataNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwner]
+	pagination_class = ResourcesPagination
 	queryset=RandomDataNotes.objects.all()
-	filter_fields = ['id', 'user', 'resource', 'title', 'slug', 'content', 'created_at']
+	filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+	filter_fields = ['id', 'resource', 'title', 'slug', 'content']
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
