@@ -4,7 +4,10 @@
 # framework level libraries
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import (
+    SearchFilter,
+    OrderingFilter,
+    )
 from django_filters import rest_framework as filters
 
 # project level imports
@@ -25,7 +28,8 @@ class ReadOnlyCoursesAbstractViewSet(viewsets.ReadOnlyModelViewSet):
     """
     serializer_class = None
     permission_classes = [AllowAny]
-    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+    filter_backends = [filters.DjangoFilterBackend,SearchFilter, OrderingFilter]
+    search_fields = []
     filter_fields = []
     ordering_fields = []
     ordering = []
@@ -60,7 +64,8 @@ class LanguageViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = LanguageSerializer
-    filter_fields = ['id', 'language_name', 'slug', 'description']
+    filter_fields = ['id']
+    search_fields = ['language_name','slug','description']
     ordering_fields = ['language_name']
     ordering = ['language_name']
     queryset = Language.objects.all()
@@ -90,7 +95,8 @@ class DomainViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = DomainSerializer
-    filter_fields = ['id', 'domain_name', 'slug', 'description']
+    filter_fields = ['id']
+    search_fields = ['domain_name','slug','description']
     ordering_fields = ['domain_name']
     ordering = ['domain_name']
     queryset = Domain.objects.all()
@@ -118,7 +124,8 @@ class SoftSkillsViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = SoftSkillsSerializer
-    filter_fields = ['id', 'soft_skill_category', 'slug', 'description']
+    filter_fields = ['id']
+    search_fields = ['soft_skill_category','slug','description']
     ordering_fields = ['soft_skill_category']
     ordering = ['soft_skill_category']
     queryset = SoftSkills.objects.all()
@@ -151,7 +158,8 @@ class SoftSkillsDataViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = SoftSkillsDataSerializer
-    filter_fields = ['title', 'description', 'slug', 'data_type', 'paid', 'soft_skill__id', 'soft_skill__slug']
+    filter_fields = ['data_type', 'paid', 'soft_skill__id']
+    search_fields = ['title','description','slug','soft_skill__slug']
     ordering_fields = ['data_type', 'title', 'paid']
     ordering = ['data_type']
     queryset = SoftSkillsData.objects.all()
@@ -193,8 +201,9 @@ class KnowledgeBaseViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = KnowledgeBaseSerializer
-    filter_fields = ['title', 'description', 'slug', 'skill_level', 'data_type', 'paid', 'languages__id',
-                    'languages__slug', 'domains__id', 'domains__slug', 'project']
+    filter_fields = ['skill_level', 'data_type', 'paid', 'languages__id',
+                     'domains__id', 'project']
+    search_fields = ['title','description','slug','languages__slug','domains__slug']
     ordering_fields = ['skill_level', 'data_type', 'title', 'paid']
     ordering = ['skill_level', 'data_type']
     queryset = KnowledgeBase.objects.all()
@@ -229,7 +238,8 @@ class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = RandomDataSerializer
-    filter_fields = ['title', 'description', 'slug', 'data_type', 'paid']
+    filter_fields = ['data_type', 'paid']
+    search_fields = ['title','description','slug']
     ordering_fields = ['data_type', 'title', 'paid']
     ordering = ['data_type']
     queryset = RandomData.objects.all()
