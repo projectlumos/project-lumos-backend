@@ -10,18 +10,18 @@ from rest_framework.decorators import api_view, permission_classes, authenticati
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 # project level
 from accounts.models import User, LumosUser
-from accounts.constants import HOME_PAGE_URL
 from utilities.app_utils.crpyto_utils import lumos_encryption_service
 from utilities.datetime_utils import epoch_in_future
-from utilities.generic_utils import create_redirect_url
+from backend.utils import get_lumos_user_data
 
 # app level
 from accounts.user_account_management.user_account_management_helper import validate_user_creation_params
+from accounts.utils.mailers import send_lumos_user_verification_email
 
 
 @api_view(['POST'])
@@ -57,8 +57,7 @@ def create_lumos_user(request):
     user_params_valid = validate_user_creation_params(user_creation_params=request_params)
 
     if not user_params_valid.get('status'):
-        response_data['status'] = False
-        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+        return Response(data=user_params_valid, status=HTTP_400_BAD_REQUEST)
 
     email = request.data.get('email').strip()
     password = request.data.get('password', None).strip()
@@ -90,9 +89,12 @@ def create_lumos_user(request):
             response_data['message'] = "You are already Lumos user"
             return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
 
-    response_data['id'] = int(django_user.id)
+    # response_data['id'] = int(django_user.id)
 
-    return Response(data=response_data, status=HTTP_201_CREATED)
+    lumos_user_data = get_lumos_user_data(django_user)
+
+    return Response(data=lumos_user_data, status=HTTP_201_CREATED)
+
 
 @api_view(['POST'])
 @authentication_classes([JSONWebTokenAuthentication, BasicAuthentication, SessionAuthentication])
@@ -100,6 +102,40 @@ def create_lumos_user(request):
 def logout_lumos_user(request):
     logout(request)
     return Response(data="Successfully logged out.", status=HTTP_200_OK)
+
+
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication, BasicAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def email_verification_request(request):
+
+    response_data = dict()
+    response_data['status'] = True
+
+    if None:
+        response_data['status'] = False
+        response_data['message'] = "Invalid request"
+        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+
+    django_user = request.user
+
+    if not hasattr(django_user, 'lumos_user'):
+        response_data['status'] = False
+        response_data['message'] = "Lumos User not present"
+        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+
+    else:
+        email_sent = send_lumos_user_verification_email(lumos_user_obj=django_user.lumos_user)
+
+        if email_sent:
+            response_data['status'] = True
+            response_data['message'] = "Verification email sent"
+            return Response(data=response_data, status=HTTP_200_OK)
+
+        else:
+            response_data['status'] = False
+            response_data['message'] = "Server error in sending Verification email"
+            return Response(data=response_data, status=HTTP_503_SERVICE_UNAVAILABLE)
 
 
 @api_view(['GET'])
@@ -157,10 +193,6 @@ def verify_user(request):
     response_data['status'] = True
     response_data['message'] = "User email verified"
 
-    redirected_url = create_redirect_url(query_params=response_data,
-                        base_url=HOME_PAGE_URL.format(user_lumos_token))
-
-    print(redirected_url)
     # return HttpResponsePermanentRedirect(redirected_url)
     return True
 
