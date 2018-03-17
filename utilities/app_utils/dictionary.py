@@ -11,8 +11,10 @@ def dictionary_result(term):
 	Takes an input string and returns a dictionary with
 	the orignal term, meaning, synonym and antonyms
 	"""
-    dictionary = PyDictionary()  # creating instance of the PyDictionary
+    # creating instance of the PyDictionary
+    dictionary = PyDictionary()
     return_data = {}
+
     # dictionary keys
     return_data['term'] = term
     return_data['term_meaning'] = dictionary.meaning(term) # returns the meaning of the term

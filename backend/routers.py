@@ -7,6 +7,7 @@ from courses.api.views import (
     KnowledgeBaseViewSet,
     RandomDataViewSet
 )
+
 from ratings.api.views import(
     KnowledgeBaseRatingViewSet,
     SoftSkillsDataRatingViewSet,
@@ -18,6 +19,7 @@ from notesapp.api.views import (
 	SoftSkillsDataNotesViewset,
 	RandomDataNotesViewset
 )
+
 
 router = routers.SimpleRouter()
 router.register(r'language', LanguageViewSet)
