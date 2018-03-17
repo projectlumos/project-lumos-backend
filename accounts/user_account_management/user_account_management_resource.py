@@ -94,7 +94,6 @@ def create_lumos_user(request):
 
     return Response(data=response_data, status=HTTP_201_CREATED)
 
-
 @api_view(['POST'])
 @authentication_classes([JSONWebTokenAuthentication, BasicAuthentication, SessionAuthentication])
 @permission_classes([IsAuthenticated])
@@ -164,3 +163,12 @@ def verify_user(request):
     print(redirected_url)
     # return HttpResponsePermanentRedirect(redirected_url)
     return True
+
+
+
+# to do
+# send verification email endpoint
+# reset password endpoint
+# verify user testing
+# email sendgrid api keys
+# env vars in gitignore
