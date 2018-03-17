@@ -32,7 +32,7 @@ def epoch_in_past(given_epoch):
         return False
 
     now = get_current_time()
-    now_epoch = get_epoch()
+    now_epoch = get_epoch(now)
 
     return True if now_epoch >= given_epoch else False
 
