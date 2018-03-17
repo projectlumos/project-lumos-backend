@@ -608,15 +608,15 @@ SoftSkillsDataModelAdmin, RandomDataModelAdmin
             "previous": "https://pl-backend-staging.herokuapp.com/api/knowledge-base-notes/",
             "results": [
               {
-                 "url": "https://pl-backend-staging.herokuapp.com/api/knowledge-base-notes/1/",
-    			       "id": 1,
-    			       "user": 1,
-    			       "resource": 9,
-    			       "title": "New",
-    			       "content": "new",
-    			       "slug": "new",
-    			       "created_at": "2018-03-15T09:45:10.474941Z",
-    			       "modified_at": "2018-03-15T09:46:54.265141Z"
+                "url": "https://pl-backend-staging.herokuapp.com/api/knowledge-base-notes/1/",
+    		"id": 1,
+    		"user": 1,
+    		"resource": 9,
+    		"title": "New",
+    		"content": "new",
+    		"slug": "new",
+    		"created_at": "2018-03-15T09:45:10.474941Z",
+    		"modified_at": "2018-03-15T09:46:54.265141Z"
               }
             ]
           }
@@ -639,15 +639,15 @@ SoftSkillsDataModelAdmin, RandomDataModelAdmin
             "previous": "https://pl-backend-staging.herokuapp.com/api/soft-skills-data/",
             "results": [
               {
-                 "url": "https://pl-backend-staging.herokuapp.com/api/soft-skills-data/1/",
-    			       "id": 1,
-    			       "user": 1,
-    			       "resource": 9,
-    			       "title": "New",
-    			       "content": "new",
-    			       "slug": "new",
-    			       "created_at": "2018-03-15T09:45:10.474941Z",
-    			       "modified_at": "2018-03-15T09:46:54.265141Z"
+                "url": "https://pl-backend-staging.herokuapp.com/api/soft-skills-data/1/",
+    		"id": 1,
+    		"user": 1,
+    		"resource": 9,
+    		"title": "New",
+    		"content": "new",
+    		"slug": "new",
+    		"created_at": "2018-03-15T09:45:10.474941Z",
+    		"modified_at": "2018-03-15T09:46:54.265141Z"
               }
             ]
           }
@@ -670,15 +670,15 @@ SoftSkillsDataModelAdmin, RandomDataModelAdmin
             "previous": "https://pl-backend-staging.herokuapp.com/api/random-data-notes/",
             "results": [
               {
-                 "url": "https://pl-backend-staging.herokuapp.com/api/random-data-notes/1/",
-    			       "id": 1,
-    			       "user": 1,
-    			       "resource": 9,
-    			       "title": "New",
-    			       "content": "new",
-    			       "slug": "new",
-    			       "created_at": "2018-03-15T09:45:10.474941Z",
-    			       "modified_at": "2018-03-15T09:46:54.265141Z"
+                "url": "https://pl-backend-staging.herokuapp.com/api/random-data-notes/1/",
+    		"id": 1,
+    		"user": 1,
+    		"resource": 9,
+    		"title": "New",
+    		"content": "new",
+    		"slug": "new",
+    		"created_at": "2018-03-15T09:45:10.474941Z",
+    		"modified_at": "2018-03-15T09:46:54.265141Z"
               }
             ]
           }
