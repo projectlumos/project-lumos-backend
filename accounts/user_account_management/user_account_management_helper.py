@@ -1,6 +1,5 @@
 # django imports
-from django.contrib.auth.models import User
-from django.core.validators import EmailValidator
+
 # drf imports
 
 # project level
@@ -79,4 +78,5 @@ def validate_user_creation_params(user_creation_params):
         response['message'] = "Your email is too long! Please try again with a shorter email!"
 
     return response
+
 
