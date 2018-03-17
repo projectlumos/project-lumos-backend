@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+from utilities.app_utils.crpyto_utils import lumos_encryption_service
 # Create your models here.
 
 
@@ -18,3 +20,13 @@ class LumosUser(models.Model):
 
     def __str__(self):
         return '{username}'.format(username=self.id.username)
+
+    @property
+    def lumos_token(self):
+        """
+        
+        :return: 
+        """
+        encrypted_token = lumos_encryption_service(data=str(self.id.id))
+
+        return encrypted_token

@@ -26,6 +26,11 @@ def epoch_in_past(given_epoch):
     :param given_epoch: 
     :return: 
     """
+    try:
+        given_epoch = float(given_epoch)
+    except ValueError:
+        return False
+
     now = get_current_time()
     now_epoch = get_epoch()
 
