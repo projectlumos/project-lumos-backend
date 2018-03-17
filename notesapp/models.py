@@ -112,7 +112,6 @@ class RandomDataNotes(Notes):
 	"""
 	This model will handle the notes for RandomData Resource.
 	It will inherit from base class which is notes.
-
 	"""
 
 	resource = models.ForeignKey(RandomData, on_delete=models.CASCADE,related_name='random_data_notes')
