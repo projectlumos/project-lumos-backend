@@ -3,19 +3,25 @@ import json
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.contrib.auth import logout
+from django.http import HttpResponsePermanentRedirect
+
 
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_503_SERVICE_UNAVAILABLE
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 # project level
 from accounts.models import User, LumosUser
+from utilities.app_utils.crpyto_utils import lumos_encryption_service
+from utilities.datetime_utils import epoch_in_future
+from backend.utils import get_lumos_user_data
 
 # app level
 from accounts.user_account_management.user_account_management_helper import validate_user_creation_params
+from accounts.utils.mailers import send_lumos_user_verification_email
 
 
 @api_view(['POST'])
@@ -51,7 +57,7 @@ def create_lumos_user(request):
     user_params_valid = validate_user_creation_params(user_creation_params=request_params)
 
     if not user_params_valid.get('status'):
-        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+        return Response(data=user_params_valid, status=HTTP_400_BAD_REQUEST)
 
     email = request.data.get('email').strip()
     password = request.data.get('password', None).strip()
@@ -83,9 +89,11 @@ def create_lumos_user(request):
             response_data['message'] = "You are already Lumos user"
             return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
 
-    response_data['id'] = int(django_user.id)
+    # response_data['id'] = int(django_user.id)
 
-    return Response(data=response_data, status=HTTP_201_CREATED)
+    lumos_user_data = get_lumos_user_data(django_user)
+
+    return Response(data=lumos_user_data, status=HTTP_201_CREATED)
 
 
 @api_view(['POST'])
@@ -95,3 +103,104 @@ def logout_lumos_user(request):
     logout(request)
     return Response(data="Successfully logged out.", status=HTTP_200_OK)
 
+
+@api_view(['POST'])
+@authentication_classes([JSONWebTokenAuthentication, BasicAuthentication, SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def email_verification_request(request):
+
+    response_data = dict()
+    response_data['status'] = True
+
+    if None:
+        response_data['status'] = False
+        response_data['message'] = "Invalid request"
+        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+
+    django_user = request.user
+
+    if not hasattr(django_user, 'lumos_user'):
+        response_data['status'] = False
+        response_data['message'] = "Lumos User not present"
+        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+
+    else:
+        email_sent = send_lumos_user_verification_email(lumos_user_obj=django_user.lumos_user)
+
+        if email_sent:
+            response_data['status'] = True
+            response_data['message'] = "Verification email sent"
+            return Response(data=response_data, status=HTTP_200_OK)
+
+        else:
+            response_data['status'] = False
+            response_data['message'] = "Server error in sending Verification email"
+            return Response(data=response_data, status=HTTP_503_SERVICE_UNAVAILABLE)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def verify_user(request):
+
+    encrypted_token = request.query_params.get('token', None)
+
+    decrypted_token = lumos_encryption_service(data=encrypted_token.strip(), encrypt_mode=False)
+
+    token_data = json.loads(decrypted_token)
+
+    print(token_data)
+
+    response_data = dict()
+
+    django_id = token_data.get('id', None)
+    epoch = token_data.get('expiry', None)
+
+    if not django_id or not epoch:
+        response_data['status'] = False
+        response_data['message'] = "Token invalid | keys missing"
+        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+
+    try:
+        django_user_object = User.objects.get(id=django_id)
+    except User.DoesNotExist:
+        response_data['status'] = False
+        response_data['message'] = "Invalid user ID"
+        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+
+    if not hasattr(django_user_object, 'lumos_user'):
+        response_data['status'] = False
+        response_data['message'] = "Lumos User is not registered"
+        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+    else:
+        lumos_user_object = django_user_object.lumos_user
+
+    if lumos_user_object.is_verified:
+        response_data['status'] = False
+        response_data['message'] = "Email is already verified!"
+        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+
+    # check epoch not beyond 30
+    if not epoch_in_future(given_epoch=epoch):
+        response_data['status'] = False
+        response_data['message'] = "Token expired. Please verify email again"
+        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
+
+    lumos_user_object.is_verified = True
+    lumos_user_object.save()
+
+    user_lumos_token = lumos_user_object.lumos_token
+
+    response_data['status'] = True
+    response_data['message'] = "User email verified"
+
+    # return HttpResponsePermanentRedirect(redirected_url)
+    return True
+
+
+
+# to do
+# send verification email endpoint
+# reset password endpoint
+# verify user testing
+# email sendgrid api keys
+# env vars in gitignore

@@ -11,7 +11,6 @@ from accounts.constants import DJANGO_USERNAME_LIMIT
 def validate_email(email):
     from django.core.validators import validate_email
     from django.core.exceptions import ValidationError
-
     if not email:
         return False
     else:

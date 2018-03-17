@@ -36,6 +36,11 @@ def send_sendgrid_email(to_email, subject, content,
     if not all([to_email, from_email, subject, content]):
         return False
 
+
+    print(to_email, subject, content,
+                        from_email,
+                        content_type)
+
     sendgrid_client_object = sendgrid_client()
 
     sendgrid_to_email = Email(to_email)
@@ -45,6 +50,10 @@ def send_sendgrid_email(to_email, subject, content,
 
     mail = Mail(sendgrid_from_email, subject, sendgrid_to_email, sendgrid_content)
     response = sendgrid_client_object.client.mail.send.post(request_body=mail.get())
+
+
+    from pprint import pprint
+    pprint(response.__dict__)
 
     if response.status_code != 202:
         return False
@@ -70,15 +79,17 @@ def send_lumos_email(lumos_user, subject, content, check_verified_email=True):
     :return: bool
     """
 
-    # lumos_user_email = lumos_user.email
+    print(lumos_user, subject, content, check_verified_email)
 
-    # if check_verified_email and not lumos_user.is_verified:
-    #     return False
+    lumos_user_email = lumos_user.id.email
 
-    lumos_user_email = "abhishek.juneja145+TO-USER@gmail.com"
+    if check_verified_email and not lumos_user.is_verified:
+        return False
 
-    email_status = send_sendgrid_email(to_email=lumos_user_email,
-                                       subject=subject,
-                                       content=content)
+    lumos_user_email = "abhishek.juneja145@gmail.com"
 
+    # email_status = send_sendgrid_email(to_email=lumos_user_email,
+    #                                    subject=subject,
+    #                                    content=content)
+    email_status = True
     return email_status
