@@ -2,6 +2,10 @@
 # import os
 
 # framework level libraries
+from django.db.models import Q
+import itertools
+from rest_framework.serializers import Serializer
+from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 from rest_framework.filters import (
@@ -9,7 +13,7 @@ from rest_framework.filters import (
     OrderingFilter,
     )
 from django_filters import rest_framework as filters
-
+from drf_multiple_model.viewsets import ObjectMultipleModelAPIViewSet
 # project level imports
 
 # app level imports
@@ -247,3 +251,95 @@ class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
     def get_queryset(self):
         queryset = RandomData.objects.filter(is_active=True)
         return queryset
+
+class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
+
+    def get_querylist(self,*args, **kwargs):
+        query = self.request.GET.get('query', None)
+        knowledgebase_queryset = KnowledgeBase.objects.filter(Q(title__icontains=query) | Q(slug__icontains=query)).distinct()
+        domain_queryset = Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct()
+        language_queryset = Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct()
+        soft_skill_queryset = SoftSkills.objects.filter(Q(slug__icontains=query)).distinct()
+        soft_skill_data_queryset = SoftSkillsData.objects.filter(Q(title__icontains=query) | Q(slug__icontains=query)).distinct()
+        random_data_queryset = RandomData.objects.filter(Q(title__icontains=query) | Q(slug__icontains=query))
+        
+        querylist = (
+        {
+            'queryset':language_queryset,
+            'serializer_class': LanguageSerializer,
+        },
+
+        {
+            'queryset': domain_queryset,
+            'serializer_class': DomainSerializer,
+        }, 
+
+        {
+            'queryset': knowledgebase_queryset,
+            'serializer_class': KnowledgeBaseSerializer,
+        },
+
+        {
+            'queryset': soft_skill_data_queryset,
+            'serializer_class': SoftSkillsDataSerializer,
+        },
+
+        {
+
+            'queryset': soft_skill_queryset ,
+            'serializer_class': SoftSkillsSerializer,
+        },
+
+        {
+            'queryset': random_data_queryset,
+            'serializer_class': RandomDataSerializer,
+        },
+
+    )
+        return querylist
+
+# class GlobalSearchViewSet(viewsets.ReadOnlyModelViewSet):
+
+    # serializer_class = GlobalSearchSerializer
+   
+#     def get_queryset(self,*args, **kwargs):
+
+#         query = self.request.GET.get('query', None)
+#         querylist = (
+#         {
+#         'queryset': KnowledgeBase.objects.filter(Q(title__icontains=query) | Q(slug__icontains=query)).distinct(),
+#         'serializer_class': KnowledgeBaseSerializer,
+#         },
+#         {
+#         'queryset': SoftSkillsData.objects.filter(Q(title__icontains=query) | Q(slug__icontains=query)).distinct(),
+#         'serializer_class': SoftSkillsDataSerializer,
+#         },
+#         {
+
+#         'queryset': SoftSkills.objects.filter(Q(slug__icontains=query)).distinct(),
+#         'serializer_class': SoftSkillsSerializer,
+#         },
+#         {
+#         'queryset': RandomData.objects.filter(Q(title__icontains=query) | Q(slug__icontains=query)).distinct(),
+#         'serializer_class': RandomDataSerializer,
+#         },
+
+#     )
+#         return querylist
+
+
+# class GlobalSearchViewSet(viewsets.ReadOnlyModelViewSet):
+#     filter_backends = [filters.DjangoFilterBackend,SearchFilter]
+#     search_fields = ['title','slug']
+#     def list(self,request):
+#         queryset = itertools.chain(KnowledgeBase.objects.all(),SoftSkills.objects.all(),
+#             SoftSkillsData.objects.all(), RandomData.objects.all())
+#         serializer_class = GlobalSearchSerializer(queryset, many = True)
+#         return Response(serializer_class.data)
+
+#     def get_queryset(self, *args, **kwargs):
+#         queryset = itertools.chain(KnowledgeBase.objects.all(),SoftSkills.objects.all(),
+#             SoftSkillsData.objects.all(), RandomData.objects.all())
+#         return queryset
+
+

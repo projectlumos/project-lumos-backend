@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     #third_party_apps
     'rest_framework',
     'corsheaders',
-    'django_filters'
+    'django_filters',
+    'drf_multiple_model',
+
 ]
 
 MIDDLEWARE = [
