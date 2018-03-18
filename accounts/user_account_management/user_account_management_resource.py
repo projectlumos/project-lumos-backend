@@ -174,8 +174,6 @@ def verify_user(request):
 
     token_data = json.loads(decrypted_token)
 
-    print(token_data)
-
     response_data = dict()
 
     django_id = token_data.get('id', None)

@@ -36,11 +36,6 @@ def send_sendgrid_email(to_email, subject, content,
     if not all([to_email, from_email, subject, content]):
         return False
 
-
-    print(to_email, subject, content,
-                        from_email,
-                        content_type)
-
     sendgrid_client_object = sendgrid_client()
 
     sendgrid_to_email = Email(to_email)
@@ -50,10 +45,6 @@ def send_sendgrid_email(to_email, subject, content,
 
     mail = Mail(sendgrid_from_email, subject, sendgrid_to_email, sendgrid_content)
     response = sendgrid_client_object.client.mail.send.post(request_body=mail.get())
-
-
-    from pprint import pprint
-    pprint(response.__dict__)
 
     if response.status_code != 202:
         return False
