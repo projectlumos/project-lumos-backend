@@ -1,7 +1,7 @@
 import os
 from backend.settings.base import *
 from backend.settings.env_vars import DATABASE_ENGINE, DATABASE_USER, DATABASE_NAME, DATABASE_PASSWORD, \
-    SECURE_PROXY_SSL_HEADER, SENDGRID_API_KEY
+    SECURE_PROXY_SSL_HEADER
 
 DEBUG = True
 
@@ -17,7 +17,7 @@ DATABASES = {
     }
 }
 
-SENDGRID_API_KEY = get_env_variable('SENDGRID_API_KEY', SENDGRID_API_KEY)
+SENDGRID_API_KEY = get_env_variable('SENDGRID_API_KEY')
 
 
 env = os.environ.copy()

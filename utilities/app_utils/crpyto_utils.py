@@ -6,10 +6,11 @@ from backend.settings.env_vars import SECRET_KEY
 
 def lumos_encryption_service(data, encrpytion_key=SECRET_KEY, url_encode=True, encrypt_mode=True):
     """
+    Encrpytion service function which takes in a str and encrpytion/decrpytion flag and return a st
     
-    :param data: 
-    :param encrpytion_key: 
-    :return: 
+    :param data: plaintext/ciphertext str 
+    :param encrpytion_key: key used for encrpytion services
+    :return: str
     """
 
     if encrypt_mode:

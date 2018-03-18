@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-def get_env_variable(var_name, default):
+def get_env_variable(var_name, default=None):
     # if var_name not set in virtual env
 
     if var_name not in os.environ:

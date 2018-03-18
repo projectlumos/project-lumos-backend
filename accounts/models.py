@@ -24,9 +24,8 @@ class LumosUser(models.Model):
     @property
     def lumos_token(self):
         """
-        
-        :return: 
+        Encrpyts the Django User id using lumos encryption service
+        :return: str
         """
         encrypted_token = lumos_encryption_service(data=str(self.id.id))
-
         return encrypted_token

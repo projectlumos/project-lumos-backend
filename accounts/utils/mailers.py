@@ -1,7 +1,9 @@
 import datetime
 import json
 
-from accounts.constants import ACCOUNT_VERIFICATION_URL
+from accounts.constants import ACCOUNT_VERIFICATION_URL, USER_VERIFICATION_EMAIL_BODY
+
+
 from utilities.datetime_utils import get_epoch, get_current_time
 from utilities.app_utils.crpyto_utils import lumos_encryption_service
 from utilities.app_utils.mailer_utils import send_lumos_email
@@ -10,8 +12,10 @@ from utilities.app_utils.mailer_utils import send_lumos_email
 def send_lumos_user_verification_email(lumos_user_obj=None):
     """
     
-    :param lumos_user_obj: 
-    :return: 
+    Function sending User verification email
+    
+    :param lumos_user_obj: LumosUser object
+    :return: bool
     """
     verification_payload = {}
 
@@ -33,28 +37,12 @@ def send_lumos_user_verification_email(lumos_user_obj=None):
 
     user_name = lumos_user_obj.id.first_name.title() if lumos_user_obj.id.first_name else ""
 
-    body = """
-                Hi {0}!
-    
-                Kindly click on the url below to confirm your account:
-                
-                {1}
-                
-                
-                -
-                
-                Team Lumos
-            """.format(user_name, verification_url)
-
-
-    print(epoch)
-    print(body)
-    print(subject)
+    body = USER_VERIFICATION_EMAIL_BODY.format(user_name, verification_url)
 
     email_success = send_lumos_email(lumos_user=lumos_user_obj,
-                     subject=subject,
-                     content=body,
-                     check_verified_email=False)
+                                     subject=subject,
+                                     content=body,
+                                     bypass_verification=True)
 
     return email_success
 

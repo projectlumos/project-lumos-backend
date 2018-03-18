@@ -5,6 +5,11 @@ from accounts.models import LumosUser
 
 
 def get_lumos_user_data(user):
+    """
+    LumosUser data with key profile information
+    :param user: django user object
+    :return: dict
+    """
 
     lumos_user_object = LumosUser.objects.filter(id=user.id)
 
@@ -18,6 +23,16 @@ def get_lumos_user_data(user):
 
 
 def jwt_response_payload_handler(token=None, user=None, request=None):
+    """
+    /auth/login/ will redirect to this endpoint
+    
+    User auth using tokens or user object wrapper around vanilla auth/login
+    
+    :param token: 
+    :param user: 
+    :param request: 
+    :return: token and lumos_user_data
+    """
 
     if not hasattr(user, 'lumos_user'):
         raise PermissionDenied("Invalid User!")

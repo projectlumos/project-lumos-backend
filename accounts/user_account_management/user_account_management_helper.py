@@ -9,6 +9,12 @@ from accounts.constants import DJANGO_USERNAME_LIMIT
 
 
 def validate_email(email):
+    """
+    Using default django functions to validate the email IDs
+    
+    :param email: string
+    :return: bool
+    """
     from django.core.validators import validate_email
     from django.core.exceptions import ValidationError
     if not email:
