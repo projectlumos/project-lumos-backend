@@ -8,9 +8,9 @@ Check out with prashant I have explained him about this
 
 def dictionary_result(term):
     """
-	Takes an input string and returns a dictionary with
-	the orignal term, meaning, synonym and antonyms
-	"""
+    Takes an input string and returns a dictionary with
+    the orignal term, meaning, synonym and antonyms
+    """
     dictionary = PyDictionary()  # creating instance of the PyDictionary
     return_data = {}
     # dictionary keys

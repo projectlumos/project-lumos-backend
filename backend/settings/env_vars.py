@@ -1,4 +1,5 @@
 import dj_database_url
+
 # secret key
 SECRET_KEY_DEFAULT = '93pye=z=**bajl6ie5euzul*gzz8b8+*)ku&1b=b)dkv%+o-q5'
 SECRET_KEY = '93pye=z=**bajl6ie5euzul*gzz8b8+*)ku&1b=b)dkv%+o-q5'
@@ -12,4 +13,5 @@ DATABASE_PASSWORD = ''
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
-SENDGRID_API_KEY='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'
+
+LUMOS_ENCRYPTION_SEED = 'UKkx3sfyCFjyiy1xpryXd6FGkgeQ_gMSJ2cU3_edx1o='

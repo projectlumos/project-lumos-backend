@@ -3,10 +3,10 @@
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Email, Mail, Content
-
-from backend.settings.env_vars import SENDGRID_API_KEY
+from backend.settings.base import get_env_variable
 from utilities.constants import LUMOS_FROM_EMAIL_ID
 
+SENDGRID_API_KEY = get_env_variable('SENDGRID_API_KEY')
 
 def sendgrid_client():
     """
@@ -52,7 +52,7 @@ def send_sendgrid_email(to_email, subject, content,
         return True
 
 
-def send_lumos_email(lumos_user, subject, content, check_verified_email=True):
+def send_lumos_email(lumos_user, subject, content, bypass_verification=False):
     """
     
     Single point for sending email from the Project. 
@@ -65,20 +65,23 @@ def send_lumos_email(lumos_user, subject, content, check_verified_email=True):
     :param lumos_user: LumosUser object
     :param subject: Subject of the email
     :param content: body of the email
-    :param check_verified_email: flag to prevent sending emails to non verified accounts
+    :param bypass_verification: emails sent to users independent of is_verified value
     
     :return: bool
     """
 
-    # lumos_user_email = lumos_user.email
+    print(lumos_user, subject, content, bypass_verification)
 
-    # if check_verified_email and not lumos_user.is_verified:
-    #     return False
+    lumos_user_email = lumos_user.id.email
 
-    lumos_user_email = "abhishek.juneja145+TO-USER@gmail.com"
+    if not bypass_verification and not lumos_user.is_verified:
+        print("Cannot send email to non verified users")
+        return False
+
+    lumos_user_email = "abhishek.juneja145+LUMOS_EMAIL@gmail.com"
 
     email_status = send_sendgrid_email(to_email=lumos_user_email,
                                        subject=subject,
                                        content=content)
-
+    email_status = True
     return email_status
