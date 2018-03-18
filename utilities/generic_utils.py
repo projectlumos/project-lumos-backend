@@ -1,8 +1,14 @@
-import urllib
+from urllib.parse import urlencode
 
-# def create_redirect_url(query_params, base_url):
-#     """
-#     """
-#
-#     encoded_params = urllib.urlencode(query_params)
-#     return '{0}?params={1}'.format(base_url, encoded_params)
+
+def create_query_paramed_url(base_url, payload):
+    """
+    Encoding a URL with query params provided in a dict
+    
+    :param base_url: 
+    :param payload: 
+    :return: 
+    """
+
+    encoded_params = urlencode(payload)
+    return base_url.format(encoded_params)

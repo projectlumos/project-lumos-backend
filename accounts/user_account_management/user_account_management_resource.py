@@ -18,10 +18,12 @@ from accounts.models import User, LumosUser
 from utilities.app_utils.crpyto_utils import lumos_encryption_service
 from utilities.datetime_utils import epoch_in_future
 from backend.utils import get_lumos_user_data
+from utilities.generic_utils import create_query_paramed_url
 
 # app level
 from accounts.user_account_management.user_account_management_helper import validate_user_creation_params
 from accounts.utils.mailers import send_lumos_user_verification_email
+from accounts.constants import HOME_PAGE_URL
 
 
 @api_view(['POST'])
@@ -187,15 +189,18 @@ def verify_user(request):
 
     response_data['status'] = True
     response_data['message'] = "User email verified"
+    response_data['lumos_token'] = user_lumos_token
 
+    login_url = HOME_PAGE_URL
+    redirect_url = create_query_paramed_url(base_url=login_url, payload=response_data)
+    print(redirect_url)
+
+    return Response(data=response_data)
     # return HttpResponsePermanentRedirect(redirected_url)
-    return True
 
 
 
 # to do
-# send verification email endpoint
 # reset password endpoint
-# verify user testing
 # email sendgrid api keys
 # env vars in gitignore
