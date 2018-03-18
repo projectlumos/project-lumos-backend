@@ -78,10 +78,8 @@ def send_lumos_email(lumos_user, subject, content, bypass_verification=False):
         print("Cannot send email to non verified users")
         return False
 
-    lumos_user_email = "abhishek.juneja145+LUMOS_EMAIL@gmail.com"
-
     email_status = send_sendgrid_email(to_email=lumos_user_email,
                                        subject=subject,
                                        content=content)
-    email_status = True
+    # email_status = True
     return email_status
