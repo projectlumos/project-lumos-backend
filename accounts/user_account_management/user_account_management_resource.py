@@ -112,11 +112,6 @@ def email_verification_request(request):
     response_data = dict()
     response_data['status'] = True
 
-    if None:
-        response_data['status'] = False
-        response_data['message'] = "Invalid request"
-        return Response(data=response_data, status=HTTP_400_BAD_REQUEST)
-
     django_user = request.user
 
     if not hasattr(django_user, 'lumos_user'):
