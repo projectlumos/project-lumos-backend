@@ -116,6 +116,7 @@ class SoftSkillsDataSerializer(ModelSerializer):
             'data_type',
             'link_url',
             'paid',
+            'ratings'
         ]
 
 
@@ -141,7 +142,8 @@ class KnowledgeBaseSerializer(ModelSerializer):
             'skill_level',
             'link_url',
             'paid',
-            'project'
+            'project',
+            'ratings'
         ]
 
 
@@ -162,4 +164,5 @@ class RandomDataSerializer(ModelSerializer):
             'data_type',
             'link_url',
             'paid',
+            'ratings'
         ]
