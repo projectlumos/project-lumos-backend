@@ -235,7 +235,14 @@ SoftSkillsDataModelAdmin, RandomDataModelAdmin
               "url": "https://pl-backend-staging.herokuapp.com/api/soft-skills-data/1/",
               "id": 1,
               "soft_skill": [
-                  2
+                      {
+                          "url": "https://pl-backend-staging.herokuapp.com/api/soft-skills/1/",
+                          "id": 1,
+                          "soft_skill_category": "Time Management",
+                          "slug": "time-management",
+                          "description": "Time Management",
+                          "icon": ""
+                      }
               ],
               "title": "How to reduce and cope with stress",
               "description": "It may seem like there’s nothing you can do about stress.",
@@ -271,10 +278,25 @@ SoftSkillsDataModelAdmin, RandomDataModelAdmin
                   "description": "Learn how to test Django signals",
                   "slug": "testing-django-signals",
                   "languages": [
-                      1
+                        {
+                            "url": "https://pl-backend-staging.herokuapp.com/api/language/1/",
+                            "id": 1,
+                            "language_name": "Python",
+                            "slug": "python",
+                            "site_url": "https://www.python.org/",
+                            "description": "Python can be easy to pick up whether you're a first-time programmer or you're experienced with other languages.",
+                            "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/1200px-Python.svg.png"
+                        }
                   ],
                   "domains": [
-                      1
+                        {
+                           "url": "https://pl-backend-staging.herokuapp.com/api/domain/1/",
+                           "id": 1,
+                           "domain_name": "Web Development",
+                           "slug": "web-development",
+                           "description": "Web development is a broad term for the work involved in developing a web site for the Internet (World Wide Web) or an intranet (a private network).",
+                           "icon": "https://cdn3.iconfinder.com/data/icons/web-design-and-development-glyph-vol-1/64/web-development-glyph-01-512.png"
+                       }
                   ],
                   "data_type": "BL",
                   "skill_level": "AD",
@@ -608,15 +630,15 @@ SoftSkillsDataModelAdmin, RandomDataModelAdmin
             "previous": "https://pl-backend-staging.herokuapp.com/api/knowledge-base-notes/",
             "results": [
               {
-                "url": "https://pl-backend-staging.herokuapp.com/api/knowledge-base-notes/1/",
-    		"id": 1,
-    		"user": 1,
-    		"resource": 9,
-    		"title": "New",
-    		"content": "new",
-    		"slug": "new",
-    		"created_at": "2018-03-15T09:45:10.474941Z",
-    		"modified_at": "2018-03-15T09:46:54.265141Z"
+                 "url": "https://pl-backend-staging.herokuapp.com/api/knowledge-base-notes/1/",
+    			       "id": 1,
+    			       "user": 1,
+    			       "resource": 9,
+    			       "title": "New",
+    			       "content": "new",
+    			       "slug": "new",
+    			       "created_at": "2018-03-15T09:45:10.474941Z",
+    			       "modified_at": "2018-03-15T09:46:54.265141Z"
               }
             ]
           }
@@ -639,15 +661,15 @@ SoftSkillsDataModelAdmin, RandomDataModelAdmin
             "previous": "https://pl-backend-staging.herokuapp.com/api/soft-skills-data/",
             "results": [
               {
-                "url": "https://pl-backend-staging.herokuapp.com/api/soft-skills-data/1/",
-    		"id": 1,
-    		"user": 1,
-    		"resource": 9,
-    		"title": "New",
-    		"content": "new",
-    		"slug": "new",
-    		"created_at": "2018-03-15T09:45:10.474941Z",
-    		"modified_at": "2018-03-15T09:46:54.265141Z"
+                 "url": "https://pl-backend-staging.herokuapp.com/api/soft-skills-data/1/",
+    			       "id": 1,
+    			       "user": 1,
+    			       "resource": 9,
+    			       "title": "New",
+    			       "content": "new",
+    			       "slug": "new",
+    			       "created_at": "2018-03-15T09:45:10.474941Z",
+    			       "modified_at": "2018-03-15T09:46:54.265141Z"
               }
             ]
           }
@@ -670,15 +692,15 @@ SoftSkillsDataModelAdmin, RandomDataModelAdmin
             "previous": "https://pl-backend-staging.herokuapp.com/api/random-data-notes/",
             "results": [
               {
-                "url": "https://pl-backend-staging.herokuapp.com/api/random-data-notes/1/",
-    		"id": 1,
-    		"user": 1,
-    		"resource": 9,
-    		"title": "New",
-    		"content": "new",
-    		"slug": "new",
-    		"created_at": "2018-03-15T09:45:10.474941Z",
-    		"modified_at": "2018-03-15T09:46:54.265141Z"
+                 "url": "https://pl-backend-staging.herokuapp.com/api/random-data-notes/1/",
+    			       "id": 1,
+    			       "user": 1,
+    			       "resource": 9,
+    			       "title": "New",
+    			       "content": "new",
+    			       "slug": "new",
+    			       "created_at": "2018-03-15T09:45:10.474941Z",
+    			       "modified_at": "2018-03-15T09:46:54.265141Z"
               }
             ]
           }
