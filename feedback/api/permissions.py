@@ -16,4 +16,4 @@ class IsOwnerFeedback(BasePermission):
         else:
             # Check permissions for write request
             if obj.user == request.user:
-                return True
+                return False
