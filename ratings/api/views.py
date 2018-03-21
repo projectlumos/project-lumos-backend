@@ -7,7 +7,7 @@ from rest_framework.permissions import(
     AllowAny,
     IsAuthenticated,
 )
-from .permissions import IsOwner
+from .permissions import IsOwnerRatings
 from rest_framework.filters import OrderingFilter
 from django_filters import rest_framework as filters
 from rest_framework.response import Response
@@ -43,11 +43,30 @@ class RatingsAbstractViewSet(viewsets.ModelViewSet):
 
 class KnowledgeBaseRatingViewSet(RatingsAbstractViewSet):
     """
-    handles viewset for KnowledgeBase
+    handles viewset for KnowledgeBaseRating
+    request : http://127.0.0.1:8000/api/knowledge-base-rating/
+    response :
+    {
+    "count": 1,
+    "next": null,
+    "previous": "http://127.0.0.1:8000/api/knowledge-base-rating/",
+    "results": [
+            {
+                "url": "http://127.0.0.1:8000/api/knowledge-base-rating/1/",
+                "id": 1,
+                "user": 1,
+                "resource": 9,
+                "attribute_1": 2,
+                "attribute_2": 3,
+                "attribute_3": 4,
+                "attribute_4": 3
+            }
+        ]
+    }
     """
     serializer_class = KnowledgeBaseRatingSerializer
     pagination_class = ResourcesPagination
-    permission_classes = [IsOwner]
+    permission_classes = [IsOwnerRatings]
     filter_fields = ['id', 'resource']
     ordering_fields = ['id', 'resource']
     ordering = ['id']
@@ -79,11 +98,30 @@ class KnowledgeBaseRatingViewSet(RatingsAbstractViewSet):
 
 class SoftSkillsDataRatingViewSet(RatingsAbstractViewSet):
     """
-    handles viewset for SoftSkillsData
+    handles viewset for SoftSkillsDataRating
+    request : http://127.0.0.1:8000/api/softskills-data-rating/
+    response :
+    {
+    "count": 1,
+    "next": null,
+    "previous": "http://127.0.0.1:8000/api/knowledge-base-rating/",
+    "results": [
+            {
+                "url": "http://127.0.0.1:8000/api/softskills-data-rating/1/",
+                "id": 1,
+                "user": 1,
+                "resource": 9,
+                "attribute_1": 2,
+                "attribute_2": 3,
+                "attribute_3": 4,
+                "attribute_4": 3
+            }
+        ]
+    }
     """
     serializer_class = SoftSkillsDataRatingSerializer
     pagination_class = ResourcesPagination
-    permission_classes = [IsOwner]
+    permission_classes = [IsOwnerRatings]
     filter_fields = ['id', 'resource']
     ordering_fields = ['id', 'resource']
     ordering = ['id']
@@ -115,10 +153,29 @@ class SoftSkillsDataRatingViewSet(RatingsAbstractViewSet):
 class RandomDataRatingViewSet(RatingsAbstractViewSet):
     """
     handles viewset for RandomDataRating
+    request : http://127.0.0.1:8000/api/random-data-rating/
+    response :
+    {
+    "count": 1,
+    "next": null,
+    "previous": "http://127.0.0.1:8000/api/knowledge-base-rating/",
+    "results": [
+            {
+                "url": "http://127.0.0.1:8000/api/random-data-rating/1/",
+                "id": 1,
+                "user": 1,
+                "resource": 9,
+                "attribute_1": 2,
+                "attribute_2": 3,
+                "attribute_3": 4,
+                "attribute_4": 3
+            }
+        ]
+    }
     """
     serializer_class = RandomDataRatingSerializer
     pagination_class = ResourcesPagination
-    permission_classes = [IsOwner]
+    permission_classes = [IsOwnerRatings]
     filter_fields = ['id', 'resource']
     ordering_fields = ['id', 'resource']
     ordering = ['id']

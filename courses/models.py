@@ -39,7 +39,7 @@ class Language(models.Model):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            # This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
             with transaction.atomic():
                 # since unique combination of source_field and slug exists, call save method
                 super(Language, self).save(*args, **kwargs)
@@ -86,7 +86,7 @@ class Domain(models.Model):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            # This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
             with transaction.atomic():
                 # since unique combination of source_field and slug exists, call save method
                 super(Domain, self).save(*args, **kwargs)
@@ -132,7 +132,7 @@ class SoftSkills(models.Model):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            # This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
             with transaction.atomic():
                 # since unique combination of source_field and slug exists, call save method
                 super(SoftSkills, self).save(*args, **kwargs)
@@ -183,7 +183,7 @@ class SoftSkillsData(RowInformation):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            # This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
             with transaction.atomic():
                 # since unique combination of source_field and slug exists, call save method
                 super(SoftSkillsData, self).save(*args, **kwargs)
@@ -257,7 +257,7 @@ class KnowledgeBase(RowInformation):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            # This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
             with transaction.atomic():
                 # since unique combination of source_field and slug exists, call save method
                 super(KnowledgeBase, self).save(*args, **kwargs)
@@ -287,7 +287,9 @@ class KnowledgeBase(RowInformation):
 
     class Meta:
         ordering = ['-modified_at', '-created_at']
-        unique_together = ('title', 'slug')  # checks whether the combination of two fields is unique
+
+         # checks whether the combination of two fields is unique
+        unique_together = ('title', 'slug') 
 
 
 class RandomData(RowInformation):
@@ -320,7 +322,7 @@ class RandomData(RowInformation):
             While saving, it we have a duplicate combination of name and slug
             Since we have added an IntegrityError check, we will have an exception raised
             """
-            #This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            # This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
             with transaction.atomic():
                 # since unique combination of source_field and slug exists, call save method
                 super(RandomData, self).save(*args, **kwargs)

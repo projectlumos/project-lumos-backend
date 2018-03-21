@@ -138,7 +138,14 @@ class SoftSkillsDataViewSet(ReadOnlyCoursesAbstractViewSet):
             "url": "http://127.0.0.1:8000/api/soft-skills-data/1/",
             "id": 1,
             "soft_skill": [
-                2
+                {
+                    "url": "https://pl-backend-staging.herokuapp.com/api/soft-skills/1/",
+                    "id": 1,
+                    "soft_skill_category": "Time Management",
+                    "slug": "time-management",
+                    "description": "Time Management",
+                    "icon": ""
+                }
             ],
             "title": "How to reduce and cope with stress",
             "description": "It may seem like there’s nothing you can do about stress.",
@@ -178,10 +185,25 @@ class KnowledgeBaseViewSet(ReadOnlyCoursesAbstractViewSet):
                 "description": "Learn how to test Django signals",
                 "slug": "testing-django-signals",
                 "languages": [
-                    1
+                    {
+                    "url": "https://pl-backend-staging.herokuapp.com/api/language/1/",
+                    "id": 1,
+                    "language_name": "Python",
+                    "slug": "python",
+                    "site_url": "https://www.python.org/",
+                    "description": "Python can be easy to pick up whether you're a first-time programmer or you're experienced with other languages.",
+                    "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/1200px-Python.svg.png"
+                }
                 ],
                 "domains": [
-                    1
+                     {
+                    "url": "https://pl-backend-staging.herokuapp.com/api/domain/1/",
+                    "id": 1,
+                    "domain_name": "Web Development",
+                    "slug": "web-development",
+                    "description": "Web development is a broad term for the work involved in developing a web site for the Internet (World Wide Web) or an intranet (a private network). Web development can range from developing the simplest static single page of plain text to the most complex web-based internet applications (or just 'web apps') electronic businesses, and social network services. A more comprehensive list of tasks to which web development commonly refers, may include web engineering, web design, web content development, client liaison, client-side/server-side scripting, web server and network security configuration, and e-commerce development. Among web professionals, \"web development\" usually refers to the main non-design aspects of building web sites: writing markup and coding. Most recently Web development has come to mean the creation of content management systems or CMS. These CMS can be made from scratch, proprietary or open source. In broad terms the CMS acts as middleware between the database and the user through the browser. A principle benefit of a CMS is that it allows non-technical people to make changes to their web site without having technical knowledge.",
+                    "icon": "https://cdn3.iconfinder.com/data/icons/web-design-and-development-glyph-vol-1/64/web-development-glyph-01-512.png"
+                }
                 ],
                 "data_type": "BL",
                 "skill_level": "AD",
