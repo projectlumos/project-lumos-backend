@@ -46,7 +46,7 @@ class KnowledgeBaseRatingSerializer(ModelSerializer):
         ]
 
         extra_kwargs = {
-            'user' : {'read_only': True}   #making create_date read_only
+            'user' : {'read_only': True}   # Making user field read_only
         }
 
 
@@ -71,7 +71,7 @@ class SoftSkillsDataRatingSerializer(ModelSerializer):
         ]
 
         extra_kwargs = {
-            'user' : {'read_only': True}   #making create_date read_only
+            'user' : {'read_only': True}   # Making user field read_only
         }
 
 
@@ -96,5 +96,5 @@ class RandomDataRatingSerializer(ModelSerializer):
         ]
 
         extra_kwargs = {
-            'user' : {'read_only': True}   #making create_date read_only
+            'user' : {'read_only': True}   # Making user field read_only
         }

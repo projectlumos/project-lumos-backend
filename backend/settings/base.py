@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'ratings',
     'accounts',
     'notesapp',
+    'feedback',
 
     #third_party_apps
     'rest_framework',
