@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+
+# app level imports
 from courses.utils.modelsutils import RowInformation
 from ratings.utils.constants import RATING
 from .managers import KnowledgeBaseRatingManager, SoftSkillsDataRatingManager, RandomDataRatingManager
