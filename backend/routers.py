@@ -20,6 +20,8 @@ from notesapp.api.views import (
 	RandomDataNotesViewset
 )
 
+from feedback.api.views import FeedbackViewSet
+
 
 router = routers.SimpleRouter()
 router.register(r'language', LanguageViewSet)
@@ -34,3 +36,5 @@ router.register(r'random-data-rating', RandomDataRatingViewSet)
 router.register(r'knowledge-base-notes', KnowledgeBaseNotesViewset)
 router.register(r'soft-skills-notes', SoftSkillsDataNotesViewset)
 router.register(r'random-data-notes', RandomDataNotesViewset)
+router.register(r'feedback', FeedbackViewSet)
+
