@@ -294,21 +294,6 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
                                                       Q(languages__language_name__icontains=query) | 
                                                       Q(domains__domain_name__icontains=query)).distinct()
 
-        # knowledgebase_queryset = KnowledgeBase.objects.filter(Q(title__icontains=query) | 
-        #                                               Q(slug__icontains=query) | 
-        #                                               Q(languages__slug__icontains=query) | 
-        #                                               Q(domains__slug__icontains=query) |
-        #                                               Q(languages__language_name__icontains=query) | 
-        #                                               Q(domains__domain_name__icontains=query)).distinct().count()
-
-        # domain_queryset = Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct().count()
-        # language_queryset = Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct().count()
-        # soft_skill_queryset = SoftSkills.objects.filter(Q(slug__icontains=query) |
-        #                                                 Q(soft_skill_category__icontains=query)).distinct().count()
-        # soft_skill_data_queryset = SoftSkillsData.objects.filter(Q(title__icontains=query) |
-        #                                                          Q(slug__icontains=query)).distinct().count()
-        # random_data_queryset = RandomData.objects.filter(Q(title__icontains=query) | 
-        #                                                  Q(slug__icontains=query)).distinct().count()
 
         querylist = (
         
@@ -353,4 +338,5 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
         },
 
     )
+
         return querylist
