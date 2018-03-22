@@ -2,6 +2,10 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.filters import OrderingFilter
+from rest_framework.filters import (
+    SearchFilter,
+    OrderingFilter,
+    )
 from django_filters import rest_framework as filters
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -43,9 +47,10 @@ class KnowledgeBaseNotesViewset(ModelViewSet):
 	serializer_class = KnowledgeBaseNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwnerNotes]
 	pagination_class = ResourcesPagination
-	queryset = KnowledgeBaseNotes.objects.all()
-	filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
-	filter_fields = ['id', 'resource', 'title', 'slug', 'content']
+	queryset=KnowledgeBaseNotes.objects.all()
+	filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]
+	filter_fields = ['id', 'resource']
+	search_fields = ['title','slug','content']
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
@@ -91,9 +96,10 @@ class SoftSkillsDataNotesViewset(ModelViewSet):
 	serializer_class = SoftSkillsDataNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwnerNotes]
 	pagination_class = ResourcesPagination
-	queryset = SoftSkillsDataNotes.objects.all()
-	filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
-	filter_fields = ['id', 'resource', 'title', 'slug', 'content']
+	queryset=SoftSkillsDataNotes.objects.all()
+	filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]
+	filter_fields = ['id', 'resource']
+	search_fields = ['title','slug','content']
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
@@ -139,9 +145,10 @@ class RandomDataNotesViewset(ModelViewSet):
 	serializer_class = RandomDataNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwnerNotes]
 	pagination_class = ResourcesPagination
-	queryset = RandomDataNotes.objects.all()
-	filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
-	filter_fields = ['id', 'resource', 'title', 'slug', 'content']
+	queryset=RandomDataNotes.objects.all()
+	filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]
+	filter_fields = ['id', 'resource']
+	search_fields = ['title','slug','content']
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):

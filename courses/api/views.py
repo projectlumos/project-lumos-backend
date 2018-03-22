@@ -2,17 +2,26 @@
 # import os
 
 # framework level libraries
+from django.db.models import Q
+import itertools
+from rest_framework.serializers import Serializer
+from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import (
+    SearchFilter,
+    OrderingFilter,
+    )
 from django_filters import rest_framework as filters
-
+from drf_multiple_model.viewsets import ObjectMultipleModelAPIViewSet
+from drf_multiple_model.pagination import MultipleModelLimitOffsetPagination
+from django.db.models import Count
 # project level imports
 
 # app level imports
 from courses.models import Language, Domain, SoftSkills, SoftSkillsData, KnowledgeBase, \
     RandomData
-
+    
 # api level imports
 from courses.api.serializers import LanguageSerializer, DomainSerializer, SoftSkillsSerializer, \
     SoftSkillsDataSerializer, KnowledgeBaseSerializer, RandomDataSerializer
@@ -25,7 +34,8 @@ class ReadOnlyCoursesAbstractViewSet(viewsets.ReadOnlyModelViewSet):
     """
     serializer_class = None
     permission_classes = [AllowAny]
-    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+    filter_backends = [filters.DjangoFilterBackend,SearchFilter, OrderingFilter]
+    search_fields = []
     filter_fields = []
     ordering_fields = []
     ordering = []
@@ -60,7 +70,8 @@ class LanguageViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = LanguageSerializer
-    filter_fields = ['id', 'language_name', 'slug', 'description']
+    filter_fields = ['id']
+    search_fields = ['language_name','slug','description']
     ordering_fields = ['language_name']
     ordering = ['language_name']
     queryset = Language.objects.all()
@@ -90,7 +101,8 @@ class DomainViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = DomainSerializer
-    filter_fields = ['id', 'domain_name', 'slug', 'description']
+    filter_fields = ['id']
+    search_fields = ['domain_name','slug','description']
     ordering_fields = ['domain_name']
     ordering = ['domain_name']
     queryset = Domain.objects.all()
@@ -113,12 +125,11 @@ class SoftSkillsViewSet(ReadOnlyCoursesAbstractViewSet):
                 "slug": "body-language",
                 "description": "Does this really matter? Yes it does.SIT UP STRAIGHT!",
                 "icon": ""
-            }
-        ]
-    }
+            }  
     """
     serializer_class = SoftSkillsSerializer
-    filter_fields = ['id', 'soft_skill_category', 'slug', 'description']
+    filter_fields = ['id']
+    search_fields = ['soft_skill_category','slug','description']
     ordering_fields = ['soft_skill_category']
     ordering = ['soft_skill_category']
     queryset = SoftSkills.objects.all()
@@ -158,7 +169,8 @@ class SoftSkillsDataViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = SoftSkillsDataSerializer
-    filter_fields = ['title', 'description', 'slug', 'data_type', 'paid', 'soft_skill__id', 'soft_skill__slug']
+    filter_fields = ['data_type', 'paid', 'soft_skill__id']
+    search_fields = ['title','description','slug','soft_skill__slug']
     ordering_fields = ['data_type', 'title', 'paid']
     ordering = ['data_type']
     queryset = SoftSkillsData.objects.all()
@@ -215,8 +227,9 @@ class KnowledgeBaseViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = KnowledgeBaseSerializer
-    filter_fields = ['title', 'description', 'slug', 'skill_level', 'data_type', 'paid', 'languages__id',
-                    'languages__slug', 'domains__id', 'domains__slug', 'project']
+    filter_fields = ['skill_level', 'data_type', 'paid', 'languages__id',
+                     'domains__id', 'project']
+    search_fields = ['title','description','slug','languages__slug','domains__slug']
     ordering_fields = ['skill_level', 'data_type', 'title', 'paid']
     ordering = ['skill_level', 'data_type']
     queryset = KnowledgeBase.objects.all()
@@ -251,7 +264,8 @@ class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = RandomDataSerializer
-    filter_fields = ['title', 'description', 'slug', 'data_type', 'paid']
+    filter_fields = ['data_type', 'paid']
+    search_fields = ['title','description','slug']
     ordering_fields = ['data_type', 'title', 'paid']
     ordering = ['data_type']
     queryset = RandomData.objects.all()
@@ -259,3 +273,70 @@ class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
     def get_queryset(self):
         queryset = RandomData.objects.filter(is_active=True)
         return queryset
+
+
+
+class LimitPagination(MultipleModelLimitOffsetPagination):
+    default_limit = 15
+
+
+class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
+    pagination_class = LimitPagination
+
+
+    def get_querylist(self,*args, **kwargs):
+        query = self.request.GET.get('query', None)
+
+        knowledgebase_queryset = KnowledgeBase.objects.filter(Q(title__icontains=query) | 
+                                                      Q(slug__icontains=query) | 
+                                                      Q(languages__slug__icontains=query) | 
+                                                      Q(domains__slug__icontains=query) |
+                                                      Q(languages__language_name__icontains=query) | 
+                                                      Q(domains__domain_name__icontains=query)).distinct()
+
+
+        querylist = (
+        
+
+        {
+            'queryset': Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct(),
+            'serializer_class': DomainSerializer,
+        }, 
+
+        {
+            'queryset':Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct(),
+            'serializer_class': LanguageSerializer,
+        },
+
+        {
+            'queryset': KnowledgeBase.objects.filter(Q(title__icontains=query) | 
+                                                      Q(slug__icontains=query) | 
+                                                      Q(languages__slug__icontains=query) | 
+                                                      Q(domains__slug__icontains=query) |
+                                                      Q(languages__language_name__icontains=query) | 
+                                                      Q(domains__domain_name__icontains=query)).distinct(),
+            'serializer_class': KnowledgeBaseSerializer,
+        },
+
+        {
+            'queryset': SoftSkillsData.objects.filter(Q(title__icontains=query) |
+                                                      Q(slug__icontains=query)).distinct(),
+            'serializer_class': SoftSkillsDataSerializer,
+        },
+
+        {
+
+            'queryset': SoftSkills.objects.filter(Q(slug__icontains=query) |
+                                                  Q(soft_skill_category__icontains=query)).distinct(),
+            'serializer_class': SoftSkillsSerializer,
+        },
+
+        {
+            'queryset': RandomData.objects.filter(Q(title__icontains=query) | 
+                                                  Q(slug__icontains=query)).distinct(),
+            'serializer_class': RandomDataSerializer,
+        },
+
+    )
+
+        return querylist
