@@ -47,16 +47,10 @@ class KnowledgeBaseNotesViewset(ModelViewSet):
 	serializer_class = KnowledgeBaseNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwnerNotes]
 	pagination_class = ResourcesPagination
-<<<<<<< HEAD
 	queryset=KnowledgeBaseNotes.objects.all()
 	filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]
 	filter_fields = ['id', 'resource']
 	search_fields = ['title','slug','content']
-=======
-	queryset = KnowledgeBaseNotes.objects.all()
-	filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
-	filter_fields = ['id', 'resource', 'title', 'slug', 'content']
->>>>>>> 2f30b0fe0f2e7c719943c5ba1cd0b93d52c48529
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
@@ -102,16 +96,10 @@ class SoftSkillsDataNotesViewset(ModelViewSet):
 	serializer_class = SoftSkillsDataNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwnerNotes]
 	pagination_class = ResourcesPagination
-<<<<<<< HEAD
 	queryset=SoftSkillsDataNotes.objects.all()
 	filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]
 	filter_fields = ['id', 'resource']
 	search_fields = ['title','slug','content']
-=======
-	queryset = SoftSkillsDataNotes.objects.all()
-	filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
-	filter_fields = ['id', 'resource', 'title', 'slug', 'content']
->>>>>>> 2f30b0fe0f2e7c719943c5ba1cd0b93d52c48529
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
@@ -157,16 +145,10 @@ class RandomDataNotesViewset(ModelViewSet):
 	serializer_class = RandomDataNotesSerializer
 	permission_classes = [IsAuthenticated,IsOwnerNotes]
 	pagination_class = ResourcesPagination
-<<<<<<< HEAD
 	queryset=RandomDataNotes.objects.all()
 	filter_backends = [filters.DjangoFilterBackend, SearchFilter, OrderingFilter]
 	filter_fields = ['id', 'resource']
 	search_fields = ['title','slug','content']
-=======
-	queryset = RandomDataNotes.objects.all()
-	filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
-	filter_fields = ['id', 'resource', 'title', 'slug', 'content']
->>>>>>> 2f30b0fe0f2e7c719943c5ba1cd0b93d52c48529
 	ordering = ('-created_at')
 
 	def perform_create(self,serializer):
