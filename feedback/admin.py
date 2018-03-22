@@ -8,6 +8,7 @@ class FeedbackModelAdmin(admin.ModelAdmin):
  	"""
  	list_display = ['user', 'text', 'is_active', 'created_at', 'modified_at']
  	list_display_links = ['user']
+ 	list_filter = ['user']
  	search_fields = ['text']
  	autocomplete_fields = ['user']
 

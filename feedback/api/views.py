@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from rest_framework.permissions import(
-    AllowAny,
+	AllowAny,
 )
 from feedback.api.serializers import FeedbackSerializer
 from feedback.models import Feedback
@@ -40,17 +40,3 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 		    serializer.save(user=self.request.user.id)
 		else:
 		    serializer.save(user=self.request.user)
-
-	def perform_update(self, serializer):
-		serializer.save(user=self.request.user)
-
-	def get_queryset(self):
-		user = self.request.user.id
-		# Get objects only associated with the requesting user
-		queryset = Feedback.objects.filter(user=user)
-		return queryset
-
-
-
-
-
