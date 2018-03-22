@@ -1,10 +1,6 @@
 from rest_framework.serializers import (
     ModelSerializer,
     HyperlinkedIdentityField,
-    Serializer,
-    # ReadOnlyField,
-    # CharField
-
 )
 from courses.models import Language, Domain, KnowledgeBase, SoftSkills, SoftSkillsData, RandomData
 
@@ -162,21 +158,3 @@ class RandomDataSerializer(ModelSerializer):
             'link_url',
             'paid',
         ]
-
-# class GlobalSearchSerializer(Serializer):
-#     pk = ReadOnlyField()
-#     result_count = ReadOnlyField()
-
-    # def to_native(self, obj):
-
-    #     if isinstance(obj, KnowledgeBase):
-    #         serializer = KnowledgeBaseSerializer(obj)
-    #     elif isinstance(obj, SoftSkillsData):
-    #         serializer = SoftSkillsDataSerializer(obj)
-    #     elif isinstance(obj, SoftSkills):
-    #         serializer = SoftSkillsSerializer(obj)
-    #     elif isinstance(obj, RandomData):
-    #         serializer = RandomDataSerializer(obj)
-    #     else:
-    #         raise Exception("No results found")
-    #     return serializer.data
