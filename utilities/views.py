@@ -1,10 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-import wikipedia
-from PyDictionary import PyDictionary
-from utilities.app_utils import wiki, dictionary
+
+# framework level libraries
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+# external imports
+import wikipedia
+from PyDictionary import PyDictionary
+
+# app level imports
+from utilities.app_utils import wiki, dictionary
+
 # Create your views here.
 
 @api_view(['GET'])
@@ -37,7 +44,8 @@ def wikiscript(request, term):
     }
     """
     term = str(term)
-    wiki_dict = wiki.get_wiki_product_data(term)  #passing the term from url to get_wiki_product_data
+    # passing the term from url to get_wiki_product_data
+    wiki_dict = wiki.get_wiki_product_data(term)
     return Response(wiki_dict)
 
 @api_view(['GET'])
@@ -76,5 +84,6 @@ def dictscript(request, term):
     }
     """
     term = str(term)
-    dict_dict = dictionary.dictionary_result(term)  #passing the term from url to dictionary_result
+    # passing the term from url to dictionary_result
+    dict_dict = dictionary.dictionary_result(term)
     return Response(dict_dict)

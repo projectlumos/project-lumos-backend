@@ -1,11 +1,14 @@
+from django.contrib.auth.models import User
+# framework level libraries
 from rest_framework.serializers import (
 	ModelSerializer,
 	HyperlinkedIdentityField,
 	PrimaryKeyRelatedField,
 )
+
+# app level imports
 from notesapp.models import KnowledgeBaseNotes, SoftSkillsDataNotes, RandomDataNotes
 from courses.models import KnowledgeBase, SoftSkillsData, RandomData
-from django.contrib.auth.models import User
 
 
 knowledgebasenotes_detail_url = HyperlinkedIdentityField(
@@ -15,13 +18,11 @@ knowledgebasenotes_detail_url = HyperlinkedIdentityField(
 )
 
 softskillsdatanotes_detail_url = HyperlinkedIdentityField(
-    # URL to detail view
 	view_name='softskillsdatanotes-detail',
 	read_only=True
 )
 
 randomdatanotes_detail_url = HyperlinkedIdentityField(
-    # URL to detail view
 	view_name='randomdatanotes-detail',
 	read_only=True
 )
@@ -46,7 +47,6 @@ class KnowledgeBaseNotesSerializer(ModelSerializer):
 			'slug',
 			'created_at',
 			'modified_at',
-
 		]
 
 		extra_kwargs = {
@@ -76,7 +76,6 @@ class SoftSkillsDataNotesSerializer(ModelSerializer):
 			'slug',
 			'created_at',
 			'modified_at',
-
 		]
 
 		extra_kwargs = {
@@ -106,7 +105,6 @@ class RandomDataNotesSerializer(ModelSerializer):
 			'slug',
 			'created_at',
 			'modified_at',
-
 		]
 
 		extra_kwargs = {

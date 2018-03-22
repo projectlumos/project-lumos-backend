@@ -1,8 +1,7 @@
 import os
 from backend.settings.base import *
-from backend.settings.env_vars  import DATABASE_ENGINE, DATABASE_USER, DATABASE_NAME, DATABASE_PASSWORD, \
-    SECURE_PROXY_SSL_HEADER, SENDGRID_API_KEY
-
+from backend.settings.env_vars import DATABASE_ENGINE, DATABASE_USER, DATABASE_NAME, DATABASE_PASSWORD, \
+    SECURE_PROXY_SSL_HEADER
 
 DEBUG = True
 
@@ -18,7 +17,7 @@ DATABASES = {
     }
 }
 
-SENDGRID_API_KEY = get_env_variable('SENDGRID_API_KEY', SENDGRID_API_KEY)
+SENDGRID_API_KEY = get_env_variable('SENDGRID_API_KEY')
 
 
 env = os.environ.copy()
@@ -29,4 +28,13 @@ if db_url != False:
     DATABASES['default'] = dj_database_url.config()
     SECURE_PROXY_SSL_HEADER = SECURE_PROXY_SSL_HEADER
 
+###########################################################################
+# TODO SETTINGS ARE SUPER CONFUSING | FIX THEM
+###########################################################################
 
+# encryption string
+'''
+from cryptography.fernet import Fernet
+Fernet.generate_key().decode('utf-8')
+'''
+LUMOS_ENCRYPTION_SEED = "UKkx3sfyCFjyiy1xpryXd6FGkgeQ_gMSJ2cU3_edx1o="

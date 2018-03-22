@@ -1,5 +1,8 @@
 from django.contrib import admin
+
+# app level imports
 from .models import KnowledgeBaseNotes, SoftSkillsDataNotes, RandomDataNotes
+
 # Register your models here.
 
 
@@ -54,8 +57,3 @@ class RandomDataNotesModelAdmin(admin.ModelAdmin):
 admin.site.register(KnowledgeBaseNotes, KnowledgeBaseNotesModelAdmin)
 admin.site.register(SoftSkillsDataNotes, KnowledgeBaseNotesModelAdmin)
 admin.site.register(RandomDataNotes, RandomDataNotesModelAdmin)
-
-
-
-
-

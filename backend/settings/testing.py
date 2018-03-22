@@ -13,7 +13,5 @@ DATABASES = {
     }
 }
 
-import dj_database_url
-
 DATABASES['default'] = DATABASE_DEFAULT
 SECURE_PROXY_SSL_HEADER = SECURE_PROXY_SSL_HEADER

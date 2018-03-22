@@ -1,12 +1,17 @@
+# framework level libraries
+
 from rest_framework.serializers import (
     ModelSerializer,
     HyperlinkedIdentityField,
 )
+
+# app level imports
+
 from courses.models import Language, Domain, KnowledgeBase, SoftSkills, SoftSkillsData, RandomData
 
 
 language_detail_url = HyperlinkedIdentityField(
-    #url to detail view
+    # url to detail view
     view_name='language-detail',
     read_only=True
 )
@@ -76,7 +81,7 @@ class DomainSerializer(ModelSerializer):
 
 class SoftSkillsSerializer(ModelSerializer):
     """
-    serializer for Domain model class
+    serializer for SoftSkills model class
     """
     url = softskills_detail_url
 
@@ -94,7 +99,7 @@ class SoftSkillsSerializer(ModelSerializer):
 
 class SoftSkillsDataSerializer(ModelSerializer):
     """
-    serializer for ExternalLink model class
+    serializer for SoftSkillsData model class
     """
     soft_skill = SoftSkillsSerializer(many=True)
     url = softskillsdata_detail_url
@@ -111,12 +116,13 @@ class SoftSkillsDataSerializer(ModelSerializer):
             'data_type',
             'link_url',
             'paid',
+            'ratings'
         ]
 
 
 class KnowledgeBaseSerializer(ModelSerializer):
     """
-    serializer for ExternalLink model class
+    serializer for KnowledgeBase model class
     """
     languages = LanguageSerializer(many=True)
     domains = DomainSerializer(many=True)
@@ -136,13 +142,14 @@ class KnowledgeBaseSerializer(ModelSerializer):
             'skill_level',
             'link_url',
             'paid',
-            'project'
+            'project',
+            'ratings'
         ]
 
 
 class RandomDataSerializer(ModelSerializer):
     """
-    serializer for ExternalLink model class
+    serializer for RandomData model class
     """
     url = randomdata_detail_url
 
@@ -157,4 +164,5 @@ class RandomDataSerializer(ModelSerializer):
             'data_type',
             'link_url',
             'paid',
+            'ratings'
         ]

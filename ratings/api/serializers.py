@@ -1,15 +1,19 @@
+# framework level libraries
 from rest_framework.serializers import (
     ModelSerializer,
     HyperlinkedIdentityField,
     PrimaryKeyRelatedField
 )
+
+# app level imports
 from ratings.models import KnowledgeBaseRating, SoftSkillsDataRating, RandomDataRating
 from courses.models import KnowledgeBase, SoftSkillsData, RandomData
+
 from django.contrib.auth.models import User
 
 
 knowledgebaserating_detail_url = HyperlinkedIdentityField(
-    #url to detail view
+    # url to detail view
     view_name='knowledgebaserating-detail',
     read_only=True
 )
@@ -46,7 +50,8 @@ class KnowledgeBaseRatingSerializer(ModelSerializer):
         ]
 
         extra_kwargs = {
-            'user' : {'read_only': True}   #making create_date read_only
+        # making user read_only
+            'user' : {'read_only': True}
         }
 
 
@@ -71,7 +76,7 @@ class SoftSkillsDataRatingSerializer(ModelSerializer):
         ]
 
         extra_kwargs = {
-            'user' : {'read_only': True}   #making create_date read_only
+            'user' : {'read_only': True}
         }
 
 
@@ -96,5 +101,5 @@ class RandomDataRatingSerializer(ModelSerializer):
         ]
 
         extra_kwargs = {
-            'user' : {'read_only': True}   #making create_date read_only
+            'user' : {'read_only': True}
         }
