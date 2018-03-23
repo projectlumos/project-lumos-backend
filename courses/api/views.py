@@ -281,19 +281,86 @@ class LimitPagination(MultipleModelLimitOffsetPagination):
 
 
 class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
+    """
+    handles viewset for global search.
+    "results": {
+        "Domain": [
+            {
+                "url": "http://127.0.0.1:8000/api/domain/1/",
+                "id": 1,
+                "domain_name": "Web Development",
+                "slug": "web-development",
+                "description": "Web development is a broad term for the work involved in developing a web site for the Internet (World Wide Web) or an intranet (a private network). Web development can range from developing the simplest static single page of plain text to the most complex web-based internet applications (or just 'web apps') electronic businesses, and social network services. A more comprehensive list of tasks to which web development commonly refers, may include web engineering, web design, web content development, client liaison, client-side/server-side scripting, web server and network security configuration, and e-commerce development. Among web professionals, \"web development\" usually refers to the main non-design aspects of building web sites: writing markup and coding. Most recently Web development has come to mean the creation of content management systems or CMS. These CMS can be made from scratch, proprietary or open source. In broad terms the CMS acts as middleware between the database and the user through the browser. A principle benefit of a CMS is that it allows non-technical people to make changes to their web site without having technical knowledge.",
+                "icon": "https://cdn3.iconfinder.com/data/icons/web-design-and-development-glyph-vol-1/64/web-development-glyph-01-512.png"
+            },
+            
+        ],
+        "Language": [
+            {
+                "url": "http://127.0.0.1:8000/api/language/1/",
+                "id": 1,
+                "language_name": "Python",
+                "slug": "python",
+                "site_url": "https://www.python.org/",
+                "description": "Python can be easy to pick up whether you're a first-time programmer or you're experienced with other languages.",
+                "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/1200px-Python.svg.png"
+            }
+        ],
+        "KnowledgeBase": [
+            {
+                "url": "http://127.0.0.1:8000/api/knowledge-base/9/",
+                "id": 9,
+                "title": "Testing Django Signals",
+                "description": "Learn how to test Django signals",
+                "slug": "testing-django-signals",
+                "languages": [
+                    {
+                        "url": "http://127.0.0.1:8000/api/language/1/",
+                        "id": 1,
+                        "language_name": "Python",
+                        "slug": "python",
+                        "site_url": "https://www.python.org/",
+                        "description": "Python can be easy to pick up whether you're a first-time programmer or you're experienced with other languages.",
+                        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/1200px-Python.svg.png"
+                    }
+                ],
+                "domains": [
+                    {
+                        "url": "http://127.0.0.1:8000/api/domain/1/",
+                        "id": 1,
+                        "domain_name": "Web Development",
+                        "slug": "web-development",
+                        "description": "Web development is a broad term for the work involved in developing a web site for the Internet (World Wide Web) or an intranet (a private network). Web development can range from developing the simplest static single page of plain text to the most complex web-based internet applications (or just 'web apps') electronic businesses, and social network services. A more comprehensive list of tasks to which web development commonly refers, may include web engineering, web design, web content development, client liaison, client-side/server-side scripting, web server and network security configuration, and e-commerce development. Among web professionals, \"web development\" usually refers to the main non-design aspects of building web sites: writing markup and coding. Most recently Web development has come to mean the creation of content management systems or CMS. These CMS can be made from scratch, proprietary or open source. In broad terms the CMS acts as middleware between the database and the user through the browser. A principle benefit of a CMS is that it allows non-technical people to make changes to their web site without having technical knowledge.",
+                        "icon": "https://cdn3.iconfinder.com/data/icons/web-design-and-development-glyph-vol-1/64/web-development-glyph-01-512.png"
+                    }
+                ],
+                "data_type": "BL",
+                "skill_level": "AD",
+                "link_url": "https://medium.freecodecamp.com/how-to-testing-django-signals-like-a-pro-c7ed74279311#.n5anplyc4",
+                "paid": false,
+                "project": false,
+                "ratings": {
+                    "attribute_1": 3.0,
+                    "attribute_2": 3.0,
+                    "attribute_3": 3.0,
+                    "attribute_4": 3.0
+                }
+            },
+    """
     pagination_class = LimitPagination
 
 
     def get_querylist(self,*args, **kwargs):
         query = self.request.GET.get('query', None)
-        domain_queryset = Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct()
-        language_queryset = Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct()
         knowledgebase_queryset = KnowledgeBase.objects.filter(Q(title__icontains=query) | 
                                                       Q(slug__icontains=query) | 
                                                       Q(languages__slug__icontains=query) | 
                                                       Q(domains__slug__icontains=query) |
                                                       Q(languages__language_name__icontains=query) | 
                                                       Q(domains__domain_name__icontains=query)).distinct()
+        domain_queryset = Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct()
+        language_queryset = Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct()
+       
         soft_skills_data_queryset = SoftSkillsData.objects.filter(Q(title__icontains=query) |
                                                       Q(slug__icontains=query)).distinct()
         soft_skill_queryset = SoftSkills.objects.filter(Q(slug__icontains=query) |
