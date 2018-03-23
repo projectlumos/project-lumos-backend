@@ -14,7 +14,6 @@ from rest_framework.filters import (
     )
 from django_filters import rest_framework as filters
 from drf_multiple_model.viewsets import ObjectMultipleModelAPIViewSet
-from drf_multiple_model.pagination import MultipleModelLimitOffsetPagination
 from django.db.models import Count
 # project level imports
 
@@ -25,7 +24,7 @@ from courses.models import Language, Domain, SoftSkills, SoftSkillsData, Knowled
 # api level imports
 from courses.api.serializers import LanguageSerializer, DomainSerializer, SoftSkillsSerializer, \
     SoftSkillsDataSerializer, KnowledgeBaseSerializer, RandomDataSerializer
-from courses.api.pagination import ResourcesPagination
+from courses.api.pagination import ResourcesPagination,LimitPagination
 
 
 class ReadOnlyCoursesAbstractViewSet(viewsets.ReadOnlyModelViewSet):
@@ -275,11 +274,6 @@ class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
         return queryset
 
 
-
-class LimitPagination(MultipleModelLimitOffsetPagination):
-    default_limit = 15
-
-
 class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
     """
     handles viewset for global search.
@@ -290,7 +284,7 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
                 "id": 1,
                 "domain_name": "Web Development",
                 "slug": "web-development",
-                "description": "Web development is a broad term for the work involved in developing a web site for the Internet (World Wide Web) or an intranet (a private network). Web development can range from developing the simplest static single page of plain text to the most complex web-based internet applications (or just 'web apps') electronic businesses, and social network services. A more comprehensive list of tasks to which web development commonly refers, may include web engineering, web design, web content development, client liaison, client-side/server-side scripting, web server and network security configuration, and e-commerce development. Among web professionals, \"web development\" usually refers to the main non-design aspects of building web sites: writing markup and coding. Most recently Web development has come to mean the creation of content management systems or CMS. These CMS can be made from scratch, proprietary or open source. In broad terms the CMS acts as middleware between the database and the user through the browser. A principle benefit of a CMS is that it allows non-technical people to make changes to their web site without having technical knowledge.",
+                "description": "",
                 "icon": "https://cdn3.iconfinder.com/data/icons/web-design-and-development-glyph-vol-1/64/web-development-glyph-01-512.png"
             },
             
@@ -302,7 +296,7 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
                 "language_name": "Python",
                 "slug": "python",
                 "site_url": "https://www.python.org/",
-                "description": "Python can be easy to pick up whether you're a first-time programmer or you're experienced with other languages.",
+                "description": "",
                 "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/1200px-Python.svg.png"
             }
         ],
@@ -320,7 +314,7 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
                         "language_name": "Python",
                         "slug": "python",
                         "site_url": "https://www.python.org/",
-                        "description": "Python can be easy to pick up whether you're a first-time programmer or you're experienced with other languages.",
+                        "description": "",
                         "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/1200px-Python.svg.png"
                     }
                 ],
@@ -330,7 +324,7 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
                         "id": 1,
                         "domain_name": "Web Development",
                         "slug": "web-development",
-                        "description": "Web development is a broad term for the work involved in developing a web site for the Internet (World Wide Web) or an intranet (a private network). Web development can range from developing the simplest static single page of plain text to the most complex web-based internet applications (or just 'web apps') electronic businesses, and social network services. A more comprehensive list of tasks to which web development commonly refers, may include web engineering, web design, web content development, client liaison, client-side/server-side scripting, web server and network security configuration, and e-commerce development. Among web professionals, \"web development\" usually refers to the main non-design aspects of building web sites: writing markup and coding. Most recently Web development has come to mean the creation of content management systems or CMS. These CMS can be made from scratch, proprietary or open source. In broad terms the CMS acts as middleware between the database and the user through the browser. A principle benefit of a CMS is that it allows non-technical people to make changes to their web site without having technical knowledge.",
+                        "description": "",
                         "icon": "https://cdn3.iconfinder.com/data/icons/web-design-and-development-glyph-vol-1/64/web-development-glyph-01-512.png"
                     }
                 ],
@@ -349,24 +343,22 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
     """
     pagination_class = LimitPagination
 
-
     def get_querylist(self,*args, **kwargs):
         query = self.request.GET.get('query', None)
         knowledgebase_queryset = KnowledgeBase.objects.filter(Q(title__icontains=query) | 
-                                                      Q(slug__icontains=query) | 
-                                                      Q(languages__slug__icontains=query) | 
-                                                      Q(domains__slug__icontains=query) |
-                                                      Q(languages__language_name__icontains=query) | 
-                                                      Q(domains__domain_name__icontains=query)).distinct()
+                                                              Q(slug__icontains=query) | 
+                                                              Q(languages__slug__icontains=query) | 
+                                                              Q(domains__slug__icontains=query) |
+                                                              Q(languages__language_name__icontains=query) | 
+                                                              Q(domains__domain_name__icontains=query)).exclude(is_active=False).distinct()
         domain_queryset = Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct()
         language_queryset = Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct()
-       
         soft_skills_data_queryset = SoftSkillsData.objects.filter(Q(title__icontains=query) |
-                                                      Q(slug__icontains=query)).distinct()
+                                                                  Q(slug__icontains=query)).exclude(is_active=False).distinct()
         soft_skill_queryset = SoftSkills.objects.filter(Q(slug__icontains=query) |
-                                                  Q(soft_skill_category__icontains=query)).distinct()
+                                                        Q(soft_skill_category__icontains=query)).distinct()
         ramdom_data_queryset = RandomData.objects.filter(Q(title__icontains=query) | 
-                                                  Q(slug__icontains=query)).distinct()
+                                                         Q(slug__icontains=query)).exclude(is_active=False).distinct()
 
         querylist = (
         
