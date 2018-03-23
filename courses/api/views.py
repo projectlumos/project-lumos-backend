@@ -286,57 +286,54 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
 
     def get_querylist(self,*args, **kwargs):
         query = self.request.GET.get('query', None)
-
+        domain_queryset = Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct()
+        language_queryset = Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct()
         knowledgebase_queryset = KnowledgeBase.objects.filter(Q(title__icontains=query) | 
                                                       Q(slug__icontains=query) | 
                                                       Q(languages__slug__icontains=query) | 
                                                       Q(domains__slug__icontains=query) |
                                                       Q(languages__language_name__icontains=query) | 
                                                       Q(domains__domain_name__icontains=query)).distinct()
-
+        soft_skills_data_queryset = SoftSkillsData.objects.filter(Q(title__icontains=query) |
+                                                      Q(slug__icontains=query)).distinct()
+        soft_skill_queryset = SoftSkills.objects.filter(Q(slug__icontains=query) |
+                                                  Q(soft_skill_category__icontains=query)).distinct()
+        ramdom_data_queryset = RandomData.objects.filter(Q(title__icontains=query) | 
+                                                  Q(slug__icontains=query)).distinct()
 
         querylist = (
         
+            {
+                'queryset': domain_queryset,
+                'serializer_class': DomainSerializer,
+            }, 
 
-        {
-            'queryset': Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct(),
-            'serializer_class': DomainSerializer,
-        }, 
+            {
+                'queryset': language_queryset,
+                'serializer_class': LanguageSerializer,
+            },
 
-        {
-            'queryset':Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct(),
-            'serializer_class': LanguageSerializer,
-        },
+            {
+                'queryset':knowledgebase_queryset,
+                'serializer_class': KnowledgeBaseSerializer,
+            },
 
-        {
-            'queryset': KnowledgeBase.objects.filter(Q(title__icontains=query) | 
-                                                      Q(slug__icontains=query) | 
-                                                      Q(languages__slug__icontains=query) | 
-                                                      Q(domains__slug__icontains=query) |
-                                                      Q(languages__language_name__icontains=query) | 
-                                                      Q(domains__domain_name__icontains=query)).distinct(),
-            'serializer_class': KnowledgeBaseSerializer,
-        },
+            {
+                'queryset': soft_skills_data_queryset,
+                'serializer_class': SoftSkillsDataSerializer,
+            },
 
-        {
-            'queryset': SoftSkillsData.objects.filter(Q(title__icontains=query) |
-                                                      Q(slug__icontains=query)).distinct(),
-            'serializer_class': SoftSkillsDataSerializer,
-        },
+            {
 
-        {
+                'queryset': soft_skill_queryset,
+                'serializer_class': SoftSkillsSerializer,
+            },
 
-            'queryset': SoftSkills.objects.filter(Q(slug__icontains=query) |
-                                                  Q(soft_skill_category__icontains=query)).distinct(),
-            'serializer_class': SoftSkillsSerializer,
-        },
+            {
+                'queryset': ramdom_data_queryset,
+                'serializer_class': RandomDataSerializer,
+            },
 
-        {
-            'queryset': RandomData.objects.filter(Q(title__icontains=query) | 
-                                                  Q(slug__icontains=query)).distinct(),
-            'serializer_class': RandomDataSerializer,
-        },
-
-    )
+        )
 
         return querylist
