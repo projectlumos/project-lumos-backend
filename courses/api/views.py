@@ -2,17 +2,26 @@
 # import os
 
 # framework level libraries
+from django.db.models import Q
+import itertools
+from rest_framework.serializers import Serializer
+from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
-from rest_framework.filters import OrderingFilter
+from rest_framework.filters import (
+    SearchFilter,
+    OrderingFilter,
+    )
 from django_filters import rest_framework as filters
-
+from drf_multiple_model.viewsets import ObjectMultipleModelAPIViewSet
+from drf_multiple_model.pagination import MultipleModelLimitOffsetPagination
+from django.db.models import Count
 # project level imports
 
 # app level imports
 from courses.models import Language, Domain, SoftSkills, SoftSkillsData, KnowledgeBase, \
     RandomData
-
+    
 # api level imports
 from courses.api.serializers import LanguageSerializer, DomainSerializer, SoftSkillsSerializer, \
     SoftSkillsDataSerializer, KnowledgeBaseSerializer, RandomDataSerializer
@@ -25,7 +34,8 @@ class ReadOnlyCoursesAbstractViewSet(viewsets.ReadOnlyModelViewSet):
     """
     serializer_class = None
     permission_classes = [AllowAny]
-    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
+    filter_backends = [filters.DjangoFilterBackend,SearchFilter, OrderingFilter]
+    search_fields = []
     filter_fields = []
     ordering_fields = []
     ordering = []
@@ -60,7 +70,8 @@ class LanguageViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = LanguageSerializer
-    filter_fields = ['id', 'language_name', 'slug', 'description']
+    filter_fields = ['id']
+    search_fields = ['language_name','slug','description']
     ordering_fields = ['language_name']
     ordering = ['language_name']
     queryset = Language.objects.all()
@@ -90,7 +101,8 @@ class DomainViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = DomainSerializer
-    filter_fields = ['id', 'domain_name', 'slug', 'description']
+    filter_fields = ['id']
+    search_fields = ['domain_name','slug','description']
     ordering_fields = ['domain_name']
     ordering = ['domain_name']
     queryset = Domain.objects.all()
@@ -113,12 +125,11 @@ class SoftSkillsViewSet(ReadOnlyCoursesAbstractViewSet):
                 "slug": "body-language",
                 "description": "Does this really matter? Yes it does.SIT UP STRAIGHT!",
                 "icon": ""
-            }
-        ]
-    }
+            }  
     """
     serializer_class = SoftSkillsSerializer
-    filter_fields = ['id', 'soft_skill_category', 'slug', 'description']
+    filter_fields = ['id']
+    search_fields = ['soft_skill_category','slug','description']
     ordering_fields = ['soft_skill_category']
     ordering = ['soft_skill_category']
     queryset = SoftSkills.objects.all()
@@ -138,7 +149,14 @@ class SoftSkillsDataViewSet(ReadOnlyCoursesAbstractViewSet):
             "url": "http://127.0.0.1:8000/api/soft-skills-data/1/",
             "id": 1,
             "soft_skill": [
-                2
+                {
+                    "url": "https://pl-backend-staging.herokuapp.com/api/soft-skills/1/",
+                    "id": 1,
+                    "soft_skill_category": "Time Management",
+                    "slug": "time-management",
+                    "description": "Time Management",
+                    "icon": ""
+                }
             ],
             "title": "How to reduce and cope with stress",
             "description": "It may seem like there’s nothing you can do about stress.",
@@ -151,7 +169,8 @@ class SoftSkillsDataViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = SoftSkillsDataSerializer
-    filter_fields = ['title', 'description', 'slug', 'data_type', 'paid', 'soft_skill__id', 'soft_skill__slug']
+    filter_fields = ['data_type', 'paid', 'soft_skill__id']
+    search_fields = ['title','description','slug','soft_skill__slug']
     ordering_fields = ['data_type', 'title', 'paid']
     ordering = ['data_type']
     queryset = SoftSkillsData.objects.all()
@@ -178,10 +197,25 @@ class KnowledgeBaseViewSet(ReadOnlyCoursesAbstractViewSet):
                 "description": "Learn how to test Django signals",
                 "slug": "testing-django-signals",
                 "languages": [
-                    1
+                    {
+                    "url": "https://pl-backend-staging.herokuapp.com/api/language/1/",
+                    "id": 1,
+                    "language_name": "Python",
+                    "slug": "python",
+                    "site_url": "https://www.python.org/",
+                    "description": "Python can be easy to pick up whether you're a first-time programmer or you're experienced with other languages.",
+                    "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/1200px-Python.svg.png"
+                }
                 ],
                 "domains": [
-                    1
+                     {
+                    "url": "https://pl-backend-staging.herokuapp.com/api/domain/1/",
+                    "id": 1,
+                    "domain_name": "Web Development",
+                    "slug": "web-development",
+                    "description": "Web development is a broad term for the work involved in developing a web site for the Internet (World Wide Web) or an intranet (a private network). Web development can range from developing the simplest static single page of plain text to the most complex web-based internet applications (or just 'web apps') electronic businesses, and social network services. A more comprehensive list of tasks to which web development commonly refers, may include web engineering, web design, web content development, client liaison, client-side/server-side scripting, web server and network security configuration, and e-commerce development. Among web professionals, \"web development\" usually refers to the main non-design aspects of building web sites: writing markup and coding. Most recently Web development has come to mean the creation of content management systems or CMS. These CMS can be made from scratch, proprietary or open source. In broad terms the CMS acts as middleware between the database and the user through the browser. A principle benefit of a CMS is that it allows non-technical people to make changes to their web site without having technical knowledge.",
+                    "icon": "https://cdn3.iconfinder.com/data/icons/web-design-and-development-glyph-vol-1/64/web-development-glyph-01-512.png"
+                }
                 ],
                 "data_type": "BL",
                 "skill_level": "AD",
@@ -193,8 +227,9 @@ class KnowledgeBaseViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = KnowledgeBaseSerializer
-    filter_fields = ['title', 'description', 'slug', 'skill_level', 'data_type', 'paid', 'languages__id',
-                    'languages__slug', 'domains__id', 'domains__slug', 'project']
+    filter_fields = ['skill_level', 'data_type', 'paid', 'languages__id',
+                     'domains__id', 'project']
+    search_fields = ['title','description','slug','languages__slug','domains__slug']
     ordering_fields = ['skill_level', 'data_type', 'title', 'paid']
     ordering = ['skill_level', 'data_type']
     queryset = KnowledgeBase.objects.all()
@@ -229,7 +264,8 @@ class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
     }
     """
     serializer_class = RandomDataSerializer
-    filter_fields = ['title', 'description', 'slug', 'data_type', 'paid']
+    filter_fields = ['data_type', 'paid']
+    search_fields = ['title','description','slug']
     ordering_fields = ['data_type', 'title', 'paid']
     ordering = ['data_type']
     queryset = RandomData.objects.all()
@@ -237,3 +273,70 @@ class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
     def get_queryset(self):
         queryset = RandomData.objects.filter(is_active=True)
         return queryset
+
+
+
+class LimitPagination(MultipleModelLimitOffsetPagination):
+    default_limit = 15
+
+
+class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
+    pagination_class = LimitPagination
+
+
+    def get_querylist(self,*args, **kwargs):
+        query = self.request.GET.get('query', None)
+
+        knowledgebase_queryset = KnowledgeBase.objects.filter(Q(title__icontains=query) | 
+                                                      Q(slug__icontains=query) | 
+                                                      Q(languages__slug__icontains=query) | 
+                                                      Q(domains__slug__icontains=query) |
+                                                      Q(languages__language_name__icontains=query) | 
+                                                      Q(domains__domain_name__icontains=query)).distinct()
+
+
+        querylist = (
+        
+
+        {
+            'queryset': Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct(),
+            'serializer_class': DomainSerializer,
+        }, 
+
+        {
+            'queryset':Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct(),
+            'serializer_class': LanguageSerializer,
+        },
+
+        {
+            'queryset': KnowledgeBase.objects.filter(Q(title__icontains=query) | 
+                                                      Q(slug__icontains=query) | 
+                                                      Q(languages__slug__icontains=query) | 
+                                                      Q(domains__slug__icontains=query) |
+                                                      Q(languages__language_name__icontains=query) | 
+                                                      Q(domains__domain_name__icontains=query)).distinct(),
+            'serializer_class': KnowledgeBaseSerializer,
+        },
+
+        {
+            'queryset': SoftSkillsData.objects.filter(Q(title__icontains=query) |
+                                                      Q(slug__icontains=query)).distinct(),
+            'serializer_class': SoftSkillsDataSerializer,
+        },
+
+        {
+
+            'queryset': SoftSkills.objects.filter(Q(slug__icontains=query) |
+                                                  Q(soft_skill_category__icontains=query)).distinct(),
+            'serializer_class': SoftSkillsSerializer,
+        },
+
+        {
+            'queryset': RandomData.objects.filter(Q(title__icontains=query) | 
+                                                  Q(slug__icontains=query)).distinct(),
+            'serializer_class': RandomDataSerializer,
+        },
+
+    )
+
+        return querylist

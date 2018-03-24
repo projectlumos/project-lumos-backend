@@ -13,6 +13,7 @@ from django_filters import rest_framework as filters
 from rest_framework.response import Response
 from rest_framework import status
 from courses.api.pagination import ResourcesPagination
+<<<<<<< HEAD
 from rest_framework.generics import ListCreateAPIView
 
 class FeedbackViewSet(ListCreateAPIView):

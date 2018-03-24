@@ -5,8 +5,11 @@ from courses.api.views import (
     SoftSkillsViewSet,
     SoftSkillsDataViewSet,
     KnowledgeBaseViewSet,
-    RandomDataViewSet
+    RandomDataViewSet,
+    GlobalSearchAPIViewSet
+    # GlobalSearchViewSet
 )
+
 from ratings.api.views import(
     KnowledgeBaseRatingViewSet,
     SoftSkillsDataRatingViewSet,
@@ -16,8 +19,12 @@ from ratings.api.views import(
 from notesapp.api.views import (
 	KnowledgeBaseNotesViewset,
 	SoftSkillsDataNotesViewset,
-	RandomDataNotesViewset
+	RandomDataNotesViewset,
+    
 )
+
+from feedback.api.views import FeedbackViewSet
+
 
 router = routers.SimpleRouter()
 router.register(r'language', LanguageViewSet)
@@ -32,3 +39,6 @@ router.register(r'random-data-rating', RandomDataRatingViewSet)
 router.register(r'knowledge-base-notes', KnowledgeBaseNotesViewset)
 router.register(r'soft-skills-notes', SoftSkillsDataNotesViewset)
 router.register(r'random-data-notes', RandomDataNotesViewset)
+router.register(r'global-search', GlobalSearchAPIViewSet, base_name='global-search')
+router.register(r'feedback', FeedbackViewSet)
+

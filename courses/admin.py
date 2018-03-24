@@ -1,4 +1,6 @@
 from django.contrib import admin
+
+# app level imports
 from .models import Domain, Language, SoftSkills, SoftSkillsData, KnowledgeBase, RandomData
 from .forms import KnowledgeBaseForm
 # Register your models here.

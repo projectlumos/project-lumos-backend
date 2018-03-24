@@ -1,6 +1,7 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-class IsOwner(BasePermission):
+
+class IsOwnerRatings(BasePermission):
     message = "You must be the owner of the object to view."
 
     def has_object_permission(self, request, view, obj):
@@ -8,8 +9,11 @@ class IsOwner(BasePermission):
             if obj.user == None:
                 # if user is anonymous then read-only
                 return True
-            elif obj.user == request.user:  # Check permissions for read-only request
+
+            # Check permissions for read-only request
+            elif obj.user == request.user:
                 return True
         else:
-            if obj.user == request.user:  # Check permissions for write request
+            # Check permissions for write request
+            if obj.user == request.user:
                 return True
