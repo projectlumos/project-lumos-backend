@@ -15,7 +15,7 @@ class Language(models.Model):
     language_name, slug, description and icon
     """
     language_name = models.CharField(max_length=30)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=255,unique=True)
 
     # if no site_url, store empty null frontend will handle
     site_url = models.URLField(null=True, blank=True)
@@ -70,7 +70,7 @@ class Domain(models.Model):
     domain_name, slug, description and icon
     """
     domain_name = models.CharField(max_length=30)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=255,unique=True)
     description = models.TextField(null=True, blank=True)
     icon = models.URLField(null=True, blank=True)
 
@@ -114,7 +114,7 @@ class SoftSkills(models.Model):
     soft_skill_category, slug, description and icon
     """
     soft_skill_category = models.CharField(max_length=30)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=255,unique=True)
     description = models.TextField(null=True, blank=True)
     # if no icon_url, store empty string
     icon = models.URLField(null=True, blank=True)
@@ -162,7 +162,7 @@ class SoftSkillsData(RowInformation):
     soft_skill = models.ManyToManyField(SoftSkills, related_name='soft_skills')
     title = models.CharField(max_length=100, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=255,unique=True)
     link_url = models.URLField(null=False, blank=False, unique=True)
 
     # indicates the type of data, video, blog, tutorial, course or others
@@ -222,22 +222,22 @@ class KnowledgeBase(RowInformation):
     This class is used to maintain attributes which are common to both the
     Video class and ExternalLink class. It inherits from RowInformation class
     """
-    title = models.CharField(max_length=100, null=False, blank=False)
+    title = models.CharField(max_length=200, null=False, blank=False)
     description = models.TextField(null=True, blank=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=255,unique=True)
 
     # skill level required to understand the resource
-    skill_level = models.CharField(max_length=2, choices=SKILL_LEVELS)
+    skill_level = models.CharField(max_length=10, choices=SKILL_LEVELS)
 
     # indicates the type of data, video, blog, tutorial, course or others
-    data_type = models.CharField(max_length=2, choices=DATA_TYPES)
+    data_type = models.CharField(max_length=10, choices=DATA_TYPES)
 
     # languages associated with the resource
     languages = models.ManyToManyField(Language, related_name='%(class)s_languages', blank=True)
 
     # domains associated with the resource
     domains = models.ManyToManyField(Domain, related_name='%(class)s_domains', blank=True)
-    link_url = models.URLField(null=False, blank=False, unique=True)
+    link_url = models.URLField(max_length=255,null=False, blank=False, unique=True)
 
     # indicates whether the resource is paid or not
     paid = models.BooleanField(default=False)
