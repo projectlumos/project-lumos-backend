@@ -301,7 +301,7 @@ class RandomData(RowInformation):
     title = models.CharField(max_length=100, null=False, blank=False)
 
     description = models.TextField(null=True, blank=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=255,unique=True)
     link_url = models.URLField(null=False, blank=False, unique=True)
 
     # indicates the type of data, video, blog, tutorial, course or others
