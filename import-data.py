@@ -17,7 +17,7 @@ def language_import():
 	loads it into database
 	"""
 	# Open the CSV File
-	language_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Related_Resource/project-lumos-backend/Language.csv"),
+	language_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Data-CSV-Files/Language.csv"),
 							   delimiter=",")
 	# Shift the header from column name to actual value
 	language_header = next(language_data)
@@ -35,7 +35,7 @@ def domain_import():
 	loads it into database
 	"""
 	# Open the CSV File
-	domain_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Related_Resource/project-lumos-backend/Domain.csv"),
+	domain_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Data-CSV-Files/Domain.csv"),
 							 delimiter=",")
 	# Shift the header from column name to actual value
 	domain_header = next(domain_data)
@@ -53,7 +53,7 @@ def softskills_import():
 	loads it into database
 	"""
 	# Open the CSV File
-	softskills_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Related_Resource/project-lumos-backend/Soft Skills.csv",
+	softskills_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Data-CSV-Files/Soft Skills.csv",
 		                         encoding="UTF-8"),delimiter=",")
 	# Shift the header from column name to actual value
 	softskills_header = next(softskills_data)
@@ -70,7 +70,7 @@ def softskillsdata_import():
 	This function reads the Soft Skills Data.csv file and
 	loads it into database
 	"""
-	softskillsdata_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Related_Resource/project-lumos-backend/Soft Skills Data.csv",
+	softskillsdata_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Data-CSV-Files/Soft Skills Data.csv",
 									 encoding="UTF-8"),delimiter=",")
 	softskillsdata_header = next(softskillsdata_data)
 	for row in softskillsdata_data:
@@ -88,7 +88,7 @@ def knowledge_base_import():
 	This function reads the Knowledge-Base.csv file and
 	loads it into database
 	"""
-	knowledge_base_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Related_Resource/project-lumos-backend/Knowledge-Base.csv",
+	knowledge_base_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Data-CSV-Files/Knowledge-Base.csv",
 									 encoding="UTF-8"),delimiter=",")
 	knowledgebase_header = next(knowledge_base_data)
 	for row in knowledge_base_data:
@@ -111,7 +111,7 @@ def random_data_import():
 	This function reads the Ramdom Data.csv file and
 	loads it into database
 	"""
-	random_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Related_Resource/project-lumos-backend/Random Data.csv",
+	random_data = csv.reader(open("/Users/JAI MATA DI/Desktop/Data-CSV-Files/Random Data.csv",
 							 encoding="UTF-8"),delimiter=",")
 	randomdata_header = next(random_data)
 	for row in random_data:
