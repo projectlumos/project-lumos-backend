@@ -14,7 +14,6 @@ from rest_framework.filters import (
     )
 from django_filters import rest_framework as filters
 from drf_multiple_model.viewsets import ObjectMultipleModelAPIViewSet
-from drf_multiple_model.pagination import MultipleModelLimitOffsetPagination
 from django.db.models import Count
 # project level imports
 
@@ -25,7 +24,7 @@ from courses.models import Language, Domain, SoftSkills, SoftSkillsData, Knowled
 # api level imports
 from courses.api.serializers import LanguageSerializer, DomainSerializer, SoftSkillsSerializer, \
     SoftSkillsDataSerializer, KnowledgeBaseSerializer, RandomDataSerializer
-from courses.api.pagination import ResourcesPagination
+from courses.api.pagination import ResourcesPagination,LimitPagination
 
 
 class ReadOnlyCoursesAbstractViewSet(viewsets.ReadOnlyModelViewSet):
@@ -275,68 +274,125 @@ class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
         return queryset
 
 
-
-class LimitPagination(MultipleModelLimitOffsetPagination):
-    default_limit = 15
-
-
 class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
+    """
+    handles viewset for global search.
+    "results": {
+        "Domain": [
+            {
+                "url": "http://127.0.0.1:8000/api/domain/1/",
+                "id": 1,
+                "domain_name": "Web Development",
+                "slug": "web-development",
+                "description": "",
+                "icon": "https://cdn3.iconfinder.com/data/icons/web-design-and-development-glyph-vol-1/64/web-development-glyph-01-512.png"
+            },
+            
+        ],
+        "Language": [
+            {
+                "url": "http://127.0.0.1:8000/api/language/1/",
+                "id": 1,
+                "language_name": "Python",
+                "slug": "python",
+                "site_url": "https://www.python.org/",
+                "description": "",
+                "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/1200px-Python.svg.png"
+            }
+        ],
+        "KnowledgeBase": [
+            {
+                "url": "http://127.0.0.1:8000/api/knowledge-base/9/",
+                "id": 9,
+                "title": "Testing Django Signals",
+                "description": "Learn how to test Django signals",
+                "slug": "testing-django-signals",
+                "languages": [
+                    {
+                        "url": "http://127.0.0.1:8000/api/language/1/",
+                        "id": 1,
+                        "language_name": "Python",
+                        "slug": "python",
+                        "site_url": "https://www.python.org/",
+                        "description": "",
+                        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Python.svg/1200px-Python.svg.png"
+                    }
+                ],
+                "domains": [
+                    {
+                        "url": "http://127.0.0.1:8000/api/domain/1/",
+                        "id": 1,
+                        "domain_name": "Web Development",
+                        "slug": "web-development",
+                        "description": "",
+                        "icon": "https://cdn3.iconfinder.com/data/icons/web-design-and-development-glyph-vol-1/64/web-development-glyph-01-512.png"
+                    }
+                ],
+                "data_type": "BL",
+                "skill_level": "AD",
+                "link_url": "https://medium.freecodecamp.com/how-to-testing-django-signals-like-a-pro-c7ed74279311#.n5anplyc4",
+                "paid": false,
+                "project": false,
+                "ratings": {
+                    "attribute_1": 3.0,
+                    "attribute_2": 3.0,
+                    "attribute_3": 3.0,
+                    "attribute_4": 3.0
+                }
+            },
+    """
     pagination_class = LimitPagination
-
 
     def get_querylist(self,*args, **kwargs):
         query = self.request.GET.get('query', None)
-
         knowledgebase_queryset = KnowledgeBase.objects.filter(Q(title__icontains=query) | 
-                                                      Q(slug__icontains=query) | 
-                                                      Q(languages__slug__icontains=query) | 
-                                                      Q(domains__slug__icontains=query) |
-                                                      Q(languages__language_name__icontains=query) | 
-                                                      Q(domains__domain_name__icontains=query)).distinct()
-
+                                                              Q(slug__icontains=query) | 
+                                                              Q(languages__slug__icontains=query) | 
+                                                              Q(domains__slug__icontains=query) |
+                                                              Q(languages__language_name__icontains=query) | 
+                                                              Q(domains__domain_name__icontains=query)).exclude(is_active=False).distinct()
+        domain_queryset = Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct()
+        language_queryset = Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct()
+        soft_skills_data_queryset = SoftSkillsData.objects.filter(Q(title__icontains=query) |
+                                                                  Q(slug__icontains=query)).exclude(is_active=False).distinct()
+        soft_skill_queryset = SoftSkills.objects.filter(Q(slug__icontains=query) |
+                                                        Q(soft_skill_category__icontains=query)).distinct()
+        ramdom_data_queryset = RandomData.objects.filter(Q(title__icontains=query) | 
+                                                         Q(slug__icontains=query)).exclude(is_active=False).distinct()
 
         querylist = (
         
+            {
+                'queryset': domain_queryset,
+                'serializer_class': DomainSerializer,
+            }, 
 
-        {
-            'queryset': Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct(),
-            'serializer_class': DomainSerializer,
-        }, 
+            {
+                'queryset': language_queryset,
+                'serializer_class': LanguageSerializer,
+            },
 
-        {
-            'queryset':Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct(),
-            'serializer_class': LanguageSerializer,
-        },
+            {
+                'queryset':knowledgebase_queryset,
+                'serializer_class': KnowledgeBaseSerializer,
+            },
 
-        {
-            'queryset': KnowledgeBase.objects.filter(Q(title__icontains=query) | 
-                                                      Q(slug__icontains=query) | 
-                                                      Q(languages__slug__icontains=query) | 
-                                                      Q(domains__slug__icontains=query) |
-                                                      Q(languages__language_name__icontains=query) | 
-                                                      Q(domains__domain_name__icontains=query)).distinct(),
-            'serializer_class': KnowledgeBaseSerializer,
-        },
+            {
+                'queryset': soft_skills_data_queryset,
+                'serializer_class': SoftSkillsDataSerializer,
+            },
 
-        {
-            'queryset': SoftSkillsData.objects.filter(Q(title__icontains=query) |
-                                                      Q(slug__icontains=query)).distinct(),
-            'serializer_class': SoftSkillsDataSerializer,
-        },
+            {
 
-        {
+                'queryset': soft_skill_queryset,
+                'serializer_class': SoftSkillsSerializer,
+            },
 
-            'queryset': SoftSkills.objects.filter(Q(slug__icontains=query) |
-                                                  Q(soft_skill_category__icontains=query)).distinct(),
-            'serializer_class': SoftSkillsSerializer,
-        },
+            {
+                'queryset': ramdom_data_queryset,
+                'serializer_class': RandomDataSerializer,
+            },
 
-        {
-            'queryset': RandomData.objects.filter(Q(title__icontains=query) | 
-                                                  Q(slug__icontains=query)).distinct(),
-            'serializer_class': RandomDataSerializer,
-        },
-
-    )
+        )
 
         return querylist
