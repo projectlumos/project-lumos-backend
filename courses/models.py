@@ -289,7 +289,7 @@ class KnowledgeBase(RowInformation):
         ordering = ['-modified_at', '-created_at']
 
          # checks whether the combination of two fields is unique
-        unique_together = ('title', 'slug') 
+        unique_together = ('title', 'slug')
 
 
 class RandomData(RowInformation):
