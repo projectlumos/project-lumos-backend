@@ -20,7 +20,7 @@ from django.db.models import Count
 # app level imports
 from courses.models import Language, Domain, SoftSkills, SoftSkillsData, KnowledgeBase, \
     RandomData
-    
+
 # api level imports
 from courses.api.serializers import LanguageSerializer, DomainSerializer, SoftSkillsSerializer, \
     SoftSkillsDataSerializer, KnowledgeBaseSerializer, RandomDataSerializer
@@ -75,6 +75,13 @@ class LanguageViewSet(ReadOnlyCoursesAbstractViewSet):
     ordering = ['language_name']
     queryset = Language.objects.all()
 
+    def get_queryset(self):
+        for language in Language.objects.all():
+            if not language.knowledgebase_languages.all().exists():
+                return Language.objects.exclude(id=language.id)
+        else:
+            return Language.objects.all()
+
 
 class DomainViewSet(ReadOnlyCoursesAbstractViewSet):
     """
@@ -106,6 +113,13 @@ class DomainViewSet(ReadOnlyCoursesAbstractViewSet):
     ordering = ['domain_name']
     queryset = Domain.objects.all()
 
+    def get_queryset(self):
+        for domain in Domain.objects.all():
+            if not domain.knowledgebase_domains.all().exists():
+                return Domain.objects.exclude(id=domain.id)
+        else:
+            return Domain.objects.all()
+
 
 class SoftSkillsViewSet(ReadOnlyCoursesAbstractViewSet):
     """
@@ -124,7 +138,7 @@ class SoftSkillsViewSet(ReadOnlyCoursesAbstractViewSet):
                 "slug": "body-language",
                 "description": "Does this really matter? Yes it does.SIT UP STRAIGHT!",
                 "icon": ""
-            }  
+            }
     """
     serializer_class = SoftSkillsSerializer
     filter_fields = ['id']
@@ -132,6 +146,13 @@ class SoftSkillsViewSet(ReadOnlyCoursesAbstractViewSet):
     ordering_fields = ['soft_skill_category']
     ordering = ['soft_skill_category']
     queryset = SoftSkills.objects.all()
+
+    def get_queryset(self):
+        for softskill in SoftSkills.objects.all():
+            if not softskill.soft_skills.all().exists():
+                return SoftSkills.objects.exclude(id=softskill.id)
+        else:
+            return SoftSkills.objects.all()
 
 
 class SoftSkillsDataViewSet(ReadOnlyCoursesAbstractViewSet):
@@ -287,7 +308,7 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
                 "description": "",
                 "icon": "https://cdn3.iconfinder.com/data/icons/web-design-and-development-glyph-vol-1/64/web-development-glyph-01-512.png"
             },
-            
+
         ],
         "Language": [
             {
@@ -345,11 +366,11 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
 
     def get_querylist(self,*args, **kwargs):
         query = self.request.GET.get('query', None)
-        knowledgebase_queryset = KnowledgeBase.objects.filter(Q(title__icontains=query) | 
-                                                              Q(slug__icontains=query) | 
-                                                              Q(languages__slug__icontains=query) | 
+        knowledgebase_queryset = KnowledgeBase.objects.filter(Q(title__icontains=query) |
+                                                              Q(slug__icontains=query) |
+                                                              Q(languages__slug__icontains=query) |
                                                               Q(domains__slug__icontains=query) |
-                                                              Q(languages__language_name__icontains=query) | 
+                                                              Q(languages__language_name__icontains=query) |
                                                               Q(domains__domain_name__icontains=query)).exclude(is_active=False).distinct()
         domain_queryset = Domain.objects.filter(knowledgebase_domains__in=knowledgebase_queryset).distinct()
         language_queryset = Language.objects.filter(knowledgebase_languages__in=knowledgebase_queryset).distinct()
@@ -357,15 +378,15 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
                                                                   Q(slug__icontains=query)).exclude(is_active=False).distinct()
         soft_skill_queryset = SoftSkills.objects.filter(Q(slug__icontains=query) |
                                                         Q(soft_skill_category__icontains=query)).distinct()
-        ramdom_data_queryset = RandomData.objects.filter(Q(title__icontains=query) | 
+        ramdom_data_queryset = RandomData.objects.filter(Q(title__icontains=query) |
                                                          Q(slug__icontains=query)).exclude(is_active=False).distinct()
 
         querylist = (
-        
+
             {
                 'queryset': domain_queryset,
                 'serializer_class': DomainSerializer,
-            }, 
+            },
 
             {
                 'queryset': language_queryset,
