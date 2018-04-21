@@ -23,9 +23,6 @@ from notesapp.api.views import (
     
 )
 
-from feedback.api.views import FeedbackViewSet
-
-
 router = routers.SimpleRouter()
 router.register(r'language', LanguageViewSet)
 router.register(r'domain', DomainViewSet)
@@ -40,5 +37,3 @@ router.register(r'knowledge-base-notes', KnowledgeBaseNotesViewset)
 router.register(r'soft-skills-notes', SoftSkillsDataNotesViewset)
 router.register(r'random-data-notes', RandomDataNotesViewset)
 router.register(r'global-search', GlobalSearchAPIViewSet, base_name='global-search')
-router.register(r'feedback', FeedbackViewSet)
-

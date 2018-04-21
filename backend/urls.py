@@ -21,6 +21,8 @@ from rest_framework_jwt.views import obtain_jwt_token
 
 from django.conf.urls import include, url
 from django.contrib import admin
+from feedback.api.views import FeedbackAPIView
+
 
 # TODO REFACTOR NAMESPACES AND URLS
 
@@ -31,5 +33,7 @@ urlpatterns = [
     path('wiki/<slug:term>/', wikiscript, name='wiki'),
     path('dict/<slug:term>/', dictscript, name='dictionary'),
     path('api/', include(router.urls)),
+    url(r'^api/feedback/', FeedbackAPIView.as_view(), name='feedback'),
+
     url(r'^accounts/', include('accounts.urls')),
 ]

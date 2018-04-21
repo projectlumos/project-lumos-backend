@@ -1,27 +1,22 @@
 from rest_framework import viewsets
-from rest_framework.permissions import(
-	AllowAny,
-)
 from feedback.api.serializers import FeedbackSerializer
 from feedback.models import Feedback
 from rest_framework.filters import (
 	SearchFilter,
 	OrderingFilter,
 	)
-from .permissions import IsOwnerFeedback
 from django_filters import rest_framework as filters
 from rest_framework.response import Response
 from rest_framework import status
 from courses.api.pagination import ResourcesPagination
+from rest_framework.generics import ListCreateAPIView
 
-
-class FeedbackViewSet(viewsets.ModelViewSet):
+class FeedbackAPIView(ListCreateAPIView):
 	"""
 	handles viewset for feedback serializer.
 	"""
 	serializer_class = FeedbackSerializer
 	pagination_class = ResourcesPagination
-	permission_classes = [AllowAny,IsOwnerFeedback]
 	filter_backends = [filters.DjangoFilterBackend,SearchFilter, OrderingFilter]
 	search_fields = ['id','text']
 	ordering = ('-created_at')
@@ -40,3 +35,9 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 		    serializer.save(user=self.request.user.id)
 		else:
 		    serializer.save(user=self.request.user)
+
+	def get_queryset(self):
+		user = self.request.user.id
+        # get objects only associated with the requesting user
+		queryset = Feedback.objects.filter(user=user)
+		return queryset
