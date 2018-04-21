@@ -59,8 +59,14 @@ coverage.xml
 *.log
 .static_storage/
 .media/
+*.csv
 local_settings.py
-
+Language.csv
+Domain.csv
+Knowledge-Base.csv
+Soft Skills Data.csv
+Soft Skills.csv
+Random data.csv
 # Flask stuff:
 instance/
 .webassets-cache
