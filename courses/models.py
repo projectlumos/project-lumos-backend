@@ -7,6 +7,50 @@ from courses.utils.modelsutils import RowInformation
 from ratings.models import KnowledgeBaseRating, SoftSkillsDataRating, RandomDataRating
 # Create your models here.
 
+class Tags(models.Model):
+    """
+    this class is used to find related resources by tags matching
+    """
+    tag = models.CharField(max_length=30)
+    slug = models.SlugField(max_length=255,unique=True)
+
+    def save(self, *args, **kwargs):
+
+        self.tag = self.tag.title() if self.tag else self.tag
+
+        if not self.slug:
+            # if slug doesn't exist pass the source_field and suffix=False to custom_slugify function
+            self.slug = pl_custom_slugify(source_field=self.tag, suffix=False)
+
+        try:
+            """
+            While saving, it we have a duplicate combination of name and slug
+            Since we have added an IntegrityError check, we will have an exception raised
+            """
+            # This will prevent the purposefully-thrown exception from breaking the entire unittest's transaction.
+            with transaction.atomic():
+                # since unique combination of source_field and slug exists, call save method
+                super(Tags, self).save(*args, **kwargs)
+
+        except IntegrityError:
+            """
+            after catching the exception, we will generate another slug but this time we will
+            suffix  it with a random string at the end of the slug to make it unique and try saving it again
+            """
+
+            # since unique combination of source_field and slug doesn't exist,
+            # pass suffix=True to add random_str to make it unique
+            self.slug = pl_custom_slugify(source_field=self.tag, suffix=True)
+            super(Tags, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return '{name}-{slug}'.format(name=self.tag, slug=self.slug)
+
+    class Meta:
+        # checks whether the combination of two fields is unique
+        unique_together = ('tag', 'slug')
+
+
 
 class Language(models.Model):
     """
@@ -170,6 +214,7 @@ class SoftSkillsData(RowInformation):
 
     # indicates whether the resource is paid or not
     paid = models.BooleanField(default=False)
+    tag = models.ManyToManyField(Tags, related_name='%(class)s_tag', blank=True)
 
     def save(self, *args, **kwargs):
 
@@ -245,6 +290,10 @@ class KnowledgeBase(RowInformation):
     # indicates if it's a project resource or not
     project = models.BooleanField(default=False)
 
+    # used to handle prereqs
+    prerequisites = models.ManyToManyField("self", related_name='prereqs', blank=True)
+    tag = models.ManyToManyField(Tags, related_name='%(class)s_tag', blank=True)
+
     def save(self, *args, **kwargs):
 
         self.title = self.title.title() if self.title else self.title
@@ -309,6 +358,7 @@ class RandomData(RowInformation):
 
     # indicates whether the resource is paid or not
     paid = models.BooleanField(default=False)
+    tag = models.ManyToManyField(Tags, related_name='%(class)s_tag', blank=True)
 
     def save(self, *args, **kwargs):
 

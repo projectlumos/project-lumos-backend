@@ -136,6 +136,7 @@ class KnowledgeBaseSerializer(ModelSerializer):
             'title',
             'description',
             'slug',
+            'prerequisites',
             'languages',
             'domains',
             'data_type',

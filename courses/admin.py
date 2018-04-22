@@ -1,9 +1,18 @@
 from django.contrib import admin
 
 # app level imports
-from .models import Domain, Language, SoftSkills, SoftSkillsData, KnowledgeBase, RandomData
+from .models import Domain, Language, SoftSkills, SoftSkillsData, KnowledgeBase, RandomData, Tags
 from .forms import KnowledgeBaseForm
 # Register your models here.
+
+class TagsModelAdmin(admin.ModelAdmin):
+    """
+    handles the admin panel for Tags
+    """
+    list_display = ['tag', 'slug']
+    search_fields = ['tag']
+    list_display_links = ['tag']
+    readonly_fields = ['slug']
 
 
 class DomainModelAdmin(admin.ModelAdmin):
@@ -79,7 +88,7 @@ class KnowledgeBaseModelAdmin(admin.ModelAdmin):
 
     # this field provides a way to search for related class attributes associated, autocompletes the attribute to be
     # searched for
-    autocomplete_fields = ['languages', 'domains']
+    autocomplete_fields = ['languages', 'domains', 'prerequisites', 'tag']
 
     # this field can only be read at the admin site. Since multiple_languages is a property called when object is saved,
     # no write permissions given
@@ -98,7 +107,7 @@ class SoftSkillsDataModelAdmin(admin.ModelAdmin):
     list_editable = ['is_active']
     list_filter = ['is_active', 'soft_skill__soft_skill_category', 'modified_at', 'created_at']
     search_fields = ['title', 'description', 'soft_skill__soft_skill_category']
-    autocomplete_fields = ['soft_skill']
+    autocomplete_fields = ['soft_skill', 'tag']
     readonly_fields = ['slug', 'ratings']
 
     class Meta:
@@ -114,6 +123,7 @@ class RandomDataModelAdmin(admin.ModelAdmin):
     list_editable = ['is_active']
     list_filter = ['is_active', 'modified_at', 'created_at']
     search_fields = ['title', 'description']
+    autocomplete_fields = ['tag']
     readonly_fields = ['slug', 'ratings']
 
     class Meta:
@@ -121,6 +131,7 @@ class RandomDataModelAdmin(admin.ModelAdmin):
 
 
 """Register the admin models """
+admin.site.register(Tags, TagsModelAdmin)
 admin.site.register(Domain, DomainModelAdmin)
 admin.site.register(Language, LanguageModelAdmin)
 admin.site.register(SoftSkills, SoftSkillsModelAdmin)
