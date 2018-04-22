@@ -5,7 +5,6 @@
 from django.db.models import Q
 from django.db.models import  Case, IntegerField, Value, When
 import itertools
-from itertools import chain
 from rest_framework.serializers import Serializer
 from rest_framework.response import Response
 from rest_framework import viewsets
