@@ -3,6 +3,7 @@
 
 # framework level libraries
 from django.db.models import Q
+from django.db.models import  Case, IntegerField, Value, When
 import itertools
 from rest_framework.serializers import Serializer
 from rest_framework.response import Response
@@ -25,7 +26,6 @@ from courses.models import Language, Domain, SoftSkills, SoftSkillsData, Knowled
 from courses.api.serializers import LanguageSerializer, DomainSerializer, SoftSkillsSerializer, \
     SoftSkillsDataSerializer, KnowledgeBaseSerializer, RandomDataSerializer
 from courses.api.pagination import ResourcesPagination,LimitPagination
-
 
 class ReadOnlyCoursesAbstractViewSet(viewsets.ReadOnlyModelViewSet):
     """
@@ -250,12 +250,18 @@ class KnowledgeBaseViewSet(ReadOnlyCoursesAbstractViewSet):
     filter_fields = ['skill_level', 'data_type', 'paid', 'languages__id',
                      'domains__id', 'project']
     search_fields = ['title','description','slug','languages__slug','domains__slug']
-    ordering_fields = ['skill_level', 'data_type', 'title', 'paid']
-    ordering = ['skill_level', 'data_type']
+    filter_backends = [filters.DjangoFilterBackend,SearchFilter]
     queryset = KnowledgeBase.objects.all()
 
     def get_queryset(self):
-        queryset = KnowledgeBase.objects.filter(is_active=True)
+        queryset = KnowledgeBase.objects.filter(is_active=True).annotate(
+            skill_order=Case(
+                When(skill_level='BG', then=Value(1)),
+                When(skill_level='IT', then=Value(2)),
+                default=Value(3),
+                output_field=IntegerField(),
+                ),
+        ).order_by('skill_order')
         return queryset
 
 
