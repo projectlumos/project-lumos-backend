@@ -23,6 +23,11 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from feedback.api.views import FeedbackAPIView
 
+# from related.api.views import(
+#     KnowledgeBaseRelatedView,
+#     SoftSkillsDataRelatedView,
+#     RandomDataRelatedView
+# )
 
 # TODO REFACTOR NAMESPACES AND URLS
 
@@ -34,6 +39,8 @@ urlpatterns = [
     path('dict/<slug:term>/', dictscript, name='dictionary'),
     path('api/', include(router.urls)),
     url(r'^api/feedback/', FeedbackAPIView.as_view(), name='feedback'),
-
+    # url(r'^api/knowledgebase-related/(?P<pk>\d+)/$', KnowledgeBaseRelatedView.as_view(), name='kb_related'),
+    # url(r'^api/softskills-data-related/(?P<pk>\d+)/$', SoftSkillsDataRelatedView.as_view(), name='ssd_related'),
+    # url(r'^api/random-data-related/(?P<pk>\d+)/$', RandomDataRelatedView.as_view(), name='rd_related'),
     url(r'^accounts/', include('accounts.urls')),
 ]

@@ -20,8 +20,15 @@ from notesapp.api.views import (
 	KnowledgeBaseNotesViewset,
 	SoftSkillsDataNotesViewset,
 	RandomDataNotesViewset,
-    
+
 )
+
+from related.api.views import(
+    KnowledgeBaseRelatedViewSet,
+    SoftSkillsDataRelatedViewSet,
+    RandomDataRelatedViewSet
+)
+
 
 router = routers.SimpleRouter()
 router.register(r'language', LanguageViewSet)
@@ -36,4 +43,7 @@ router.register(r'random-data-rating', RandomDataRatingViewSet)
 router.register(r'knowledge-base-notes', KnowledgeBaseNotesViewset)
 router.register(r'soft-skills-notes', SoftSkillsDataNotesViewset)
 router.register(r'random-data-notes', RandomDataNotesViewset)
+router.register(r'knowledgebase-related', KnowledgeBaseRelatedViewSet)
+router.register(r'softskills-data-related', SoftSkillsDataRelatedViewSet)
+router.register(r'random-data-related', RandomDataRelatedViewSet)
 router.register(r'global-search', GlobalSearchAPIViewSet, base_name='global-search')

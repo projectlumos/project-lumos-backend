@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from courses.utils.modelsutils import pl_custom_slugify
 from courses.utils.modelsutils import RowInformation
 from ratings.models import KnowledgeBaseRating, SoftSkillsDataRating, RandomDataRating
+from .managers import KnowledgeBaseRelatedManager
 # Create your models here.
 
 class Tags(models.Model):
@@ -293,6 +294,8 @@ class KnowledgeBase(RowInformation):
     # used to handle prereqs
     prerequisites = models.ManyToManyField("self", related_name='prereqs', blank=True)
     tag = models.ManyToManyField(Tags, related_name='%(class)s_tag', blank=True)
+
+    related = KnowledgeBaseRelatedManager()
 
     def save(self, *args, **kwargs):
 
