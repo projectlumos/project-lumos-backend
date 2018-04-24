@@ -3,6 +3,7 @@
 from rest_framework.serializers import (
     ModelSerializer,
     HyperlinkedIdentityField,
+    SerializerMethodField
 )
 
 # app level imports
@@ -40,6 +41,20 @@ randomdata_detail_url=HyperlinkedIdentityField(
     view_name='randomdata-detail',
     read_only=True
 )
+
+
+class RelatedPrerequisitesSerializer(ModelSerializer):
+    """
+    class for RelatedPrerequisitesSerializer
+    """
+
+    class Meta:
+        model = KnowledgeBase
+        fields = [
+            'id',
+            'title',
+            'slug'
+        ]
 
 
 class LanguageSerializer(ModelSerializer):
@@ -120,7 +135,7 @@ class SoftSkillsDataSerializer(ModelSerializer):
         ]
 
 
-class KnowledgeBaseSerializer(ModelSerializer):
+class KnowledgeBaseListSerializer(ModelSerializer):
     """
     serializer for KnowledgeBase model class
     """
@@ -136,7 +151,6 @@ class KnowledgeBaseSerializer(ModelSerializer):
             'title',
             'description',
             'slug',
-            'prerequisites',
             'languages',
             'domains',
             'data_type',
@@ -146,6 +160,51 @@ class KnowledgeBaseSerializer(ModelSerializer):
             'project',
             'ratings'
         ]
+
+
+class KnowledgeBaseDetailSerializer(ModelSerializer):
+    """
+    serializer for KnowledgeBase model class
+    """
+    languages = LanguageSerializer(many=True)
+    domains = DomainSerializer(many=True)
+    url = knowledgebase_detail_url
+    prerequisites = RelatedPrerequisitesSerializer(many=True)
+    related = SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = KnowledgeBase
+        fields = [
+            'url',
+            'id',
+            'title',
+            'description',
+            'slug',
+            'prerequisites',
+            'related',
+            'languages',
+            'domains',
+            'data_type',
+            'skill_level',
+            'link_url',
+            'paid',
+            'project',
+            'ratings'
+        ]
+
+    def get_related(self, obj):
+        tag_list = []
+        queryset = KnowledgeBase.objects.none()
+        qs = KnowledgeBase.objects.get(id=obj.id)
+        for tag in qs.tag.values_list(flat=True):
+            tag_list.append(tag)
+        for item in KnowledgeBase.objects.filter(is_active=True):
+            for indivisual_tag in item.tag.values_list(flat=True):
+                if indivisual_tag in tag_list:
+                    queryset = queryset | KnowledgeBase.objects.filter(id=item.id)
+        queryset = queryset.exclude(id=obj.id)
+
+        return RelatedPrerequisitesSerializer(queryset, many=True).data
 
 
 class RandomDataSerializer(ModelSerializer):

@@ -24,7 +24,8 @@ from courses.models import Language, Domain, SoftSkills, SoftSkillsData, Knowled
 
 # api level imports
 from courses.api.serializers import LanguageSerializer, DomainSerializer, SoftSkillsSerializer, \
-    SoftSkillsDataSerializer, KnowledgeBaseSerializer, RandomDataSerializer
+    SoftSkillsDataSerializer, KnowledgeBaseListSerializer, KnowledgeBaseDetailSerializer, \
+     RandomDataSerializer
 from courses.api.pagination import ResourcesPagination,LimitPagination
 
 class ReadOnlyCoursesAbstractViewSet(viewsets.ReadOnlyModelViewSet):
@@ -246,7 +247,11 @@ class KnowledgeBaseViewSet(ReadOnlyCoursesAbstractViewSet):
         ]
     }
     """
-    serializer_class = KnowledgeBaseSerializer
+    serializer_class = KnowledgeBaseListSerializer
+    action_serializers = {
+        'retrieve': KnowledgeBaseDetailSerializer,
+        'list': KnowledgeBaseListSerializer
+    }
     filter_fields = ['skill_level', 'data_type', 'paid', 'languages__id',
                      'domains__id', 'project']
     search_fields = ['title','description','slug','languages__slug','domains__slug']
@@ -263,6 +268,12 @@ class KnowledgeBaseViewSet(ReadOnlyCoursesAbstractViewSet):
                 ),
         ).order_by('skill_order')
         return queryset
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action_serializers'):
+            if self.action in self.action_serializers:
+                return self.action_serializers[self.action]
+        return super(KnowledgeBaseViewSet, self).get_serializer_class()
 
 
 class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
