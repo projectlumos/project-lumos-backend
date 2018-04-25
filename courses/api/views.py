@@ -24,8 +24,8 @@ from courses.models import Language, Domain, SoftSkills, SoftSkillsData, Knowled
 
 # api level imports
 from courses.api.serializers import LanguageSerializer, DomainSerializer, SoftSkillsSerializer, \
-    SoftSkillsDataSerializer, KnowledgeBaseListSerializer, KnowledgeBaseDetailSerializer, \
-     RandomDataSerializer
+    SoftSkillsDataListSerializer, SoftSkillsDataDetailSerializer, KnowledgeBaseListSerializer, \
+     KnowledgeBaseDetailSerializer, RandomDataListSerializer, RandomDataDetailSerializer
 from courses.api.pagination import ResourcesPagination,LimitPagination
 
 class ReadOnlyCoursesAbstractViewSet(viewsets.ReadOnlyModelViewSet):
@@ -189,7 +189,11 @@ class SoftSkillsDataViewSet(ReadOnlyCoursesAbstractViewSet):
         ]
     }
     """
-    serializer_class = SoftSkillsDataSerializer
+    serializer_class = SoftSkillsDataListSerializer
+    action_serializers = {
+        'retrieve': SoftSkillsDataDetailSerializer,
+        'list': SoftSkillsDataListSerializer
+    }
     filter_fields = ['data_type', 'paid', 'soft_skill__id']
     search_fields = ['title','description','slug','soft_skill__slug']
     ordering_fields = ['data_type', 'title', 'paid']
@@ -199,6 +203,12 @@ class SoftSkillsDataViewSet(ReadOnlyCoursesAbstractViewSet):
     def get_queryset(self):
         queryset = SoftSkillsData.objects.filter(is_active=True)
         return queryset
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action_serializers'):
+            if self.action in self.action_serializers:
+                return self.action_serializers[self.action]
+        return super(SoftSkillsDataViewSet, self).get_serializer_class()
 
 
 class KnowledgeBaseViewSet(ReadOnlyCoursesAbstractViewSet):
@@ -300,7 +310,11 @@ class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
         ]
     }
     """
-    serializer_class = RandomDataSerializer
+    serializer_class = RandomDataListSerializer
+    action_serializers = {
+        'retrieve': RandomDataDetailSerializer,
+        'list': RandomDataListSerializer
+    }
     filter_fields = ['data_type', 'paid']
     search_fields = ['title','description','slug']
     ordering_fields = ['data_type', 'title', 'paid']
@@ -310,6 +324,12 @@ class RandomDataViewSet(ReadOnlyCoursesAbstractViewSet):
     def get_queryset(self):
         queryset = RandomData.objects.filter(is_active=True)
         return queryset
+
+    def get_serializer_class(self):
+        if hasattr(self, 'action_serializers'):
+            if self.action in self.action_serializers:
+                return self.action_serializers[self.action]
+        return super(RandomDataViewSet, self).get_serializer_class()
 
 
 class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):

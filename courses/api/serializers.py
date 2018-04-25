@@ -112,7 +112,7 @@ class SoftSkillsSerializer(ModelSerializer):
         ]
 
 
-class SoftSkillsDataSerializer(ModelSerializer):
+class SoftSkillsDataListSerializer(ModelSerializer):
     """
     serializer for SoftSkillsData model class
     """
@@ -133,6 +133,45 @@ class SoftSkillsDataSerializer(ModelSerializer):
             'paid',
             'ratings'
         ]
+
+
+class SoftSkillsDataDetailSerializer(ModelSerializer):
+    """
+    serializer for SoftSkillsData model class
+    """
+    soft_skill = SoftSkillsSerializer(many=True)
+    url = softskillsdata_detail_url
+    related = SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = SoftSkillsData
+        fields = [
+            'url',
+            'id',
+            'soft_skill',
+            'title',
+            'description',
+            'slug',
+            'related',
+            'data_type',
+            'link_url',
+            'paid',
+            'ratings'
+        ]
+
+    def get_related(self, obj):
+        tag_list = []
+        queryset = SoftSkillsData.objects.none()
+        qs = SoftSkillsData.objects.get(id=obj.id)
+        for tag in qs.tag.values_list(flat=True):
+            tag_list.append(tag)
+        for item in SoftSkillsData.objects.filter(is_active=True):
+            for indivisual_tag in item.tag.values_list(flat=True):
+                if indivisual_tag in tag_list:
+                    queryset = queryset | SoftSkillsData.objects.filter(id=item.id)
+        queryset = queryset.exclude(id=obj.id)
+
+        return RelatedPrerequisitesSerializer(queryset, many=True).data
 
 
 class KnowledgeBaseListSerializer(ModelSerializer):
@@ -207,7 +246,7 @@ class KnowledgeBaseDetailSerializer(ModelSerializer):
         return RelatedPrerequisitesSerializer(queryset, many=True).data
 
 
-class RandomDataSerializer(ModelSerializer):
+class RandomDataListSerializer(ModelSerializer):
     """
     serializer for RandomData model class
     """
@@ -226,3 +265,40 @@ class RandomDataSerializer(ModelSerializer):
             'paid',
             'ratings'
         ]
+
+
+class RandomDataDetailSerializer(ModelSerializer):
+    """
+    serializer for RandomData model class
+    """
+    url = randomdata_detail_url
+    related = SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = RandomData
+        fields = [
+            'url',
+            'id',
+            'title',
+            'description',
+            'slug',
+            'related',
+            'data_type',
+            'link_url',
+            'paid',
+            'ratings'
+        ]
+
+    def get_related(self, obj):
+        tag_list = []
+        queryset = RandomData.objects.none()
+        qs = RandomData.objects.get(id=obj.id)
+        for tag in qs.tag.values_list(flat=True):
+            tag_list.append(tag)
+        for item in RandomData.objects.filter(is_active=True):
+            for indivisual_tag in item.tag.values_list(flat=True):
+                if indivisual_tag in tag_list:
+                    queryset = queryset | RandomData.objects.filter(id=item.id)
+        queryset = queryset.exclude(id=obj.id)
+
+        return RelatedPrerequisitesSerializer(queryset, many=True).data
