@@ -5,7 +5,7 @@ from rest_framework.serializers import (
     HyperlinkedIdentityField,
     SerializerMethodField
 )
-
+import operator
 # app level imports
 
 from courses.models import Language, Domain, KnowledgeBase, SoftSkills, SoftSkillsData, RandomData
@@ -43,9 +43,9 @@ randomdata_detail_url=HyperlinkedIdentityField(
 )
 
 
-class RelatedPrerequisitesSerializer(ModelSerializer):
+class PrerequisitesSerializer(ModelSerializer):
     """
-    class for RelatedPrerequisitesSerializer
+    class for PrerequisitesSerializer
     """
 
     class Meta:
@@ -161,17 +161,32 @@ class SoftSkillsDataDetailSerializer(ModelSerializer):
 
     def get_related(self, obj):
         tag_list = []
+        match_count = []
+        match_item_dict = {}
+        result = {}
+        final = []
         queryset = SoftSkillsData.objects.none()
         qs = SoftSkillsData.objects.get(id=obj.id)
         for tag in qs.tag.values_list(flat=True):
             tag_list.append(tag)
         for item in SoftSkillsData.objects.filter(is_active=True):
-            for indivisual_tag in item.tag.values_list(flat=True):
-                if indivisual_tag in tag_list:
+            item_list = []
+            if item.tag.all().exists():
+                for indivisual_tag in item.tag.values_list(flat=True):
+                    item_list.append(indivisual_tag)
+                if len(list(set(tag_list).intersection(item_list))) != 0 and item.id != obj.id:
+                    match_item_dict[item.id] = len(list(set(tag_list).intersection(item_list)))
                     queryset = queryset | SoftSkillsData.objects.filter(id=item.id)
-        queryset = queryset.exclude(id=obj.id)
-
-        return RelatedPrerequisitesSerializer(queryset, many=True).data
+        sorted_match_item = sorted(match_item_dict.items(), key=operator.itemgetter(1), reverse=True)
+        for object in sorted_match_item:
+            match_count.append(object[0])
+        for idx, val in enumerate(match_count):
+            result['id'] = val
+            obj = SoftSkillsData.objects.get(id=val)
+            result['title'] = obj.title
+            result['slug'] = obj.slug
+            final.append(result.copy())
+        return final
 
 
 class KnowledgeBaseListSerializer(ModelSerializer):
@@ -208,7 +223,7 @@ class KnowledgeBaseDetailSerializer(ModelSerializer):
     languages = LanguageSerializer(many=True)
     domains = DomainSerializer(many=True)
     url = knowledgebase_detail_url
-    prerequisites = RelatedPrerequisitesSerializer(many=True)
+    prerequisites = PrerequisitesSerializer(many=True)
     related = SerializerMethodField(read_only=True)
 
     class Meta:
@@ -233,17 +248,32 @@ class KnowledgeBaseDetailSerializer(ModelSerializer):
 
     def get_related(self, obj):
         tag_list = []
+        match_count = []
+        match_item_dict = {}
+        result = {}
+        final = []
         queryset = KnowledgeBase.objects.none()
         qs = KnowledgeBase.objects.get(id=obj.id)
         for tag in qs.tag.values_list(flat=True):
             tag_list.append(tag)
         for item in KnowledgeBase.objects.filter(is_active=True):
-            for indivisual_tag in item.tag.values_list(flat=True):
-                if indivisual_tag in tag_list:
+            item_list = []
+            if item.tag.all().exists():
+                for indivisual_tag in item.tag.values_list(flat=True):
+                    item_list.append(indivisual_tag)
+                if len(list(set(tag_list).intersection(item_list))) != 0 and item.id != obj.id:
+                    match_item_dict[item.id] = len(list(set(tag_list).intersection(item_list)))
                     queryset = queryset | KnowledgeBase.objects.filter(id=item.id)
-        queryset = queryset.exclude(id=obj.id)
-
-        return RelatedPrerequisitesSerializer(queryset, many=True).data
+        sorted_match_item = sorted(match_item_dict.items(), key=operator.itemgetter(1), reverse=True)
+        for object in sorted_match_item:
+            match_count.append(object[0])
+        for idx, val in enumerate(match_count):
+            result['id'] = val
+            obj = KnowledgeBase.objects.get(id=val)
+            result['title'] = obj.title
+            result['slug'] = obj.slug
+            final.append(result.copy())
+        return final
 
 
 class RandomDataListSerializer(ModelSerializer):
@@ -291,14 +321,29 @@ class RandomDataDetailSerializer(ModelSerializer):
 
     def get_related(self, obj):
         tag_list = []
+        match_count = []
+        match_item_dict = {}
+        result = {}
+        final = []
         queryset = RandomData.objects.none()
         qs = RandomData.objects.get(id=obj.id)
         for tag in qs.tag.values_list(flat=True):
             tag_list.append(tag)
         for item in RandomData.objects.filter(is_active=True):
-            for indivisual_tag in item.tag.values_list(flat=True):
-                if indivisual_tag in tag_list:
+            item_list = []
+            if item.tag.all().exists():
+                for indivisual_tag in item.tag.values_list(flat=True):
+                    item_list.append(indivisual_tag)
+                if len(list(set(tag_list).intersection(item_list))) != 0 and item.id != obj.id:
+                    match_item_dict[item.id] = len(list(set(tag_list).intersection(item_list)))
                     queryset = queryset | RandomData.objects.filter(id=item.id)
-        queryset = queryset.exclude(id=obj.id)
-
-        return RelatedPrerequisitesSerializer(queryset, many=True).data
+        sorted_match_item = sorted(match_item_dict.items(), key=operator.itemgetter(1), reverse=True)
+        for object in sorted_match_item:
+            match_count.append(object[0])
+        for idx, val in enumerate(match_count):
+            result['id'] = val
+            obj = RandomData.objects.get(id=val)
+            result['title'] = obj.title
+            result['slug'] = obj.slug
+            final.append(result.copy())
+        return final
