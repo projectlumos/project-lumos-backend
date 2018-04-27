@@ -432,12 +432,12 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
 
             {
                 'queryset':knowledgebase_queryset,
-                'serializer_class': KnowledgeBaseSerializer,
+                'serializer_class': KnowledgeBaseListSerializer,
             },
 
             {
                 'queryset': soft_skills_data_queryset,
-                'serializer_class': SoftSkillsDataSerializer,
+                'serializer_class': SoftSkillsDataListSerializer,
             },
 
             {
@@ -448,7 +448,7 @@ class GlobalSearchAPIViewSet(ObjectMultipleModelAPIViewSet):
 
             {
                 'queryset': ramdom_data_queryset,
-                'serializer_class': RandomDataSerializer,
+                'serializer_class': RandomDataListSerializer,
             },
 
         )
