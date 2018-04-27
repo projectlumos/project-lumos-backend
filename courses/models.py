@@ -291,7 +291,7 @@ class KnowledgeBase(RowInformation):
     project = models.BooleanField(default=False)
 
     # used to handle prereqs
-    prerequisites = models.ManyToManyField("self", related_name='prereqs', blank=True)
+    prerequisites = models.ManyToManyField("self", related_name='prereqs', blank=True, symmetrical=False)
     tag = models.ManyToManyField(Tags, related_name='%(class)s_tag', blank=True)
 
 
